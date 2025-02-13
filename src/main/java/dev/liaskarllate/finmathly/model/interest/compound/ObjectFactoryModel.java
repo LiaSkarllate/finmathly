@@ -1,5 +1,9 @@
 package dev.liaskarllate.finmathly.model.interest.compound;
 
+import java.util.List;
+
+import dev.liaskarllate.finmathly.model.FlowInputOutput;
+
 public class ObjectFactoryModel {
 	public static FormulaOutput getFormulaOutput(
 			Double interest,
@@ -23,5 +27,13 @@ public class ObjectFactoryModel {
 				presentValue, 
 				interestRate, 
 				time);
+	}
+	
+	public static PresentValueCashFlowInput getPresentValueCashFlowInput(
+			List<FlowInputOutput> flows, 
+			Double interestRate) {
+		return new PresentValueCashFlowInput(
+				flows,
+				interestRate);
 	}
 }

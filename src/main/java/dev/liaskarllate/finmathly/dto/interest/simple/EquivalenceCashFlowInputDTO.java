@@ -15,32 +15,32 @@ public class EquivalenceCashFlowInputDTO {
      private Double interestRate;
      
      public EquivalenceCashFlowInputDTO(
-    		List<FlowInputOutputDTO> originalCashFlows,
-			List<FlowInputOutputDTO> proposedCashFlows,
+    		List<FlowInputOutputDTO> originalFlows,
+			List<FlowInputOutputDTO> proposedFlows,
 			FlowInputOutputDTO flowOfInterest,
 			Double focalTime,
 			Double interestRate) {
-		this.originalCashFlows = originalCashFlows;
-		this.proposedCashFlows = proposedCashFlows;
+		this.originalCashFlows = originalFlows;
+		this.proposedCashFlows = proposedFlows;
 		this.flowOfInterest = flowOfInterest;
 		this.focalTime = focalTime;
 		this.interestRate = interestRate;
 	}
      
     public EquivalenceCashFlowInput toModel() {
-    	List<FlowInputOutput> originalCashFlows = this.originalCashFlows
+    	List<FlowInputOutput> originalFlows = this.originalCashFlows
     			.stream()
     			.map(flow -> flow.toModel())
     			.toList();
     	
-		List<FlowInputOutput> proposedCashFlows = this.proposedCashFlows
+		List<FlowInputOutput> proposedFlows = this.proposedCashFlows
     			.stream()
     			.map(flow -> flow.toModel())
     			.toList();
     	
     	return ObjectFactoryModel.getEquivalenceCashFlowInput (
-    			originalCashFlows,
-    			proposedCashFlows,
+    			originalFlows,
+    			proposedFlows,
     			this.flowOfInterest.toModel(),
     			this.focalTime,
     			this.interestRate);

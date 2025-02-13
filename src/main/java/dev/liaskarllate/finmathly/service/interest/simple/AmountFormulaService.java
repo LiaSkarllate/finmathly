@@ -7,8 +7,19 @@ import dev.liaskarllate.finmathly.model.interest.simple.AmountFormulaOutput;
 import dev.liaskarllate.finmathly.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.exception.TooManyMissingParametersException;
 
+/**
+ * Service class for applying the simple interest amount formula.
+ */
 @Service
 public class AmountFormulaService {
+	/**
+     * Applies the simple interest amount formula to calculate the amount, the missing parameter in this case.
+     *
+     * @param principal     the principal (cannot be null).
+     * @param interestRate  the interest rate (as a decimal, e.g., 0.05 for 5%) (cannot be null).
+     * @param time          the time (cannot be null).
+     * @return An {@link AmountFormulaOutput} object containing all values, including the calculated one.
+     */
 	public AmountFormulaOutput applyFormula(
 			Double principal, 
 			Double interestRate, 
@@ -21,6 +32,15 @@ public class AmountFormulaService {
 				time);
 	}
 	
+	 /**
+     * Applies the simple interest amount formula to calculate the missing parameter.
+     *
+     * @param amount        the amount (can be null if it needs to be calculated).
+     * @param principal     the principal amount (can be null if it needs to be calculated).
+     * @param interestRate  the interest rate (as a decimal, e.g., 0.05 for 5%) (can be null if it needs to be calculated).
+     * @param time          the time (can be null if it needs to be calculated).
+     * @return An {@link AmountFormulaOutput} object containing all values, including the calculated one.
+     */
 	public AmountFormulaOutput applyFormula(
 			Double amount,
 			Double principal, 
@@ -57,6 +77,9 @@ public class AmountFormulaService {
 		}
 	}
 
+	/**
+     * Performs the calculation of the missing parameter using the simple interest amount formula.
+     */
 	private AmountFormulaOutput calculate(
 			Double amount, 
 			Double principal, 
