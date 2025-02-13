@@ -3,6 +3,7 @@ package dev.liaskarllate.finmathly.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +12,17 @@ import dev.liaskarllate.finmathly.dto.ObjectFactoryDTO;
 import dev.liaskarllate.finmathly.dto.interest.compound.PresentValueCashFlowInputDTO;
 import dev.liaskarllate.finmathly.model.interest.compound.FormulaOutput;
 import dev.liaskarllate.finmathly.model.interest.compound.FutureValueFormulaOutput;
+import dev.liaskarllate.finmathly.model.interest.compound.PresentValueCashFlowInput;
+import dev.liaskarllate.finmathly.model.interest.compound.CapitalizationPeriod;
+import dev.liaskarllate.finmathly.service.interest.compound.EquivalentInterestRateService;
 import dev.liaskarllate.finmathly.service.interest.compound.FormulaService;
 import dev.liaskarllate.finmathly.service.interest.compound.FutureValueFormulaService;
+import dev.liaskarllate.finmathly.service.interest.compound.PresentValueCashFlowService;
+import jakarta.validation.Valid;
 
+/**
+ * REST Controller to expose services related to compound interest calculations.
+ */
 @RestController
 @RequestMapping("/calculations/interest/compound")
 public class CompoundInterestController {
@@ -22,6 +31,12 @@ public class CompoundInterestController {
     
     @Autowired
     private FutureValueFormulaService futureValueFormulaService;
+    
+    @Autowired
+    private PresentValueCashFlowService presentValueCashFlowService;
+    
+    @Autowired
+    private EquivalentInterestRateService equivalentInterestRateService;
     
     @GetMapping("/interest")
     public ResponseEntity<?> applyFormula(
@@ -64,9 +79,40 @@ public class CompoundInterestController {
     }
     
     @GetMapping("/present-value/cash-flow")
-    public ResponseEntity<?> calculatePresentValueCashFlow(PresentValueCashFlowInputDTO presentValueCashFlowInputDTO) {
-    	// TODO: Terminar a implementação desse cálculo.
-    	return null;
+    public ResponseEntity<?> calculatePresentValueCashFlow(@RequestBody @Valid PresentValueCashFlowInputDTO presentValueCashFlowInputDTO) {
+    	try {
+    		PresentValueCashFlowInput presentValueCashFlowInput = presentValueCashFlowInputDTO.toModel();
+    		
+    		Double valueOfInterest = this.presentValueCashFlowService.applyCalculations(
+    				presentValueCashFlowInput.getFlows(),
+    				presentValueCashFlowInput.getInterestRate());
+			
+    		return ResponseEntity.ok(
+            		ObjectFactoryDTO.getFlowInputOutputDTO(
+            				valueOfInterest,
+            				Double.valueOf(0)));
+		} catch (Exception exception) {
+            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
+		}
     }
     
+    @GetMapping({"/equivalent-interest-rate", "/effective-interest-rate"})
+    public ResponseEntity<?> calculateEquivalentRate(
+    		@RequestParam(required = true) Double interestRate,
+    		@RequestParam(required = true) CapitalizationPeriod from,
+    		@RequestParam(required = true) CapitalizationPeriod to) {
+    	try {
+	        Double equivalentInterestRate = equivalentInterestRateService.calculateEquivalentInterestRate(
+	        		interestRate, 
+	        		from, 
+	        		to);
+	
+	        return ResponseEntity.ok(
+            		ObjectFactoryDTO.getEquivalentInterestRateOutputDTO(
+            				equivalentInterestRate,
+            				to));
+    	} catch (Exception exception) {
+            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
+		}
+    }
 }
