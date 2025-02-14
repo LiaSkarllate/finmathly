@@ -23,7 +23,7 @@ public class PresentValueCashFlowService {
      * @param interestRate  the interest rate used for discounting the flows (as a decimal, e.g., 0.05 for 5%).
      * @return The present value of the cash flow as a {@link Double}.
      */
-	public Double applyCalculations(
+	public Double calculatePresentValueOfCashFlows(
 			List<FlowInputOutput> flows,
 			Double interestRate ) {
 		

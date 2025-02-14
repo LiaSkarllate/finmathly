@@ -10,14 +10,26 @@ import dev.liaskarllate.finmathly.exception.IllegalExternalParameterException;
 import dev.liaskarllate.finmathly.model.FlowInputOutput;
 
 /**
- * Service class for calculating the missing value of a target flow of a proposed cash flow to ensure equivalence with the original cash flow.
+ * Service class for calculating the missing value of a target flow of a 
+ * proposed cash flow to ensure equivalence with the original cash flow.
  */
 @Service
 public class EquivalentCashFlowService {
     @Autowired
     private AmountFormulaService amountFormulaService;
 
-    public Double applyCalculations(
+    /**
+     * Applies calculations to determine the required value of the target flow to 
+     * balance the original and proposed cash flows.
+     *
+     * @param originalCashFlows the list of cash flows from the original scheme
+     * @param proposedCashFlows	the list of cash flows from the proposed scheme
+     * @param targetFlow 		the target flow whose value needs to be determined
+     * @param focalTime 		the time reference for adjusting cash flows
+     * @param interestRate 		the interest rate used for financial adjustments
+     * @return the computed value for the target flow to ensure cash flow equivalence
+     */
+    public Double calculateRequiredTargetFlowValue(
             List<FlowInputOutput> originalCashFlows,
             List<FlowInputOutput> proposedCashFlows,
             FlowInputOutput targetFlow,
@@ -39,6 +51,10 @@ public class EquivalentCashFlowService {
                 interestRate);
     }
 
+    /**
+     * Performs the calculation of the the required value of the target flow to 
+     * balance the original and proposed cash flows.
+     */
     private Double calculate(
             List<FlowInputOutput> originalCashFlows,
             List<FlowInputOutput> proposedCashFlows,
@@ -65,6 +81,14 @@ public class EquivalentCashFlowService {
         return targetValue;
     }
 
+    /**
+     * Calculates the sum of adjusted cash flow values based on the given interest rate and focal time.
+     *
+     * @param flows 		the list of cash flows.
+     * @param interestRate	the interest rate used for adjustments.
+     * @param focalTime 	the reference time for value adjustment.
+     * @return the sum of adjusted cash flow values.
+     */
     private Double calculateAdjustedFlowsValuesSum(
             List<FlowInputOutput> flows,
             Double interestRate,
@@ -74,6 +98,14 @@ public class EquivalentCashFlowService {
                 .sum();
     }
 
+    /**
+     * Calculates the adjusted value of a single cash flow value based on its timing relative to the focal time.
+     *
+     * @param flow 			the cash flow to adjust
+     * @param interestRate 	the interest rate applied
+     * @param focalTime 	the focal time used for adjustment
+     * @return the adjusted cash flow value
+     */
     private Double calculateAdjustedFlowValue(
             FlowInputOutput flow,
             Double interestRate,
