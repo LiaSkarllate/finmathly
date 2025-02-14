@@ -14,7 +14,8 @@ import dev.liaskarllate.finmathly.exception.TooManyMissingParametersException;
 @Service
 public class FutureValueFormulaService {
 	/**
-     * Applies the compound interest future value formula to calculate the future value, the missing parameter in this case.
+     * Applies the compound interest future value formula to calculate the future value, 
+     * the missing parameter in this case.
      *
      * @param presentValue  the present (cannot be null).
      * @param interestRate  the interest rate (as a decimal, e.g., 0.05 for 5%) (cannot be null).

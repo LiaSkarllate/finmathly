@@ -3,6 +3,7 @@ package dev.liaskarllate.finmathly.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ import dev.liaskarllate.finmathly.service.interest.compound.PresentValueCashFlow
 import jakarta.validation.Valid;
 
 /**
- * REST Controller to expose services related to compound interest calculations.
+ * REST Controller that exposes service through endpoints for performing compound interest calculations.
  */
 @RestController
 @RequestMapping("/calculations/interest/compound")
@@ -39,7 +40,7 @@ public class CompoundInterestController {
     private EquivalentInterestRateService equivalentInterestRateService;
     
     @GetMapping("/interest")
-    public ResponseEntity<?> applyFormula(
+    public ResponseEntity<?> applyInterestFormula(
     		@RequestParam(required = false) Double interest,
     		@RequestParam(required = false) Double presentValue, 
     		@RequestParam(required = false) Double interestRate, 
@@ -78,12 +79,12 @@ public class CompoundInterestController {
 		}
     }
     
-    @GetMapping("/present-value/cash-flow")
-    public ResponseEntity<?> calculatePresentValueCashFlow(@RequestBody @Valid PresentValueCashFlowInputDTO presentValueCashFlowInputDTO) {
+    @PostMapping("/present-value/cash-flow")
+    public ResponseEntity<?> calculatePresentValueOfCashFlows(@RequestBody @Valid PresentValueCashFlowInputDTO presentValueCashFlowInputDTO) {
     	try {
     		PresentValueCashFlowInput presentValueCashFlowInput = presentValueCashFlowInputDTO.toModel();
     		
-    		Double valueOfInterest = this.presentValueCashFlowService.applyCalculations(
+    		Double valueOfInterest = this.presentValueCashFlowService.calculatePresentValueOfCashFlows(
     				presentValueCashFlowInput.getFlows(),
     				presentValueCashFlowInput.getInterestRate());
 			
@@ -97,7 +98,7 @@ public class CompoundInterestController {
     }
     
     @GetMapping({"/equivalent-interest-rate", "/effective-interest-rate"})
-    public ResponseEntity<?> calculateEquivalentRate(
+    public ResponseEntity<?> calculateEquivalentInterestRate(
     		@RequestParam(required = true) Double interestRate,
     		@RequestParam(required = true) CapitalizationPeriod from,
     		@RequestParam(required = true) CapitalizationPeriod to) {

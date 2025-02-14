@@ -20,6 +20,9 @@ import dev.liaskarllate.finmathly.service.interest.simple.EquivalentInterestRate
 import dev.liaskarllate.finmathly.service.interest.simple.FormulaService;
 import jakarta.validation.Valid;
 
+/**
+ * REST Controller that exposes service through endpoints for performing simple interest calculations.
+ */
 @RestController
 @RequestMapping("/calculations/interest/simple")
 public class SimpleInterestController {
@@ -76,12 +79,12 @@ public class SimpleInterestController {
     }
     
     @GetMapping("/equivalence-cash-flow")
-    public ResponseEntity<?> applyEquivalenceCashFlow(@RequestBody @Valid EquivalenceCashFlowInputDTO equivalenceCashFlowInputDTO) {
+    public ResponseEntity<?> calculateRequiredTargetFlowValue(@RequestBody @Valid EquivalenceCashFlowInputDTO equivalenceCashFlowInputDTO) {
     	
     	EquivalenceCashFlowInput equivalenceCashFlowInput = equivalenceCashFlowInputDTO.toModel();
     	
     	try {
-    		Double valueOfInterest = this.equivalentCashFlowService.applyCalculations(
+    		Double valueOfInterest = this.equivalentCashFlowService.calculateRequiredTargetFlowValue(
     				equivalenceCashFlowInput.getOriginalCashFlows(),
     				equivalenceCashFlowInput.getProposedCashFlows(),
     				equivalenceCashFlowInput.getEventOfInterest(),
@@ -98,7 +101,7 @@ public class SimpleInterestController {
     }
     
     @GetMapping("/equivalent-interest-rate")
-    public ResponseEntity<?> calculateEquivalentRate(
+    public ResponseEntity<?> calculateEquivalentInterestRate(
     		@RequestParam(required = true) Double interestRate,
     		@RequestParam(required = true) CapitalizationPeriod from,
     		@RequestParam(required = true) CapitalizationPeriod to) {
