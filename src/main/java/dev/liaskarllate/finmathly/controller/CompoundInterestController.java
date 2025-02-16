@@ -46,17 +46,13 @@ public class CompoundInterestController {
     		@RequestParam(required = false) Double interestRate, 
     		@RequestParam(required = false) Double time) {
     	
-    	try {
-    		FormulaOutput formulaOutput = this.formulaService.applyFormula(
-					interest,
-					presentValue,
-					interestRate,
-					time);
-			
-            return ResponseEntity.ok(formulaOutput.toDTO());
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		FormulaOutput formulaOutput = this.formulaService.applyFormula(
+				interest,
+				presentValue,
+				interestRate,
+				time);
+		
+        return ResponseEntity.ok(formulaOutput.toDTO());
     }
     
     @GetMapping({"/future-value", "/present-value/"})
@@ -66,35 +62,28 @@ public class CompoundInterestController {
     		@RequestParam(required = false) Double interestRate,
     		@RequestParam(required = false) Double time) {
     	
-    	try {
-    		FutureValueFormulaOutput futureValueFormulaOutput = this.futureValueFormulaService.applyFormula(
-    				futureValue,
-    				presentValue,
-    				interestRate,
-    				time);
-			
-            return ResponseEntity.ok(futureValueFormulaOutput.toDTO());
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		FutureValueFormulaOutput futureValueFormulaOutput = this.futureValueFormulaService.applyFormula(
+				futureValue,
+				presentValue,
+				interestRate,
+				time);
+		
+        return ResponseEntity.ok(futureValueFormulaOutput.toDTO());
     }
     
     @PostMapping("/present-value/cash-flow")
     public ResponseEntity<?> calculatePresentValueOfCashFlows(@RequestBody @Valid PresentValueCashFlowInputDTO presentValueCashFlowInputDTO) {
-    	try {
-    		PresentValueCashFlowInput presentValueCashFlowInput = presentValueCashFlowInputDTO.toModel();
-    		
-    		Double valueOfInterest = this.presentValueCashFlowService.calculatePresentValueOfCashFlows(
-    				presentValueCashFlowInput.getFlows(),
-    				presentValueCashFlowInput.getInterestRate());
-			
-    		return ResponseEntity.ok(
-            		ObjectFactoryDTO.getFlowInputOutputDTO(
-            				valueOfInterest,
-            				Double.valueOf(0)));
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		
+    	PresentValueCashFlowInput presentValueCashFlowInput = presentValueCashFlowInputDTO.toModel();
+		
+		Double valueOfInterest = this.presentValueCashFlowService.calculatePresentValueOfCashFlows(
+				presentValueCashFlowInput.getFlows(),
+				presentValueCashFlowInput.getInterestRate());
+		
+		return ResponseEntity.ok(
+        		ObjectFactoryDTO.getFlowInputOutputDTO(
+        				valueOfInterest,
+        				Double.valueOf(0)));
     }
     
     @GetMapping({"/equivalent-interest-rate", "/effective-interest-rate"})
@@ -102,18 +91,15 @@ public class CompoundInterestController {
     		@RequestParam(required = true) Double interestRate,
     		@RequestParam(required = true) CapitalizationPeriod from,
     		@RequestParam(required = true) CapitalizationPeriod to) {
-    	try {
-	        Double equivalentInterestRate = equivalentInterestRateService.calculateEquivalentInterestRate(
-	        		interestRate, 
-	        		from, 
-	        		to);
-	
-	        return ResponseEntity.ok(
-            		ObjectFactoryDTO.getEquivalentInterestRateOutputDTO(
-            				equivalentInterestRate,
-            				to));
-    	} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+    	
+        Double equivalentInterestRate = equivalentInterestRateService.calculateEquivalentInterestRate(
+        		interestRate, 
+        		from, 
+        		to);
+
+        return ResponseEntity.ok(
+        		ObjectFactoryDTO.getEquivalentInterestRateOutputDTO(
+        				equivalentInterestRate,
+        				to));
     }
 }

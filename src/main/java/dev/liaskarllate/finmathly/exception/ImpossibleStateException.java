@@ -1,9 +1,9 @@
 package dev.liaskarllate.finmathly.exception;
 
-public abstract class InputValidationException extends RuntimeException{
+public class ImpossibleStateException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	public InputValidationException(String message) {
+	public ImpossibleStateException(String message) {
         super(message);
     }
 }

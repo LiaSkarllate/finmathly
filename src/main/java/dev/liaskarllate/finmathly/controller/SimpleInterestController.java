@@ -45,17 +45,13 @@ public class SimpleInterestController {
     		@RequestParam(required = false) Double interestRate,
     		@RequestParam(required = false) Double time) {
     	
-    	try {
-			FormulaOutput formulaOutput = this.formulaService.applyFormula(
-					interest,
-					principal,
-					interestRate,
-					time);
-			
-            return ResponseEntity.ok(formulaOutput.toDTO());
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		FormulaOutput formulaOutput = this.formulaService.applyFormula(
+				interest,
+				principal,
+				interestRate,
+				time);
+		
+        return ResponseEntity.ok(formulaOutput.toDTO());
     }
     
     @GetMapping({"/amount", "/principal"})
@@ -65,17 +61,13 @@ public class SimpleInterestController {
     		@RequestParam(required = false) Double interestRate,
     		@RequestParam(required = false) Double time) {
     	
-    	try {
-    		AmountFormulaOutput amountFormulaOutput = this.amountFormulaService.applyFormula(
-    				amount,
-    				principal,
-					interestRate,
-					time);
-			
-            return ResponseEntity.ok(amountFormulaOutput.toDTO());
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		AmountFormulaOutput amountFormulaOutput = this.amountFormulaService.applyFormula(
+				amount,
+				principal,
+				interestRate,
+				time);
+		
+        return ResponseEntity.ok(amountFormulaOutput.toDTO());
     }
     
     @GetMapping("/equivalence-cash-flow")
@@ -83,21 +75,17 @@ public class SimpleInterestController {
     	
     	EquivalenceCashFlowInput equivalenceCashFlowInput = equivalenceCashFlowInputDTO.toModel();
     	
-    	try {
-    		Double valueOfInterest = this.equivalentCashFlowService.calculateRequiredTargetFlowValue(
-    				equivalenceCashFlowInput.getOriginalCashFlows(),
-    				equivalenceCashFlowInput.getProposedCashFlows(),
-    				equivalenceCashFlowInput.getEventOfInterest(),
-    				equivalenceCashFlowInput.getFocalTime(),
-    				equivalenceCashFlowInput.getInterestRate());
-			
-            return ResponseEntity.ok(
-            		ObjectFactoryDTO.getFlowInputOutputDTO(
-            				valueOfInterest,
-            				equivalenceCashFlowInputDTO.getFocalTime()));
-		} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+		Double valueOfInterest = this.equivalentCashFlowService.calculateRequiredTargetFlowValue(
+				equivalenceCashFlowInput.getOriginalCashFlows(),
+				equivalenceCashFlowInput.getProposedCashFlows(),
+				equivalenceCashFlowInput.getEventOfInterest(),
+				equivalenceCashFlowInput.getFocalTime(),
+				equivalenceCashFlowInput.getInterestRate());
+		
+        return ResponseEntity.ok(
+        		ObjectFactoryDTO.getFlowInputOutputDTO(
+        				valueOfInterest,
+        				equivalenceCashFlowInputDTO.getFocalTime()));
     }
     
     @GetMapping("/equivalent-interest-rate")
@@ -105,18 +93,15 @@ public class SimpleInterestController {
     		@RequestParam(required = true) Double interestRate,
     		@RequestParam(required = true) CapitalizationPeriod from,
     		@RequestParam(required = true) CapitalizationPeriod to) {
-    	try {
-	        Double equivalentInterestRate = equivalentInterestRateService.calculateEquivalentInterestRate(
-	        		interestRate, 
-	        		from, 
-	        		to);
-	
-	        return ResponseEntity.ok(
-            		ObjectFactoryDTO.getEquivalentInterestRateOutputDTO(
-            				equivalentInterestRate,
-            				to));
-    	} catch (Exception exception) {
-            return ResponseEntity.badRequest().body(ObjectFactoryDTO.getThrownExceptionDTO(exception.getMessage()));
-		}
+    	
+        Double equivalentInterestRate = equivalentInterestRateService.calculateEquivalentInterestRate(
+        		interestRate, 
+        		from, 
+        		to);
+
+        return ResponseEntity.ok(
+        		ObjectFactoryDTO.getEquivalentInterestRateOutputDTO(
+        				equivalentInterestRate,
+        				to));
     }
 }

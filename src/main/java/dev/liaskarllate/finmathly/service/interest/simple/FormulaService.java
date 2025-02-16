@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import dev.liaskarllate.finmathly.model.interest.simple.ObjectFactoryModel;
 import dev.liaskarllate.finmathly.model.interest.simple.FormulaOutput;
 import dev.liaskarllate.finmathly.exception.NothingToBeCalculatedException;
-import dev.liaskarllate.finmathly.exception.TooManyMissingParametersException;
+import dev.liaskarllate.finmathly.exception.TooManyMissingArgumentsException;
 
 /**
  * Service class for applying the simple interest formula.
@@ -53,7 +53,7 @@ public class FormulaService {
 		if (time == null) missingParametersCount++;
 
 		if (missingParametersCount != 1) {
-			throw new TooManyMissingParametersException(missingParametersCount, 1, 4);
+			throw new TooManyMissingArgumentsException(missingParametersCount, 1, 4);
 		}
 	}
 

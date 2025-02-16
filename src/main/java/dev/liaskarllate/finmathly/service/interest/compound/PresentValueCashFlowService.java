@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.liaskarllate.finmathly.exception.IllegalExternalParameterException;
+import dev.liaskarllate.finmathly.exception.InputNotValidException;
 import dev.liaskarllate.finmathly.model.FlowInputOutput;
 
 /**
@@ -41,24 +41,24 @@ public class PresentValueCashFlowService {
             Double interestRate) {
 
         if (flows == null || flows.isEmpty()) {
-            throw new IllegalExternalParameterException("Flows are required. Please provide a cash flow.");
+            throw new InputNotValidException("Flows are required. Please provide a cash flow.");
         }
 
         if (interestRate == null) {
-            throw new IllegalExternalParameterException("Interest rate is required. Please provide a value, such as 0.05 for 5%.");
+            throw new InputNotValidException("Interest rate is required. Please provide a value, such as 0.05 for 5%.");
         }
         
         if (interestRate < 0) {
-            throw new IllegalExternalParameterException("Interest rate cannot be negative. Please provide a positive value, such as 0.05 for 5%.");
+            throw new InputNotValidException("Interest rate cannot be negative. Please provide a positive value, such as 0.05 for 5%.");
         }
 
         for (FlowInputOutput flow : flows) {
             if (flow.getValue() == null) {
-                throw new IllegalExternalParameterException("The value of at least one flow has not been provided. Please provide all cash flow values.");
+                throw new InputNotValidException("The value of at least one flow has not been provided. Please provide all cash flow values.");
             }
             
             if (flow.getTime() == null) {
-                throw new IllegalExternalParameterException("The time of at least one flow has not been provided. Please provide all cash flow times.");
+                throw new InputNotValidException("The time of at least one flow has not been provided. Please provide all cash flow times.");
             }
         }
     }

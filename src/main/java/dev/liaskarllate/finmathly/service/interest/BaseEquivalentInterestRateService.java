@@ -1,6 +1,6 @@
 package dev.liaskarllate.finmathly.service.interest;
 
-import dev.liaskarllate.finmathly.exception.IllegalExternalParameterException;
+import dev.liaskarllate.finmathly.exception.InputNotValidException;
 import dev.liaskarllate.finmathly.model.interest.compound.CapitalizationPeriod;
 
 /**
@@ -32,19 +32,19 @@ public abstract class BaseEquivalentInterestRateService {
             CapitalizationPeriod to) {
 
         if (interestRate == null) {
-            throw new IllegalExternalParameterException("Interest rate is required. Please provide a value, such as 0.05 for 5%.");
+            throw new InputNotValidException("Interest rate is required. Please provide a value, such as 0.05 for 5%.");
         }
 
         if (interestRate < 0) {
-            throw new IllegalExternalParameterException("Interest rate cannot be negative. Please provide a positive value, such as 0.05 for 5%.");
+            throw new InputNotValidException("Interest rate cannot be negative. Please provide a positive value, such as 0.05 for 5%.");
         }
 
         if (from == null) {
-            throw new IllegalExternalParameterException("The original capitalization period is required. Please provide a period, such as 'MONTHLY' or 'YEARLY'.");
+            throw new InputNotValidException("The original capitalization period is required. Please provide a period, such as 'MONTHLY' or 'YEARLY'.");
         }
 
         if (to == null) {
-            throw new IllegalExternalParameterException("The target capitalization period is required. Please provide a period, such as 'MONTHLY' or 'YEARLY'.");
+            throw new InputNotValidException("The target capitalization period is required. Please provide a period, such as 'MONTHLY' or 'YEARLY'.");
         }
     }
 
