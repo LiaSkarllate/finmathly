@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.liaskarllate.finmathly.exception.IllegalExternalParameterException;
+import dev.liaskarllate.finmathly.exception.InputNotValidException;
 import dev.liaskarllate.finmathly.model.FlowInputOutput;
 
 /**
@@ -133,15 +133,15 @@ public class EquivalentCashFlowService {
             Double interestRate) {
 
         if (Objects.isNull(originalFlows) || Objects.isNull(proposedFlows) || Objects.isNull(targetFlow)) {
-            throw new IllegalExternalParameterException("Os esquemas de pagamento e o evento de interesse não podem ser nulos.");
+            throw new InputNotValidException("Os esquemas de pagamento e o evento de interesse não podem ser nulos.");
         }
 
         if (Objects.isNull(focalTime) || focalTime <= 0) {
-            throw new IllegalExternalParameterException("O tempo focal deve ser maior que zero e não pode ser nulo.");
+            throw new InputNotValidException("O tempo focal deve ser maior que zero e não pode ser nulo.");
         }
 
         if (Objects.isNull(interestRate) || interestRate <= 0) {
-            throw new IllegalExternalParameterException("A taxa de juros deve ser maior que zero e não pode ser nula.");
+            throw new InputNotValidException("A taxa de juros deve ser maior que zero e não pode ser nula.");
         }
 
         originalFlows.forEach(flow -> this.validateFlow(flow, "evento do esquema original"));
@@ -152,15 +152,15 @@ public class EquivalentCashFlowService {
 
     private void validateFlow(FlowInputOutput flow, String flowDescription) {
         if (Objects.isNull(flow)) {
-            throw new IllegalExternalParameterException("Um " + flowDescription + " é nulo.");
+            throw new InputNotValidException("Um " + flowDescription + " é nulo.");
         }
 
         if (Objects.isNull(flow.getValue()) || flow.getValue() <= 0) {
-            throw new IllegalExternalParameterException("O valor do " + flowDescription + " deve ser maior que zero e não pode ser nulo.");
+            throw new InputNotValidException("O valor do " + flowDescription + " deve ser maior que zero e não pode ser nulo.");
         }
 
         if (Objects.isNull(flow.getTime()) || flow.getTime() <= 0) {
-            throw new IllegalExternalParameterException("O tempo do " + flowDescription + " deve ser maior que zero e não pode ser nulo.");
+            throw new InputNotValidException("O tempo do " + flowDescription + " deve ser maior que zero e não pode ser nulo.");
         }
     }
 }
