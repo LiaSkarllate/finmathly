@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        StringBuilder errorsMessage = new StringBuilder("We noticed some issues with what you submitted. Please review the errors below.");
+        StringBuilder errorsMessage = new StringBuilder("We noticed some issues with what you submitted. Please review the following errors: ");
         
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorsMessage.append(String.format("[%s: %s] ", error.getField(), error.getDefaultMessage()));
