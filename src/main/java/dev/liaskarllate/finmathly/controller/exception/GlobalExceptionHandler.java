@@ -51,6 +51,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleGeneralException(Throwable th) {
         return ResponseEntity
                 .internalServerError()
-                .body(ObjectFactoryDTO.getThrownExceptionDTO("We're sorry, but an unexpected error occurred. Please try again later. If necessary, contact our support team."));
+                .body(ObjectFactoryDTO.getThrownExceptionDTO("We're sorry, but an unexpected issue occurred. Please try again later. If necessary, contact our support team."));
     }
 }
