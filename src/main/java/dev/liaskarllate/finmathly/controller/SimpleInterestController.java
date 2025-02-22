@@ -1,6 +1,7 @@
 package dev.liaskarllate.finmathly.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/calculations/interest/simple")
 public class SimpleInterestController {
 	@Autowired
+    @Qualifier("simpleFormulaService")
 	private FormulaService formulaService;
 	
     @Autowired
@@ -36,6 +38,7 @@ public class SimpleInterestController {
     private EquivalentCashFlowService equivalentCashFlowService;
     
     @Autowired
+    @Qualifier("simpleEquivalentInterestRateService")
     private EquivalentInterestRateService equivalentInterestRateService;
 
     @GetMapping("/interest")

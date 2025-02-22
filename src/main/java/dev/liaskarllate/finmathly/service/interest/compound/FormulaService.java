@@ -11,7 +11,7 @@ import dev.liaskarllate.finmathly.exception.TooManyMissingArgumentsException;
 /**
  * Service class for applying the compound interest formula.
  */
-@Service
+@Service("compoundFormulaService")
 public class FormulaService {
 	/**
      * Applies the compound interest formula to calculate the missing parameter.

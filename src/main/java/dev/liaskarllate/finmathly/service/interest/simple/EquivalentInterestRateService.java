@@ -8,7 +8,7 @@ import dev.liaskarllate.finmathly.service.interest.BaseEquivalentInterestRateSer
 /**
  * Service class for calculating equivalent simple interest rates.
  */
-@Service
+@Service("simpleEquivalentInterestRateService")
 public class EquivalentInterestRateService extends BaseEquivalentInterestRateService {
     @Override
     protected Double calculate(

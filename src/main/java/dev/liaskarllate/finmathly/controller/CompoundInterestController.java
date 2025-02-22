@@ -1,6 +1,7 @@
 package dev.liaskarllate.finmathly.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/calculations/interest/compound")
 public class CompoundInterestController {
     @Autowired
+    @Qualifier("compoundFormulaService")
     private FormulaService formulaService;
     
     @Autowired
@@ -37,6 +39,7 @@ public class CompoundInterestController {
     private PresentValueCashFlowService presentValueCashFlowService;
     
     @Autowired
+    @Qualifier("compoundEquivalentInterestRateService")
     private EquivalentInterestRateService equivalentInterestRateService;
     
     @GetMapping("/interest")
