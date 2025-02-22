@@ -10,7 +10,7 @@ import dev.liaskarllate.finmathly.exception.TooManyMissingArgumentsException;
 /**
  * Service class for applying the simple interest formula.
  */
-@Service
+@Service("simpleFormulaService")
 public class FormulaService {
 	/**
      * Applies the simple interest formula to calculate the missing parameter.
