@@ -1,7 +1,7 @@
 package dev.liaskarllate.finmathly.model.interest.compound;
 
 import dev.liaskarllate.finmathly.dto.interest.compound.FutureValueFormulaOutputDTO;
-import dev.liaskarllate.finmathly.dto.interest.compound.ObjectFactoryDTO;
+import dev.liaskarllate.finmathly.dto.ObjectFactoryDTO;
 
 public class FutureValueFormulaOutput{
 	private Double futureValue; 

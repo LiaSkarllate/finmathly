@@ -1,27 +1,19 @@
 package dev.liaskarllate.finmathly.service.interest.simple;
 
+import dev.liaskarllate.finmathly.model.ObjectFactoryModel;
+import dev.liaskarllate.finmathly.model.interest.simple.SimpleInterestFormulaOutput;
+
 import org.springframework.stereotype.Service;
 
-import dev.liaskarllate.finmathly.model.interest.simple.ObjectFactoryModel;
-import dev.liaskarllate.finmathly.model.interest.simple.FormulaOutput;
 import dev.liaskarllate.finmathly.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.exception.TooManyMissingArgumentsException;
 
 /**
  * Service class for applying the simple interest formula.
  */
-@Service("simpleFormulaService")
-public class FormulaService {
-	/**
-     * Applies the simple interest formula to calculate the missing parameter.
-     *
-     * @param interest      the interest (can be null if it needs to be calculated).
-     * @param principal     the principal (can be null if it needs to be calculated).
-     * @param interestRate  the interest rate (as a decimal, e.g., 0.05 for 5%) (can be null if it needs to be calculated).
-     * @param time          the time (can be null if it needs to be calculated).
-     * @return A {@link FormulaOutput} object containing all values, including the calculated one.
-	 */
-	public FormulaOutput applyFormula(
+@Service
+public class SimpleInterestFormulaService {
+	public SimpleInterestFormulaOutput applyFormula(
 			Double interest,
 			Double principal, 
 			Double interestRate, 
@@ -57,17 +49,14 @@ public class FormulaService {
 		}
 	}
 
-	/**
-     * Performs the calculation of the missing parameter using the simple interest formula.
-     */
-	private FormulaOutput calculate(
+	private SimpleInterestFormulaOutput calculate(
 			Double interest, 
 			Double principal, 
 			Double interestRate, 
 			Double time) {
 		
-		FormulaOutput formulaOutput = ObjectFactoryModel
-				.getFormulaOutput(
+		SimpleInterestFormulaOutput formulaOutput = ObjectFactoryModel
+				.getSimpleInterestFormulaOutput(
 						interest, 
 						principal, 
 						interestRate, 

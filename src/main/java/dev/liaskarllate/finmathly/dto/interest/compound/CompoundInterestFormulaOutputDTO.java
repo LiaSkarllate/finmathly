@@ -1,23 +1,12 @@
-package dev.liaskarllate.finmathly.model.interest.compound;
+package dev.liaskarllate.finmathly.dto.interest.compound;
 
-import dev.liaskarllate.finmathly.dto.interest.compound.FormulaOutputDTO;
-import dev.liaskarllate.finmathly.dto.interest.compound.ObjectFactoryDTO;
-
-public class FormulaOutput {
+public class CompoundInterestFormulaOutputDTO {
 	private Double interest;
 	private Double presentValue;
 	private Double interestRate;
 	private Double time;
-	
-	public FormulaOutputDTO toDTO() {
-		return ObjectFactoryDTO.getFormulaOutputDTO(
-				this.interest, 
-				this.presentValue, 
-				this.interestRate, 
-				this.time);
-	}
 
-	public FormulaOutput(
+	public CompoundInterestFormulaOutputDTO(
 			Double interest, 
 			Double presentValue, 
 			Double interestRate, 

@@ -1,23 +1,23 @@
 package dev.liaskarllate.finmathly.model.interest.simple;
 
-import dev.liaskarllate.finmathly.dto.interest.simple.FormulaOutputDTO;
-import dev.liaskarllate.finmathly.dto.interest.simple.ObjectFactoryDTO;
+import dev.liaskarllate.finmathly.dto.interest.simple.SimpleInterestFormulaOutputDTO;
+import dev.liaskarllate.finmathly.dto.ObjectFactoryDTO;
 
-public class FormulaOutput {
+public class SimpleInterestFormulaOutput {
 	private Double interest;
 	private Double principal;
 	private Double interestRate;
 	private Double time;
 	
-	public FormulaOutputDTO toDTO() {
-		return ObjectFactoryDTO.getFormulaOutputDTO(
+	public SimpleInterestFormulaOutputDTO toDTO() {
+		return ObjectFactoryDTO.getSimpleInterestFormulaOutputDTO(
 				interest, 
 				principal,
 				interestRate,
 				time);
 	}
 	
-	public FormulaOutput(
+	public SimpleInterestFormulaOutput(
 			Double interest, 
 			Double principal,
 			Double interestRate,

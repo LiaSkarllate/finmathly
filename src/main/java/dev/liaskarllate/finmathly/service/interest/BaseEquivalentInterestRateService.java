@@ -7,15 +7,6 @@ import dev.liaskarllate.finmathly.model.interest.compound.CapitalizationPeriod;
  * Base service class for calculating equivalent interest rates.
  */
 public abstract class BaseEquivalentInterestRateService {
-
-    /**
-     * Calculates the equivalent interest rate from the original to the target capitalization period.
-     *
-     * @param interestRate	the original interest rate (as a decimal, e.g., 0.05 for 5%) for the original capitalization period
-     * @param from 			the original capitalization period
-     * @param to 			the target capitalization period
-     * @return the equivalent interest rate for the target capitalization period
-     */
     public Double calculateEquivalentInterestRate(
             Double interestRate,
             CapitalizationPeriod from,
@@ -48,9 +39,6 @@ public abstract class BaseEquivalentInterestRateService {
         }
     }
 
-    /**
-     * Performs the calculation of the equivalent interest rate.
-     */
     protected abstract Double calculate(
             Double interestRate,
             CapitalizationPeriod from,

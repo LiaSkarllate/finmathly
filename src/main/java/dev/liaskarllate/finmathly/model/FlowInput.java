@@ -1,10 +1,10 @@
 package dev.liaskarllate.finmathly.model;
 
-public class FlowInputOutput {
+public class FlowInput {
 	private Double value;
 	private Double time;
 	
-	public FlowInputOutput(Double value, Double time) {
+	public FlowInput(Double value, Double time) {
 		this.value = value;
 		this.time = time;
 	}
