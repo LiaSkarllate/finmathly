@@ -1,18 +1,18 @@
-package dev.liaskarllate.finmathly.dto.interest.compound;
+package dev.liaskarllate.finmathly.dto.interest.simple;
 
-public class FormulaOutputDTO {
+public class SimpleInterestFormulaOutputDTO {
 	private Double interest;
-	private Double presentValue;
+	private Double principal;
 	private Double interestRate;
 	private Double time;
-
-	public FormulaOutputDTO(
+	
+	public SimpleInterestFormulaOutputDTO(
 			Double interest, 
-			Double presentValue, 
-			Double interestRate, 
+			Double principal,
+			Double interestRate,
 			Double time) {
 		this.interest = interest;
-		this.presentValue = presentValue;
+		this.principal = principal;
 		this.interestRate = interestRate;
 		this.time = time;
 	}
@@ -21,8 +21,8 @@ public class FormulaOutputDTO {
 		return interest;
 	}
 
-	public Double getPresentValue() {
-		return presentValue;
+	public Double getPrincipal() {
+		return principal;
 	}
 
 	public Double getInterestRate() {
@@ -37,8 +37,8 @@ public class FormulaOutputDTO {
 		this.interest = interest;
 	}
 
-	public void setPresentValue(Double presentValue) {
-		this.presentValue = presentValue;
+	public void setPrincipal(Double principal) {
+		this.principal = principal;
 	}
 
 	public void setInterestRate(Double interestRate) {

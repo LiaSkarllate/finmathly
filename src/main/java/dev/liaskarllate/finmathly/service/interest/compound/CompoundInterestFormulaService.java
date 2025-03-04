@@ -1,7 +1,7 @@
 package dev.liaskarllate.finmathly.service.interest.compound;
 
-import dev.liaskarllate.finmathly.model.interest.compound.FormulaOutput;
-import dev.liaskarllate.finmathly.model.interest.compound.ObjectFactoryModel;
+import dev.liaskarllate.finmathly.model.interest.compound.CompoundInterestFormulaOutput;
+import dev.liaskarllate.finmathly.model.ObjectFactoryModel;
 
 import org.springframework.stereotype.Service;
 
@@ -11,20 +11,11 @@ import dev.liaskarllate.finmathly.exception.TooManyMissingArgumentsException;
 /**
  * Service class for applying the compound interest formula.
  */
-@Service("compoundFormulaService")
-public class FormulaService {
-	/**
-     * Applies the compound interest formula to calculate the missing parameter.
-     *
-     * @param interest      the interest (can be null if it needs to be calculated).
-     * @param presentValue  the present value (can be null if it needs to be calculated).
-     * @param interestRate  the interest rate (as a decimal, e.g., 0.05 for 5%) (can be null if it needs to be calculated).
-     * @param time          the time (can be null if it needs to be calculated).
-     * @return A {@link FormulaOutput} object containing all values, including the calculated one.
-     */
-	public FormulaOutput applyFormula(
+@Service
+public class CompoundInterestFormulaService {
+	public CompoundInterestFormulaOutput applyFormula(
 			Double interest,
-			Double presentValue, 
+			Double presentValue, 	
 			Double interestRate, 
 			Double time) {
 		
@@ -58,17 +49,14 @@ public class FormulaService {
 		}
 	}
 
-	/**
-     * Performs the calculation of the missing parameter using the compound interest formula.
-     */
-	private FormulaOutput calculate(
+	private CompoundInterestFormulaOutput calculate(
 			Double interest, 
 			Double presentValue, 
 			Double interestRate, 
 			Double time) {
 		
-		FormulaOutput formulaOutput = ObjectFactoryModel
-				.getFormulaOutput(
+		CompoundInterestFormulaOutput formulaOutput = ObjectFactoryModel
+				.getCompoundInterestFormulaOutput(
 						interest, 
 						presentValue, 
 						interestRate, 

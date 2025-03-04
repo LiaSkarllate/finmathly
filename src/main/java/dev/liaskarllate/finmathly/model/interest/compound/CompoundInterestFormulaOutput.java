@@ -1,35 +1,35 @@
 package dev.liaskarllate.finmathly.model.interest.compound;
 
-import dev.liaskarllate.finmathly.dto.interest.compound.FutureValueFormulaOutputDTO;
+import dev.liaskarllate.finmathly.dto.interest.compound.CompoundInterestFormulaOutputDTO;
 import dev.liaskarllate.finmathly.dto.ObjectFactoryDTO;
 
-public class FutureValueFormulaOutput{
-	private Double futureValue; 
-	private Double presentValue; 
+public class CompoundInterestFormulaOutput {
+	private Double interest;
+	private Double presentValue;
 	private Double interestRate;
 	private Double time;
 	
-	public FutureValueFormulaOutputDTO toDTO() {
-		return ObjectFactoryDTO.getFutureValueFormulaOutputDTO(
-				this.futureValue, 
-				this.presentValue,
-				this.interestRate,
+	public CompoundInterestFormulaOutputDTO toDTO() {
+		return ObjectFactoryDTO.getCompoundInterestFormulaOutputDTO(
+				this.interest, 
+				this.presentValue, 
+				this.interestRate, 
 				this.time);
 	}
-	
-	public FutureValueFormulaOutput(
-			Double futureValue,
-			Double presentValue,
-			Double interestRate,
+
+	public CompoundInterestFormulaOutput(
+			Double interest, 
+			Double presentValue, 
+			Double interestRate, 
 			Double time) {
-		this.futureValue = futureValue;
+		this.interest = interest;
 		this.presentValue = presentValue;
 		this.interestRate = interestRate;
 		this.time = time;
 	}
 
-	public Double getFutureValue() {
-		return futureValue;
+	public Double getInterest() {
+		return interest;
 	}
 
 	public Double getPresentValue() {
@@ -44,8 +44,8 @@ public class FutureValueFormulaOutput{
 		return time;
 	}
 
-	public void setFutureValue(Double futureValue) {
-		this.futureValue = futureValue;
+	public void setInterest(Double interest) {
+		this.interest = interest;
 	}
 
 	public void setPresentValue(Double presentValue) {

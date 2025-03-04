@@ -1,7 +1,7 @@
 package dev.liaskarllate.finmathly.model.interest.simple;
 
 import dev.liaskarllate.finmathly.dto.interest.simple.AmountFormulaOutputDTO;
-import dev.liaskarllate.finmathly.dto.interest.simple.ObjectFactoryDTO;
+import dev.liaskarllate.finmathly.dto.ObjectFactoryDTO;
 
 public class AmountFormulaOutput{
 	private Double amount;

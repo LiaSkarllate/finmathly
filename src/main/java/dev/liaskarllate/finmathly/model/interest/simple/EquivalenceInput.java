@@ -2,38 +2,38 @@ package dev.liaskarllate.finmathly.model.interest.simple;
 
 import java.util.List;
 
-import dev.liaskarllate.finmathly.model.FlowInputOutput;
+import dev.liaskarllate.finmathly.model.FlowInput;
 
 public class EquivalenceInput {
-	 private List<FlowInputOutput> originalCashFlows;
-     private List<FlowInputOutput> proposedCashFlows;
-     private FlowInputOutput flowOfInterest;
+	 private List<FlowInput> originalFlows;
+     private List<FlowInput> proposedFlows;
+     private FlowInput targetFlow;
      private Double focalTime;
      private Double interestRate;
      
      public EquivalenceInput(
-    		List<FlowInputOutput> originalCashFlows,
-			List<FlowInputOutput> proposedCashFlows,
-			FlowInputOutput flowOfInterest,
+    		List<FlowInput> originalFlows,
+			List<FlowInput> proposedFlows,
+			FlowInput targetFlow,
 			Double focalTime,
 			Double interestRate) {
-		this.originalCashFlows = originalCashFlows;
-		this.proposedCashFlows = proposedCashFlows;
-		this.flowOfInterest = flowOfInterest;
+		this.originalFlows = originalFlows;
+		this.proposedFlows = proposedFlows;
+		this.targetFlow = targetFlow;
 		this.focalTime = focalTime;
 		this.interestRate = interestRate;
 	}
 	
-	public List<FlowInputOutput> getOriginalCashFlows() {
-		return originalCashFlows;
+	public List<FlowInput> getOriginalFlows() {
+		return originalFlows;
 	}
 	
-	public List<FlowInputOutput> getProposedCashFlows() {
-		return proposedCashFlows;
+	public List<FlowInput> getProposedFlows() {
+		return proposedFlows;
 	}
 	
-	public FlowInputOutput getFlowOfInterest() {
-		return flowOfInterest;
+	public FlowInput getTargetFlow() {
+		return targetFlow;
 	}
 	
 	public Double getFocalTime() {

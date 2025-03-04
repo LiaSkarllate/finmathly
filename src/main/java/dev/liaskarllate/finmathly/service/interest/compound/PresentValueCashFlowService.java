@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.liaskarllate.finmathly.exception.InputNotValidException;
-import dev.liaskarllate.finmathly.model.FlowInputOutput;
+import dev.liaskarllate.finmathly.model.FlowInput;
 
 /**
  * Service class for calculating the present value of a cash flow.
@@ -16,15 +16,8 @@ public class PresentValueCashFlowService {
 	@Autowired
     private FutureValueFormulaService futureValueFormulaService;
 
-	/**
-     * Calculates the present value of a cash flow.
-     *
-     * @param flows         a list of {@link FlowInputOutput} objects representing the flows.
-     * @param interestRate  the interest rate used for discounting the flows (as a decimal, e.g., 0.05 for 5%).
-     * @return The present value of the cash flow as a {@link Double}.
-     */
-	public Double calculatePresentValueOfCashFlows(
-			List<FlowInputOutput> flows,
+	public Double calculatePresentValueOfACashFlow(
+			List<FlowInput> flows,
 			Double interestRate ) {
 		
 		this.validateParametersProvided(
@@ -37,7 +30,7 @@ public class PresentValueCashFlowService {
 	}
 	
     private void validateParametersProvided(
-            List<FlowInputOutput> flows,
+            List<FlowInput> flows,
             Double interestRate) {
 
         if (flows == null || flows.isEmpty()) {
@@ -52,32 +45,27 @@ public class PresentValueCashFlowService {
             throw new InputNotValidException("Interest rate cannot be negative. Please provide a positive value, such as 0.05 for 5%.");
         }
 
-        for (FlowInputOutput flow : flows) {
+        for (FlowInput flow : flows) {
             if (flow.getValue() == null) {
-                throw new InputNotValidException("The value of at least one flow has not been provided. Please provide all cash flow values.");
+                throw new InputNotValidException("The value of at least one flow has not been provided. Please provide all flow values.");
             }
             
             if (flow.getTime() == null) {
-                throw new InputNotValidException("The time of at least one flow has not been provided. Please provide all cash flow times.");
+                throw new InputNotValidException("The time of at least one flow has not been provided. Please provide all flow times.");
             }
         }
     }
 
-	/**
-     * Performs the calculation of the present value of a cash flow.
-     */
 	private Double calculate(
-			List<FlowInputOutput> flows,
+			List<FlowInput> flows,
 			Double interestRate) {
 		
-		Double valueOfInterest = flows.stream()
-			    .mapToDouble(flow -> this.futureValueFormulaService.applyFormula(
-			        flow.getValue(),
-			        null,
-			        interestRate,
-			        flow.getTime()).getPresentValue())
-			    .sum();
-		
-		return valueOfInterest;
+		return flows.stream()
+            .mapToDouble(flow -> this.futureValueFormulaService.applyFormula(
+                flow.getValue(),
+                null,
+                interestRate,
+                flow.getTime()).getPresentValue())
+            .sum();
 	}
 }

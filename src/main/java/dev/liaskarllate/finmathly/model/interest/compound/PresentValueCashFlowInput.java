@@ -2,24 +2,24 @@ package dev.liaskarllate.finmathly.model.interest.compound;
 
 import java.util.List;
 
-import dev.liaskarllate.finmathly.model.FlowInputOutput;
+import dev.liaskarllate.finmathly.model.FlowInput;
 
 public class PresentValueCashFlowInput {
-	public List<FlowInputOutput> flows;
-	public Double interestRate;
+	private List<FlowInput> flows;
+	private Double interestRate;
 	
 	public PresentValueCashFlowInput(
-			List<FlowInputOutput> flows, 
+			List<FlowInput> flows, 
 			Double interestRate) {
 		this.flows = flows;
 		this.interestRate = interestRate;
 	}
 	
-	public List<FlowInputOutput> getFlows() {
+	public List<FlowInput> getFlows() {
 		return flows;
 	}
 	
-	public void setFlows(List<FlowInputOutput> flows) {
+	public void setFlows(List<FlowInput> flows) {
 		this.flows = flows;
 	}
 	
