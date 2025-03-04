@@ -179,3 +179,4 @@ README.html
 .idea
 .exercism
 *.pdf
+.vscode
