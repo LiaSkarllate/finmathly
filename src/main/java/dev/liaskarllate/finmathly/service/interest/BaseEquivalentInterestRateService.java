@@ -12,12 +12,12 @@ public abstract class BaseEquivalentInterestRateService {
             CapitalizationPeriod from,
             CapitalizationPeriod to) {
 
-        this.validateParametersProvided(interestRate, from, to);
+        this.validateProvidedParameters(interestRate, from, to);
 
         return this.calculate(interestRate, from, to);
     }
 
-    protected void validateParametersProvided(
+    protected void validateProvidedParameters(
             Double interestRate,
             CapitalizationPeriod from,
             CapitalizationPeriod to) {

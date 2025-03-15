@@ -25,7 +25,7 @@ public class EquivalentCashFlowService {
             Double focalTime,
             Double interestRate) {
 
-    	this.validateParametersProvided(
+    	this.validateProvidedParameters(
     			originalFlows, 
     			proposedFlows, 
     			targetFlow, 
@@ -94,7 +94,7 @@ public class EquivalentCashFlowService {
         }
     }
 
-    private void validateParametersProvided(
+    private void validateProvidedParameters(
             List<FlowInput> originalFlows,
             List<FlowInput> proposedFlows,
             FlowInput targetFlow,
