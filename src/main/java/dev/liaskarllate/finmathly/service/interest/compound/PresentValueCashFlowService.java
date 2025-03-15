@@ -20,7 +20,7 @@ public class PresentValueCashFlowService {
 			List<FlowInput> flows,
 			Double interestRate ) {
 		
-		this.validateParametersProvided(
+		this.validateProvidedParameters(
 				flows, 
 				interestRate);
 		
@@ -29,7 +29,7 @@ public class PresentValueCashFlowService {
 				interestRate);
 	}
 	
-    private void validateParametersProvided(
+    private void validateProvidedParameters(
             List<FlowInput> flows,
             Double interestRate) {
 

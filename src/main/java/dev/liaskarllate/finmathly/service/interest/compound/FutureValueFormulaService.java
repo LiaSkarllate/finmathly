@@ -31,7 +31,7 @@ public class FutureValueFormulaService {
 			Double interestRate,
 			Double time) {
 		
-		this.validateTheNumberOfParametersProvided(
+		this.validateTheNumberOfProvidedParameters(
 				futureValue, 
 				presentValue, 
 				interestRate, 
@@ -44,7 +44,7 @@ public class FutureValueFormulaService {
 				time);
 	}
 
-	private void validateTheNumberOfParametersProvided(
+	private void validateTheNumberOfProvidedParameters(
 			Double futureValue,
 			Double presentValue,
 			Double interestRate,

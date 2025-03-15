@@ -19,7 +19,7 @@ public class SimpleInterestFormulaService {
 			Double interestRate, 
 			Double time) {
 		
-		this.validateTheNumberOfParametersProvided(
+		this.validateTheNumberOfProvidedParameters(
 				interest, 
 				principal, 
 				interestRate, 
@@ -32,7 +32,7 @@ public class SimpleInterestFormulaService {
 				time);
 	}
 
-	private void validateTheNumberOfParametersProvided(
+	private void validateTheNumberOfProvidedParameters(
 			Double interest,
 			Double principal, 
 			Double interestRate, 

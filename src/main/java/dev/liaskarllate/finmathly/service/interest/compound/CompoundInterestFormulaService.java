@@ -19,7 +19,7 @@ public class CompoundInterestFormulaService {
 			Double interestRate, 
 			Double time) {
 		
-		this.validateTheNumberOfParametersProvided(
+		this.validateTheNumberOfProvidedParameters(
 				interest, 
 				presentValue, 
 				interestRate,
@@ -32,7 +32,7 @@ public class CompoundInterestFormulaService {
 				time);
 	}
 	
-	private void validateTheNumberOfParametersProvided(
+	private void validateTheNumberOfProvidedParameters(
 			Double interest,
 			Double presentValue, 
 			Double interestRate, 
