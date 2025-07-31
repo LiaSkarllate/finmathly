@@ -1,0 +1,4 @@
+ALTER TYPE yield_type_enum RENAME VALUE 'FIX' TO 'FIXED';
+ALTER TYPE yield_type_enum RENAME VALUE 'VAR' TO 'FLOATING';
+
+ALTER TYPE yield_type_enum ADD VALUE 'HYBRID';

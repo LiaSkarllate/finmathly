@@ -1,0 +1,64 @@
+@startuml
+enum YieldType {
+    FIX
+    VAR
+}
+
+enum CapitalizationPeriod {
+    MONTHLY
+    YEARLY
+    QUARTERLY
+    FOUR_MONTHLY
+    HALF_YEARLY
+    DAILY_360
+    DAILY_252
+}
+
+enum EventType {
+    INTEREST
+    AMORTIZATION
+}
+
+class Modality {
+  -UUID id
+  -String name
+  -YieldType yieldType
+  -CapitalizationPeriod capitalizationPeriod
+  -Boolean supportsFlows
+  -OffsetDateTime createdAt
+  -OffsetDateTime updatedAt
+}
+
+class MarketIndex {
+  -UUID id
+  -String name
+  -String description
+  -OffsetDateTime createdAt
+  -OffsetDateTime updatedAt
+}
+
+class Asset {
+  -UUID id
+  -String name
+  -LocalDate maturityDate
+  -BigDecimal interestRate
+  -BigDecimal indexPercentage
+  -BigDecimal faceValue
+  -OffsetDateTime createdAt
+  -OffsetDateTime updatedAt
+}
+
+class Flow {
+  -UUID id
+  -EventType type
+  -LocalDate eventDate
+  -BigDecimal amount
+  -BigDecimal amortizationPercentage
+  -OffsetDateTime createdAt
+  -OffsetDateTime updatedAt
+}
+
+Asset "0..n" o-- "1" Modality : has >
+Asset "0..n" o-- "0..1" MarketIndex : has >
+Asset "1" *-- "0..n" Flow : is part of <
+@enduml
