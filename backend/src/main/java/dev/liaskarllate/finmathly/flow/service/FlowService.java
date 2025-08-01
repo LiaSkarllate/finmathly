@@ -43,10 +43,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeSaved(Flow flow) {
-        if (!this.assetRepository.existsByName(flow.getAsset().getName())) {
-            throw new ResourceAlreadyExistsException(
-                    "The asset with the name '" + flow.getAsset().getName() + "' does not exists.");
-        }
+        this.checkAssetExistence(flow);
     }
 
     @Transactional
@@ -56,14 +53,8 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeUpdated(Flow flow) {
-        Flow existingFlow = this.flowRepository.findById(flow.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "The flow with the id '" + flow.getId() + "' was not found. Please, provide a valid id."));
-
-        if (!existingFlow.getAsset().getName().equals(flow.getAsset().getName())) {
-            throw new UnmodifiableResourceReferenceException(
-                    "The flow asset can not be changed.");
-        }
+        Flow oldEntity = this.findById(flow.getId());
+        this.checkAssetNameImmutabilityOnUpdate(flow, oldEntity);
     }
 
     @Transactional
@@ -73,9 +64,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeDeleted(UUID id) {
-        if (!this.flowRepository.existsById(id)) {
-            throw new ResourceNotFoundException("The flow with the id '" + id + "' was not found.");
-        }
+        this.findById(id);
     }
 
     public BigDecimal sumAmountByFilter(FlowSearchFilter filter) {
@@ -88,5 +77,19 @@ public class FlowService {
             FlowSumField fieldToSum) {
         Specification<Flow> spec = FlowSearchSpecificationBuilder.build(filter);
         return this.flowRepository.sumByFieldAndFilter(spec, fieldToSum);
+    }
+
+    private void checkAssetExistence(Flow flow) {
+        if (!this.assetRepository.existsByName(flow.getAsset().getName())) {
+            throw new ResourceAlreadyExistsException(
+                    "The asset with the name '" + flow.getAsset().getName() + "' does not exists.");
+        }
+    }
+
+    private void checkAssetNameImmutabilityOnUpdate(Flow newEntity, Flow oldEntity) {
+        if (!oldEntity.getAsset().getName().equals(newEntity.getAsset().getName())) {
+            throw new UnmodifiableResourceReferenceException(
+                    "The flow asset can not be changed.");
+        }
     }
 }
