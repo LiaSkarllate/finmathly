@@ -37,9 +37,7 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeSaved(Modality modality) {
-        if (this.modalityRepository.existsByName(modality.getName())) {
-            throw new ResourceAlreadyExistsException("The modality with the name '" + modality.getName() + "' already exists.");
-        }
+        this.checkModalityInexistence(modality);
     }
 
     @Transactional
@@ -49,14 +47,8 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeUpdated(Modality modality) {
-        Modality existingModality = this.modalityRepository.findById(modality.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "The modality with the id '" + modality.getId() + "' was not found. Please, provide a valid id."));
-
-        if (!existingModality.getName().equals(modality.getName()) &&
-                this.modalityRepository.existsByName(modality.getName())) {
-            throw new ResourceAlreadyExistsException("The modality with the name '" + modality.getName() + "' already exists. Please, provide a different name.");
-        }
+        Modality oldEntity = this.findById(modality.getId());
+        this.checkModalityNameUniquenessOnUpdate(modality, oldEntity);
     }
 
     @Transactional
@@ -66,8 +58,21 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeDeleted(UUID id) {
-        if (!this.modalityRepository.existsById(id)) {
-            throw new ResourceNotFoundException("The modality with the id '" + id + "' was not found.");
+        this.findById(id);
+    }
+
+    private void checkModalityNameUniquenessOnUpdate(Modality newEntity, Modality oldEntity) {
+        if (!oldEntity.getName().equals(newEntity.getName()) &&
+                this.modalityRepository.existsByName(newEntity.getName())) {
+            throw new ResourceAlreadyExistsException("The modality with the name '" + newEntity.getName()
+                    + "' already exists. Please, provide a different name.");
+        }
+    }
+
+    private void checkModalityInexistence(Modality modality) {
+        if (this.modalityRepository.existsByName(modality.getName())) {
+            throw new ResourceAlreadyExistsException(
+                    "The modality with the name '" + modality.getName() + "' already exists.");
         }
     }
 }
