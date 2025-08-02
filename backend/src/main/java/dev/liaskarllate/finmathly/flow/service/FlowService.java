@@ -54,7 +54,7 @@ public class FlowService {
 
     private void ensureFlowCanBeUpdated(Flow flow) {
         Flow oldEntity = this.findById(flow.getId());
-        this.checkAssetNameImmutabilityOnUpdate(flow, oldEntity);
+        this.checkFlowAssetImmutabilityOnUpdate(flow, oldEntity);
     }
 
     @Transactional
@@ -86,7 +86,7 @@ public class FlowService {
         }
     }
 
-    private void checkAssetNameImmutabilityOnUpdate(Flow newEntity, Flow oldEntity) {
+    private void checkFlowAssetImmutabilityOnUpdate(Flow newEntity, Flow oldEntity) {
         if (!oldEntity.getAsset().getName().equals(newEntity.getAsset().getName())) {
             throw new UnmodifiableResourceReferenceException(
                     "The flow asset can not be changed.");
