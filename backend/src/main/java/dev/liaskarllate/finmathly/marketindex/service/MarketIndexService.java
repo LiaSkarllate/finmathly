@@ -27,7 +27,7 @@ public class MarketIndexService {
 
     public MarketIndex findById(UUID id) {
         return this.marketindexRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("The marketindex with the id " + id + " was not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("The market index with the id " + id + " was not found."));
     }
 
     @Transactional
@@ -64,14 +64,14 @@ public class MarketIndexService {
     private void checkMarketIndexInexistence(MarketIndex marketindex) {
         if (this.marketindexRepository.existsByName(marketindex.getName())) {
             throw new ResourceAlreadyExistsException(
-                    "The marketindex with the name '" + marketindex.getName() + "' already exists.");
+                    "The market index with the name '" + marketindex.getName() + "' already exists.");
         }
     }
 
     private void checkMarketIndexNameUniquenessOnUpdate(MarketIndex newEntity, MarketIndex oldEntity) {
         if (!oldEntity.getName().equals(newEntity.getName()) &&
                 this.marketindexRepository.existsByName(newEntity.getName())) {
-            throw new ResourceAlreadyExistsException("The marketindex with the name '" + newEntity.getName()
+            throw new ResourceAlreadyExistsException("The market index with the name '" + newEntity.getName()
                     + "' already exists. Please, provide a different name.");
         }
     }
