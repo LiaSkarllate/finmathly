@@ -47,6 +47,7 @@ public class MarketIndexService {
     }
 
     private void ensureMarketIndexCanBeUpdated(MarketIndex marketindex) {
+        this.checkMarketIndexExistence(marketindex.getId());
         MarketIndex oldEntity = this.findById(marketindex.getId());
         this.checkMarketIndexNameUniquenessOnUpdate(marketindex, oldEntity);
     }
@@ -58,7 +59,7 @@ public class MarketIndexService {
     }
 
     private void ensureMarketIndexCanBeDeleted(UUID id) {
-        this.findById(id);
+        this.checkMarketIndexExistence(id);
     }
 
     private void checkMarketIndexInexistence(MarketIndex marketindex) {
@@ -73,6 +74,12 @@ public class MarketIndexService {
                 this.marketindexRepository.existsByName(newEntity.getName())) {
             throw new ResourceAlreadyExistsException("The market index with the name '" + newEntity.getName()
                     + "' already exists. Please, provide a different name.");
+        }
+    }
+
+    private void checkMarketIndexExistence(UUID id) {
+        if (!this.marketindexRepository.existsById(id)) {
+            throw new ResourceNotFoundException("The market index with the id " + id + " was not found.");
         }
     }
 }

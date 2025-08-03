@@ -53,6 +53,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeUpdated(Flow flow) {
+        this.checkFlowExistence(flow.getId());
         Flow oldEntity = this.findById(flow.getId());
         this.checkFlowAssetImmutabilityOnUpdate(flow, oldEntity);
     }
@@ -64,7 +65,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeDeleted(UUID id) {
-        this.findById(id);
+        this.checkFlowExistence(id);
     }
 
     public BigDecimal sumAmountByFilter(FlowSearchFilter filter) {
@@ -90,6 +91,12 @@ public class FlowService {
         if (!oldEntity.getAsset().getName().equals(newEntity.getAsset().getName())) {
             throw new UnmodifiableResourceReferenceException(
                     "The flow asset can not be changed.");
+        }
+    }
+
+     public void checkFlowExistence(UUID id) {
+        if (!this.flowRepository.existsById(id)) {
+            throw new ResourceNotFoundException("The flow with the id " + id + " was not found.");
         }
     }
 }

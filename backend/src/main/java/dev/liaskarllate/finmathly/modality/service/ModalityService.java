@@ -47,6 +47,7 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeUpdated(Modality modality) {
+        this.checkModalityExistence(modality.getId());
         Modality oldEntity = this.findById(modality.getId());
         this.checkModalityNameUniquenessOnUpdate(modality, oldEntity);
     }
@@ -58,7 +59,7 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeDeleted(UUID id) {
-        this.findById(id);
+        this.checkModalityExistence(id);
     }
 
     private void checkModalityNameUniquenessOnUpdate(Modality newEntity, Modality oldEntity) {
@@ -73,6 +74,12 @@ public class ModalityService {
         if (this.modalityRepository.existsByName(modality.getName())) {
             throw new ResourceAlreadyExistsException(
                     "The modality with the name '" + modality.getName() + "' already exists.");
+        }
+    }
+
+    public void checkModalityExistence(UUID id) {
+        if (!this.modalityRepository.existsById(id)) {
+            throw new ResourceNotFoundException("The modality with the id " + id + " was not found.");
         }
     }
 }

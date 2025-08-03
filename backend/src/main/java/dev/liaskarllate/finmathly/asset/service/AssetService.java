@@ -58,6 +58,7 @@ public class AssetService {
     }
 
     private void ensureAssetCanBeUpdated(Asset asset) {
+        this.checkAssetExistence(asset.getId());
         Asset oldEntity = this.findById(asset.getId());
         this.checkAssetNameUniquenessOnUpdate(asset, oldEntity);
         this.checkAssetModalityImmutabilityOnUpdate(asset.getModality(), oldEntity.getModality());
@@ -71,7 +72,7 @@ public class AssetService {
     }
 
     private void ensureAssetCanBeDeleted(UUID id) {
-        this.findById(id);
+        this.checkAssetExistence(id);
     }
 
     private void checkAssetModalityImmutabilityOnUpdate(Modality newEntity, Modality oldEntity) {
@@ -133,6 +134,13 @@ public class AssetService {
         if (this.assetRepository.existsByName(asset.getName())) {
             throw new ResourceAlreadyExistsException(
                     "The asset with the name '" + asset.getName() + "' already exists.");
+        }
+    }
+
+    private void checkAssetExistence(UUID id) {
+        if (!this.assetRepository.existsById(id)) {
+            throw new ResourceAlreadyExistsException(
+                    "The asset with the id '" + id + "' was not found.");
         }
     }
 }
