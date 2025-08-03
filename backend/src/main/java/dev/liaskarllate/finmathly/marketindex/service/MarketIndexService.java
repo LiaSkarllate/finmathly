@@ -18,67 +18,67 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class MarketIndexService {
-    private final MarketIndexRepository marketindexRepository;
+    private final MarketIndexRepository marketIndexRepository;
 
     public Page<MarketIndex> findByFilter(MarketIndexSearchFilter filter, Pageable pageable) {
         Specification<MarketIndex> spec = MarketIndexSearchSpecificationBuilder.build(filter);
-        return this.marketindexRepository.findAll(spec, pageable);
+        return this.marketIndexRepository.findAll(spec, pageable);
     }
 
     public MarketIndex findById(UUID id) {
-        return this.marketindexRepository.findById(id)
+        return this.marketIndexRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The market index with the id " + id + " was not found."));
     }
 
     @Transactional
-    public MarketIndex save(MarketIndex marketindex) {
-        this.ensureMarketIndexCanBeSaved(marketindex);
-        return this.marketindexRepository.save(marketindex);
+    public MarketIndex save(MarketIndex marketIndex) {
+        this.ensureMarketIndexCanBeSaved(marketIndex);
+        return this.marketIndexRepository.save(marketIndex);
     }
 
-    private void ensureMarketIndexCanBeSaved(MarketIndex marketindex) {
-        this.checkMarketIndexInexistence(marketindex);
+    private void ensureMarketIndexCanBeSaved(MarketIndex marketIndex) {
+        this.checkMarketIndexInexistence(marketIndex);
     }
 
     @Transactional
-    public MarketIndex update(MarketIndex marketindex) {
-        this.ensureMarketIndexCanBeUpdated(marketindex);
-        return this.marketindexRepository.save(marketindex);
+    public MarketIndex update(MarketIndex marketIndex) {
+        this.ensureMarketIndexCanBeUpdated(marketIndex);
+        return this.marketIndexRepository.save(marketIndex);
     }
 
-    private void ensureMarketIndexCanBeUpdated(MarketIndex marketindex) {
-        this.checkMarketIndexExistence(marketindex.getId());
-        MarketIndex oldEntity = this.findById(marketindex.getId());
-        this.checkMarketIndexNameUniquenessOnUpdate(marketindex, oldEntity);
+    private void ensureMarketIndexCanBeUpdated(MarketIndex marketIndex) {
+        this.checkMarketIndexExistence(marketIndex.getId());
+        MarketIndex oldEntity = this.findById(marketIndex.getId());
+        this.checkMarketIndexNameUniquenessOnUpdate(marketIndex, oldEntity);
     }
 
     @Transactional
     public void deleteById(UUID id) {
         this.ensureMarketIndexCanBeDeleted(id);
-        this.marketindexRepository.deleteById(id);
+        this.marketIndexRepository.deleteById(id);
     }
 
     private void ensureMarketIndexCanBeDeleted(UUID id) {
         this.checkMarketIndexExistence(id);
     }
 
-    private void checkMarketIndexInexistence(MarketIndex marketindex) {
-        if (this.marketindexRepository.existsByName(marketindex.getName())) {
+    private void checkMarketIndexInexistence(MarketIndex marketIndex) {
+        if (this.marketIndexRepository.existsByName(marketIndex.getName())) {
             throw new ResourceAlreadyExistsException(
-                    "The market index with the name '" + marketindex.getName() + "' already exists.");
+                    "The market index with the name '" + marketIndex.getName() + "' already exists.");
         }
     }
 
     private void checkMarketIndexNameUniquenessOnUpdate(MarketIndex newEntity, MarketIndex oldEntity) {
         if (!oldEntity.getName().equals(newEntity.getName()) &&
-                this.marketindexRepository.existsByName(newEntity.getName())) {
+                this.marketIndexRepository.existsByName(newEntity.getName())) {
             throw new ResourceAlreadyExistsException("The market index with the name '" + newEntity.getName()
                     + "' already exists. Please, provide a different name.");
         }
     }
 
     private void checkMarketIndexExistence(UUID id) {
-        if (!this.marketindexRepository.existsById(id)) {
+        if (!this.marketIndexRepository.existsById(id)) {
             throw new ResourceNotFoundException("The market index with the id " + id + " was not found.");
         }
     }

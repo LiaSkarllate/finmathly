@@ -28,40 +28,40 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/market-indexs")
 public class MarketIndexController {
-    private final MarketIndexService marketindexService;
-    private final MarketIndexMapper marketindexMapper;
+    private final MarketIndexService marketIndexService;
+    private final MarketIndexMapper marketIndexMapper;
 
     @GetMapping
     public ResponseEntity<Page<MarketIndexDTO>> getMarketIndexs(
             @Valid @ModelAttribute MarketIndexSearchFilter filter,
             @PageableDefault(page = 0, size = 5)
             Pageable pageable) {
-        Page<MarketIndexDTO> marketindexs = this.marketindexService.findByFilter(filter, pageable)
-                .map(this.marketindexMapper::toDTO);
-        return ResponseEntity.ok(marketindexs);
+        Page<MarketIndexDTO> marketIndexs = this.marketIndexService.findByFilter(filter, pageable)
+                .map(this.marketIndexMapper::toDTO);
+        return ResponseEntity.ok(marketIndexs);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MarketIndexDTO> getMarketIndexById(@PathVariable UUID id) {
-        MarketIndex marketindex = this.marketindexService.findById(id);
-        return ResponseEntity.ok(this.marketindexMapper.toDTO(marketindex));
+        MarketIndex marketIndex = this.marketIndexService.findById(id);
+        return ResponseEntity.ok(this.marketIndexMapper.toDTO(marketIndex));
     }
 
     @PostMapping
-    public ResponseEntity<MarketIndexDTO> saveMarketIndex(@Valid @RequestBody MarketIndexDTO marketindexDTO) {
-        MarketIndex createdMarketIndex = this.marketindexService.save(this.marketindexMapper.toEntity(marketindexDTO));
-        return new ResponseEntity<>(this.marketindexMapper.toDTO(createdMarketIndex), HttpStatus.CREATED);
+    public ResponseEntity<MarketIndexDTO> saveMarketIndex(@Valid @RequestBody MarketIndexDTO marketIndexDTO) {
+        MarketIndex createdMarketIndex = this.marketIndexService.save(this.marketIndexMapper.toEntity(marketIndexDTO));
+        return new ResponseEntity<>(this.marketIndexMapper.toDTO(createdMarketIndex), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MarketIndexDTO> updateMarketIndex(@PathVariable UUID id, @Valid @RequestBody MarketIndexDTO marketindexDTO) {
-        MarketIndex updatedMarketIndex = this.marketindexService.update(this.marketindexMapper.toEntity(marketindexDTO, id));
-        return ResponseEntity.ok(this.marketindexMapper.toDTO(updatedMarketIndex));
+    public ResponseEntity<MarketIndexDTO> updateMarketIndex(@PathVariable UUID id, @Valid @RequestBody MarketIndexDTO marketIndexDTO) {
+        MarketIndex updatedMarketIndex = this.marketIndexService.update(this.marketIndexMapper.toEntity(marketIndexDTO, id));
+        return ResponseEntity.ok(this.marketIndexMapper.toDTO(updatedMarketIndex));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMarketIndexById(@PathVariable UUID id) {
-        this.marketindexService.deleteById(id);
+        this.marketIndexService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
