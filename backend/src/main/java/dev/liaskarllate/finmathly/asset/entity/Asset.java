@@ -73,4 +73,16 @@ public class Asset {
         this.id = id;
         this.name = name;
     }
+
+    public boolean hasInterestRate() {
+        return this.interestRate != null;
+    }
+
+    public boolean hasIndexPercentage() {
+        return this.indexPercentage != null;
+    }
+
+    public boolean hasMarketIndex() {
+        return this.marketIndex != null;
+    }
 }

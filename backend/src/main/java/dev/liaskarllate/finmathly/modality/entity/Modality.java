@@ -54,4 +54,12 @@ public class Modality {
         this.id = id;
         this.name = name;
     }
+
+    public boolean hasName() {
+        return this.getName() != null && !this.getName().isBlank();
+    }
+
+    public boolean hasId() {
+        return this.getId() != null;
+    }
 }

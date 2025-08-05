@@ -31,6 +31,12 @@ public class MarketIndexService {
                         () -> new ResourceNotFoundException("The market index with the id " + id + " was not found."));
     }
 
+    public MarketIndex findByName(String name) {
+        return this.marketIndexRepository.findByName(name)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("The market index with the name " + name + " was not found."));
+    }
+
     @Transactional
     public MarketIndex save(MarketIndex marketIndex) {
         this.ensureMarketIndexCanBeSaved(marketIndex);
