@@ -34,8 +34,7 @@ public class MarketIndexController {
     @GetMapping
     public ResponseEntity<Page<MarketIndexDTO>> getMarketIndexs(
             @Valid @ModelAttribute MarketIndexSearchFilter filter,
-            @PageableDefault(page = 0, size = 5)
-            Pageable pageable) {
+            @PageableDefault(page = 0, size = 5) Pageable pageable) {
         Page<MarketIndexDTO> marketIndexs = this.marketIndexService.findByFilter(filter, pageable)
                 .map(this.marketIndexMapper::toDTO);
         return ResponseEntity.ok(marketIndexs);
@@ -54,8 +53,10 @@ public class MarketIndexController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MarketIndexDTO> updateMarketIndex(@PathVariable UUID id, @Valid @RequestBody MarketIndexDTO marketIndexDTO) {
-        MarketIndex updatedMarketIndex = this.marketIndexService.update(this.marketIndexMapper.toEntity(marketIndexDTO, id));
+    public ResponseEntity<MarketIndexDTO> updateMarketIndex(@PathVariable UUID id,
+            @Valid @RequestBody MarketIndexDTO marketIndexDTO) {
+        MarketIndex updatedMarketIndex = this.marketIndexService
+                .update(this.marketIndexMapper.toEntity(marketIndexDTO, id));
         return ResponseEntity.ok(this.marketIndexMapper.toDTO(updatedMarketIndex));
     }
 

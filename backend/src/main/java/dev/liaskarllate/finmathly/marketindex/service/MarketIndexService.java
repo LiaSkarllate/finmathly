@@ -27,7 +27,8 @@ public class MarketIndexService {
 
     public MarketIndex findById(UUID id) {
         return this.marketIndexRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("The market index with the id " + id + " was not found."));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("The market index with the id " + id + " was not found."));
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class FlowSummaryController {
     @GetMapping("/sum")
     public ResponseEntity<BigDecimal> sumByFieldAndFilter(
             @Valid @ModelAttribute FlowSearchFilter filter,
-            @RequestParam FlowSumField by){
+            @RequestParam FlowSumField by) {
         BigDecimal sum = this.flowService.sumByFieldAndFilter(filter, by);
         return ResponseEntity.ok(sum);
     }
