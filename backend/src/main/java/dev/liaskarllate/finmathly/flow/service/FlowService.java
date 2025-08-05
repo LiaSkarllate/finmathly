@@ -94,7 +94,7 @@ public class FlowService {
         }
     }
 
-     public void checkFlowExistence(UUID id) {
+    public void checkFlowExistence(UUID id) {
         if (!this.flowRepository.existsById(id)) {
             throw new ResourceNotFoundException("The flow with the id " + id + " was not found.");
         }
