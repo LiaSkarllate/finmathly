@@ -30,6 +30,12 @@ public class ModalityService {
                 .orElseThrow(() -> new ResourceNotFoundException("The modality with the id " + id + " was not found."));
     }
 
+    public Modality findByName(String name) {
+        return this.modalityRepository.findByName(name)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("The modality with the name " + name + " was not found."));
+    }
+
     @Transactional
     public Modality save(Modality modality) {
         this.ensureModalityCanBeSaved(modality);
