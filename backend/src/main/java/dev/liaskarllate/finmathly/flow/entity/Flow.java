@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "flow", indexes = {@Index(name = "idx_flow_event_date", columnList = "event_date")})
+@Table(name = "flow", indexes = { @Index(name = "idx_flow_event_date", columnList = "event_date") })
 public class Flow {
     @Id
     @Generated(event = EventType.INSERT)
@@ -55,6 +55,6 @@ public class Flow {
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
-    @Generated(event = {EventType.INSERT, EventType.UPDATE})
+    @Generated(event = { EventType.INSERT, EventType.UPDATE })
     private OffsetDateTime updatedAt;
 }

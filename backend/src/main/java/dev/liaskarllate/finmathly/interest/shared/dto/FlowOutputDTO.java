@@ -11,11 +11,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class FlowOutputDTO {
-	@Schema(
-		description = "the value of the flow",
-		example = "15000.00")
-	private BigDecimal value;
-	
-	@Schema(example = "0")
-	private BigDecimal time;
+    @Schema(description = "the value of the flow", example = "15000.00")
+    private BigDecimal value;
+
+    @Schema(example = "0")
+    private BigDecimal time;
 }

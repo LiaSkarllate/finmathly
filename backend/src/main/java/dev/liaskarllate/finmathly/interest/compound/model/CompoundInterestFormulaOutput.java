@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CompoundInterestFormulaOutput {
-	private BigDecimal interest;
-	private BigDecimal presentValue;
-	private BigDecimal interestRate;
-	private BigDecimal time;
+    private BigDecimal interest;
+    private BigDecimal presentValue;
+    private BigDecimal interestRate;
+    private BigDecimal time;
 }

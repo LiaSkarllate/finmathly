@@ -8,5 +8,6 @@ import dev.liaskarllate.finmathly.interest.compound.model.CompoundInterestFormul
 @Mapper(componentModel = "spring")
 public interface CompoundInterestFormulaOutputMapper {
     CompoundInterestFormulaOutputDTO toDTO(CompoundInterestFormulaOutput entity);
+
     CompoundInterestFormulaOutput toModel(CompoundInterestFormulaOutputDTO dto);
 }

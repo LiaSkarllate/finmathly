@@ -14,13 +14,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PresentValueCashFlowInputDTO {
-	@Schema(
-		description = "a list of flows (a cash flow)",
-		example = "[\n\t{\"value\" :15000.00, \"time\": 2},\n\t{\"value\": 40000.00, \"time\": 5},\n\t{\"value\": 50000.00, \"time\": 6},\n\t{\"value\": 70000.00, \"time\": 8}\n]")
-	public List<FlowInputDTO> flows;
-	
-	@Schema(
-		description = "the interest rate used for discounting the flows",
-		example = "0.03")
-	public BigDecimal interestRate;
+    @Schema(description = "a list of flows (a cash flow)", example = "[\n\t{\"value\" :15000.00, \"time\": 2},\n\t{\"value\": 40000.00, \"time\": 5},\n\t{\"value\": 50000.00, \"time\": 6},\n\t{\"value\": 70000.00, \"time\": 8}\n]")
+    public List<FlowInputDTO> flows;
+
+    @Schema(description = "the interest rate used for discounting the flows", example = "0.03")
+    public BigDecimal interestRate;
 }

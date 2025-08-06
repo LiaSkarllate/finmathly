@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class SimpleInterestFormulaOutput {
-	private BigDecimal interest;
-	private BigDecimal principal;
-	private BigDecimal interestRate;
-	private BigDecimal time;
+    private BigDecimal interest;
+    private BigDecimal principal;
+    private BigDecimal interestRate;
+    private BigDecimal time;
 }

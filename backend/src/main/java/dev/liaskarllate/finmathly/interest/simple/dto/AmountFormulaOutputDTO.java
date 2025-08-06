@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AmountFormulaOutputDTO{
-	private BigDecimal amount;
-	private BigDecimal principal; 
-	private BigDecimal interestRate;
-	private BigDecimal time;
+public class AmountFormulaOutputDTO {
+    private BigDecimal amount;
+    private BigDecimal principal;
+    private BigDecimal interestRate;
+    private BigDecimal time;
 }

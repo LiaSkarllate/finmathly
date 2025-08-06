@@ -13,6 +13,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PresentValueCashFlowInput {
-	private List<FlowInput> flows;
-	private BigDecimal interestRate;
+    private List<FlowInput> flows;
+    private BigDecimal interestRate;
 }

@@ -79,7 +79,6 @@ public class AssetSearchSpecificationBuilder {
                     "%" + modalityName.toLowerCase() + "%");
         };
     }
-    
 
     public static Specification<Asset> marketIndexIdEqual(UUID marketIndexId) {
         return (Root<Asset> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {

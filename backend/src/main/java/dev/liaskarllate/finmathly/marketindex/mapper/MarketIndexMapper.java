@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface MarketIndexMapper {
     MarketIndexDTO toDTO(MarketIndex entity);
+
     MarketIndex toEntity(MarketIndexDTO dto);
 
     @Mapping(target = "id", source = "id")
