@@ -17,7 +17,7 @@ public interface FlowMapper {
     @Mapping(target = "asset", expression = "java(new Asset(dto.getAssetId(), dto.getAssetName()))")
     Flow toEntity(FlowDTO dto);
 
-    @Mapping(target = "asset", expression = "java(new Asset(dto.getAssetId(), dto.getAssetName()))") 
+    @Mapping(target = "asset", expression = "java(new Asset(dto.getAssetId(), dto.getAssetName()))")
     @Mapping(target = "id", source = "id")
     Flow toEntity(FlowDTO dto, UUID id);
 }

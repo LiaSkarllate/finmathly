@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ModalityMapper {
     ModalityDTO toDTO(Modality entity);
+
     Modality toEntity(ModalityDTO dto);
 
     @Mapping(target = "id", source = "id")

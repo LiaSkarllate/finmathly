@@ -8,5 +8,6 @@ import dev.liaskarllate.finmathly.interest.compound.model.PresentValueCashFlowIn
 @Mapper(componentModel = "spring")
 public interface PresentValueCashFlowInputMapper {
     PresentValueCashFlowInputDTO toDTO(PresentValueCashFlowInput entity);
+
     PresentValueCashFlowInput toModel(PresentValueCashFlowInputDTO dto);
 }

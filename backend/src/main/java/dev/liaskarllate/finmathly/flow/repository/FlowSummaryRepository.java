@@ -7,5 +7,6 @@ import dev.liaskarllate.finmathly.flow.query.FlowSumField;
 
 public interface FlowSummaryRepository {
     BigDecimal sumAmountByFilter(Specification<Flow> spec);
+
     BigDecimal sumByFieldAndFilter(Specification<Flow> spec, FlowSumField fieldToSum);
 }

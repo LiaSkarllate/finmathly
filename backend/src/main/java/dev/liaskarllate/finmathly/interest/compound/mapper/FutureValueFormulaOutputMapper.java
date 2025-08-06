@@ -8,5 +8,6 @@ import dev.liaskarllate.finmathly.interest.compound.model.FutureValueFormulaOutp
 @Mapper(componentModel = "spring")
 public interface FutureValueFormulaOutputMapper {
     FutureValueFormulaOutputDTO toDTO(FutureValueFormulaOutput entity);
+
     FutureValueFormulaOutput toModel(FutureValueFormulaOutputDTO dto);
 }

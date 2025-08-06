@@ -35,7 +35,7 @@ public class MarketIndex {
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
-    @Generated(event = {EventType.INSERT, EventType.UPDATE})
+    @Generated(event = { EventType.INSERT, EventType.UPDATE })
     private OffsetDateTime updatedAt;
 
     public MarketIndex(UUID id, String name) {

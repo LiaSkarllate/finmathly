@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class FlowOutput {
-	private BigDecimal value;
-	private BigDecimal time;
+    private BigDecimal value;
+    private BigDecimal time;
 }

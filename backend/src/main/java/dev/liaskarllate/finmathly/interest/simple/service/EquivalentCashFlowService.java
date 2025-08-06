@@ -12,14 +12,14 @@ import dev.liaskarllate.finmathly.shared.exception.global.InvalidInputException;
 import lombok.AllArgsConstructor;
 
 /**
- * Service class for calculating the missing value of a target flow of a proposed cash 
- * flow to ensure equivalence with the original cash flow.
+ * Service class for calculating the missing value of a target flow of a
+ * proposed cash flow to ensure equivalence with the original cash flow.
  */
 @AllArgsConstructor
 @Service
 public class EquivalentCashFlowService {
     private final AmountFormulaService amountFormulaService;
-    
+
     public BigDecimal calculateRequiredTargetFlowValue(
             List<FlowInput> originalFlows,
             List<FlowInput> proposedFlows,
@@ -27,13 +27,13 @@ public class EquivalentCashFlowService {
             BigDecimal focalTime,
             BigDecimal interestRate) {
 
-    	this.validateProvidedParameters(
-    			originalFlows, 
-    			proposedFlows, 
-    			targetFlow, 
-    			focalTime, 
-    			interestRate);
-    	
+        this.validateProvidedParameters(
+                originalFlows,
+                proposedFlows,
+                targetFlow,
+                focalTime,
+                interestRate);
+
         return this.calculate(
                 originalFlows,
                 proposedFlows,
@@ -49,22 +49,26 @@ public class EquivalentCashFlowService {
             BigDecimal focalTime,
             BigDecimal interestRate) {
 
-        BigDecimal adjustedOriginalFlowsValuesSum = this.calculateAdjustedFlowsValuesSum(originalFlows, interestRate, focalTime);
-        BigDecimal adjustedProposedFlowsValuesSum = this.calculateAdjustedFlowsValuesSum(proposedFlows, interestRate, focalTime);
+        BigDecimal adjustedOriginalFlowsValuesSum = this.calculateAdjustedFlowsValuesSum(originalFlows, interestRate,
+                focalTime);
+        BigDecimal adjustedProposedFlowsValuesSum = this.calculateAdjustedFlowsValuesSum(proposedFlows, interestRate,
+                focalTime);
 
         BigDecimal netDifference = adjustedOriginalFlowsValuesSum.subtract(adjustedProposedFlowsValuesSum);
         BigDecimal flowTime = targetFlow.getTime();
-        
+
         BigDecimal targetValue = netDifference;
 
         if (flowTime.compareTo(focalTime) < 0) {
-            targetValue = amountFormulaService.applyFormula(netDifference, interestRate, focalTime.subtract(flowTime)).getAmount();
-        } 
-        
-        if (flowTime.compareTo(focalTime) > 0) {
-        	targetValue = amountFormulaService.applyFormula(netDifference, null, interestRate, flowTime.subtract(focalTime)).getPrincipal();
+            targetValue = amountFormulaService.applyFormula(netDifference, interestRate, focalTime.subtract(flowTime))
+                    .getAmount();
         }
-        
+
+        if (flowTime.compareTo(focalTime) > 0) {
+            targetValue = amountFormulaService
+                    .applyFormula(netDifference, null, interestRate, flowTime.subtract(focalTime)).getPrincipal();
+        }
+
         return targetValue;
     }
 
@@ -84,7 +88,7 @@ public class EquivalentCashFlowService {
 
         BigDecimal flowTime = flow.getTime();
         BigDecimal flowValue = flow.getValue();
-        
+
         if (flowTime.compareTo(focalTime) < 0) {
             BigDecimal timeDelta = focalTime.subtract(flowTime);
             return amountFormulaService.applyFormula(flowValue, interestRate, timeDelta).getAmount();
@@ -92,7 +96,7 @@ public class EquivalentCashFlowService {
             BigDecimal timeDelta = flowTime.subtract(focalTime);
             return amountFormulaService.applyFormula(flowValue, null, interestRate, timeDelta).getPrincipal();
         } else {
-            return flowValue; 
+            return flowValue;
         }
     }
 
@@ -127,11 +131,13 @@ public class EquivalentCashFlowService {
         }
 
         if (Objects.isNull(flow.getValue()) || flow.getValue().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("The value of " + flowDescription + " must be bigger than zero and it can't be null.");
+            throw new InvalidInputException(
+                    "The value of " + flowDescription + " must be bigger than zero and it can't be null.");
         }
 
         if (Objects.isNull(flow.getTime()) || flow.getTime().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("The time of " + flowDescription + " must be bigger than zero and it can't be null.");
+            throw new InvalidInputException(
+                    "The time of " + flowDescription + " must be bigger than zero and it can't be null.");
         }
     }
 }

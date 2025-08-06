@@ -94,7 +94,8 @@ public class FutureValueFormulaService {
 
         } else if (interestRate == null) {
             BigDecimal ratio = futureValue.divide(presentValue, MathContext.DECIMAL64);
-            BigDecimal root = BigDecimalMath.pow(ratio, BigDecimal.ONE.divide(time, MathContext.DECIMAL64), MathContext.DECIMAL64);
+            BigDecimal root = BigDecimalMath.pow(ratio, BigDecimal.ONE.divide(time, MathContext.DECIMAL64),
+                    MathContext.DECIMAL64);
             interestRate = root.subtract(BigDecimal.ONE, MathContext.DECIMAL64);
             futureValueFormulaOutput.setInterestRate(interestRate);
 

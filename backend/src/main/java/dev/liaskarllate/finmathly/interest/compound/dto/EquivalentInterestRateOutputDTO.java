@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EquivalentInterestRateOutputDTO{
-	private BigDecimal interestRate;
-	private CapitalizationPeriod capitalizationPeriod;
+public class EquivalentInterestRateOutputDTO {
+    private BigDecimal interestRate;
+    private CapitalizationPeriod capitalizationPeriod;
 }

@@ -8,5 +8,6 @@ import dev.liaskarllate.finmathly.interest.simple.model.SimpleInterestFormulaOut
 @Mapper(componentModel = "spring")
 public interface SimpleInterestFormulaOutputMapper {
     SimpleInterestFormulaOutputDTO toDTO(SimpleInterestFormulaOutput entity);
+
     SimpleInterestFormulaOutput toModel(SimpleInterestFormulaOutputDTO dto);
 }
