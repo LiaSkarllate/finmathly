@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import dev.liaskarllate.finmathly.interest.simple.model.SimpleInterestFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
-import dev.liaskarllate.finmathly.shared.exception.TooManyMissingArgumentsException;
+import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
 
 class SimpleInterestFormulaServiceTest {
 
@@ -97,15 +97,15 @@ class SimpleInterestFormulaServiceTest {
         BigDecimal time = new BigDecimal("2");
 
         assertThatThrownBy(() -> simpleInterestFormulaService.applyFormula(null, null, interestRate, time))
-                .isInstanceOfSatisfying(TooManyMissingArgumentsException.class, e -> {
+                .isInstanceOfSatisfying(InvalidMissingParametersCountException.class, e -> {
 
-                    final int missingArgumentsCount = 2;
-                    final int expectedMissingArgumentsCount = 1;
-                    final int totalArgumentsCount = 4;
+                    final int missingParametersCount = 2;
+                    final int expectedMissingParametersCount = 1;
+                    final int totalParametersCount = 4;
 
-                    assertThat(e.getMissingArgumentsCount()).isEqualTo(missingArgumentsCount);
-                    assertThat(e.getExpectedMissingArgumentsCount()).isEqualTo(expectedMissingArgumentsCount);
-                    assertThat(e.getTotalArgumentsCount()).isEqualTo(totalArgumentsCount);
+                    assertThat(e.getMissingParametersCount()).isEqualTo(missingParametersCount);
+                    assertThat(e.getExpectedMissingParametersCount()).isEqualTo(expectedMissingParametersCount);
+                    assertThat(e.getTotalParametersCount()).isEqualTo(totalParametersCount);
                 });
     }
 }

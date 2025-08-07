@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
-import dev.liaskarllate.finmathly.shared.exception.TooManyMissingArgumentsException;
+import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
 import dev.liaskarllate.finmathly.interest.compound.model.FutureValueFormulaOutput;
 
 import org.springframework.stereotype.Service;
@@ -64,7 +64,7 @@ public class FutureValueFormulaService {
             missingParametersCount++;
 
         if (missingParametersCount != 1) {
-            throw new TooManyMissingArgumentsException(missingParametersCount, 1, 4);
+            throw new InvalidMissingParametersCountException(missingParametersCount, 1, 4);
         }
     }
 
