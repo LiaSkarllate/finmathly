@@ -96,10 +96,16 @@ class SimpleInterestFormulaServiceTest {
         BigDecimal interestRate = new BigDecimal("0.05");
         BigDecimal time = new BigDecimal("2");
 
-        final int missingArgumentsCount = 2;
-
         assertThatThrownBy(() -> simpleInterestFormulaService.applyFormula(null, null, interestRate, time))
-                .isInstanceOf(TooManyMissingArgumentsException.class)
-                .hasMessageContaining(String.valueOf(missingArgumentsCount));
+                .isInstanceOfSatisfying(TooManyMissingArgumentsException.class, e -> {
+
+                    final int missingArgumentsCount = 2;
+                    final int expectedMissingArgumentsCount = 1;
+                    final int totalArgumentsCount = 4;
+
+                    assertThat(e.getMissingArgumentsCount()).isEqualTo(missingArgumentsCount);
+                    assertThat(e.getExpectedMissingArgumentsCount()).isEqualTo(expectedMissingArgumentsCount);
+                    assertThat(e.getTotalArgumentsCount()).isEqualTo(totalArgumentsCount);
+                });
     }
 }
