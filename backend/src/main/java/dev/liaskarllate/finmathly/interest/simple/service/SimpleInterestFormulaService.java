@@ -3,7 +3,7 @@ package dev.liaskarllate.finmathly.interest.simple.service;
 import java.math.BigDecimal;
 import dev.liaskarllate.finmathly.interest.simple.model.SimpleInterestFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
-import dev.liaskarllate.finmathly.shared.exception.TooManyMissingArgumentsException;
+import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
 
 import org.springframework.stereotype.Service;
 
@@ -48,7 +48,7 @@ public class SimpleInterestFormulaService {
             missingParametersCount++;
 
         if (missingParametersCount != 1) {
-            throw new TooManyMissingArgumentsException(missingParametersCount, 1, 4);
+            throw new InvalidMissingParametersCountException(missingParametersCount, 1, 4);
         }
     }
 
