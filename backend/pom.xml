@@ -17,7 +17,7 @@
 	<artifactId>finmathly</artifactId>
 	<version>1.0</version>
 	<name>finmathly</name>
-	<description>The financial math solutions API</description>
+	<description>The financial math solutions app</description>
 	<url/>
 	
 	<licenses>
