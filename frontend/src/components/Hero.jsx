@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 const Hero = ({
-    title = 'Become a React Dev',
-    subtitle = 'Find the React job that fits your skill set',
+    title = 'finmathly',
+    subtitle = 'The financial math solutions app',
 }) => {
     return (
         <section className='bg-indigo-700 py-20 mb-4'>
