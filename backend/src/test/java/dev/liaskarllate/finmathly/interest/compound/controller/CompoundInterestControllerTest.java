@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import dev.liaskarllate.finmathly.interest.compound.dto.CompoundInterestFormulaOutputDTO;
-import dev.liaskarllate.finmathly.interest.compound.dto.FutureValueFormulaOutputDTO;
-import dev.liaskarllate.finmathly.interest.compound.dto.PresentValueCashFlowInputDTO;
-import dev.liaskarllate.finmathly.interest.shared.dto.FlowInputDTO;
-import dev.liaskarllate.finmathly.interest.compound.dto.EquivalentInterestRateOutputDTO;
-import dev.liaskarllate.finmathly.interest.shared.dto.FlowOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.compound.dto.CompoundInterestFormulaOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.compound.dto.EquivalentInterestRateOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.compound.dto.FutureValueFormulaOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.compound.dto.PresentValueCashFlowInputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowInputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowOutputDTO;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
 import lombok.AllArgsConstructor;
 

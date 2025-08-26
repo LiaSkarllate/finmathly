@@ -8,8 +8,9 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import dev.liaskarllate.finmathly.interest.simple.model.SimpleInterestFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
+import dev.liaskarllate.finmathly.calculation.interest.simple.model.SimpleInterestFormulaOutput;
+import dev.liaskarllate.finmathly.calculation.interest.simple.service.SimpleInterestFormulaService;
 import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
 
 class SimpleInterestFormulaServiceTest {

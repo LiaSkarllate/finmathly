@@ -1,12 +1,13 @@
 package dev.liaskarllate.finmathly.interest.simple.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.liaskarllate.finmathly.interest.simple.dto.SimpleInterestFormulaOutputDTO;
+
+import dev.liaskarllate.finmathly.calculation.interest.compound.dto.EquivalentInterestRateOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.simple.dto.AmountFormulaOutputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.simple.dto.EquivalenceCashFlowInputDTO;
+import dev.liaskarllate.finmathly.calculation.interest.simple.dto.SimpleInterestFormulaOutputDTO;
 import dev.liaskarllate.finmathly.shared.controller.Helper;
-import dev.liaskarllate.finmathly.interest.simple.dto.AmountFormulaOutputDTO;
-import dev.liaskarllate.finmathly.interest.simple.dto.EquivalenceCashFlowInputDTO;
-import dev.liaskarllate.finmathly.interest.shared.dto.FlowOutputDTO;
-import dev.liaskarllate.finmathly.interest.compound.dto.EquivalentInterestRateOutputDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
