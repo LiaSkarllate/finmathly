@@ -26,8 +26,8 @@ import dev.liaskarllate.finmathly.interest.simple.service.EquivalentCashFlowServ
 import dev.liaskarllate.finmathly.interest.simple.service.EquivalentSimpleInterestRateService;
 import dev.liaskarllate.finmathly.interest.simple.service.SimpleInterestFormulaService;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -41,8 +41,8 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 @RestController
-@Tag(name = "Simple interest calculations")
 @RequestMapping("/calculations/interest/simple")
+@Tag(name = "Simple interest calculations")
 public class SimpleInterestController {
     private final SimpleInterestFormulaService simpleInterestFormulaService;
     private final AmountFormulaService amountFormulaService;
@@ -66,8 +66,9 @@ public class SimpleInterestController {
      * @param time         the time (can be null if it needs to be calculated)
      * @return a body containing all values, including the calculated one
      */
+    @Operation(summary = "Apply interest formula", tags = { "Simple interest calculations" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SimpleInterestFormulaOutputDTO.class), examples = @ExampleObject(value = "{\"interest\": 6000.00, \"principal\": 80000.00, \"interestRate\": 0.025, \"time\": 3}")))
+            @ApiResponse(responseCode = "200", description = "OK. Returns the calculated value.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SimpleInterestFormulaOutputDTO.class)))
     })
     @GetMapping("/interest")
     public ResponseEntity<SimpleInterestFormulaOutputDTO> applyInterestFormula(
@@ -99,8 +100,9 @@ public class SimpleInterestController {
      * @param time         the time (can be null if it needs to be calculated)
      * @return a body containing all values, including the calculated one
      */
+    @Operation(summary = "Apply amount formula", tags = { "Simple interest calculations" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AmountFormulaOutputDTO.class), examples = @ExampleObject(value = "{\"amount\": 20160.00, \"principal\": 18000.00, \"interestRate\": 0.015, \"time\": 8}")))
+            @ApiResponse(responseCode = "200", description = "OK. Returns the calculated value.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AmountFormulaOutputDTO.class)))
     })
     @GetMapping({ "/amount", "/principal" })
     public ResponseEntity<AmountFormulaOutputDTO> applyAmountFormula(
@@ -128,8 +130,9 @@ public class SimpleInterestController {
      *
      * @return the target flow with the required value to ensure equivalence
      */
+    @Operation(summary = "Calculate required target flow value", tags = { "Simple interest calculations" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlowOutputDTO.class), examples = @ExampleObject(value = "{\"value\": 145776.15, \"time\": 12}")))
+            @ApiResponse(responseCode = "200", description = "OK. Returns the calculated required target flow value.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlowOutputDTO.class)))
     })
     @PostMapping("/equivalence-cash-flow")
     public ResponseEntity<FlowOutputDTO> calculateRequiredTargetFlowValue(
@@ -163,8 +166,9 @@ public class SimpleInterestController {
      * @param to           the target capitalization period
      * @return the equivalent interest rate for the target capitalization period
      */
+    @Operation(summary = "Calculate equivalent interest rate", tags = { "Simple interest calculations" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = EquivalentInterestRateOutputDTO.class), examples = @ExampleObject(value = "{\"interestRate\": 0.09, \"capitalizationPeriod\": \"QUARTERLY\"}")))
+            @ApiResponse(responseCode = "200", description = "OK. Returns the calculated equivalent interest rate.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = EquivalentInterestRateOutputDTO.class)))
     })
     @GetMapping("/equivalent-interest-rate")
     public ResponseEntity<EquivalentInterestRateOutputDTO> calculateEquivalentInterestRate(
