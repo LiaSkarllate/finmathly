@@ -56,7 +56,7 @@ public class AssetService {
     }
 
     private void ensureAssetCanBeSaved(Asset asset) {
-        this.checkAssetInexistence(asset);
+        this.checkAssetNonexistence(asset.getName());
         this.checkModalityExistence(asset.getModality());
         this.checkAssetModalityConstraintsCompliance(asset);
     }
@@ -70,7 +70,7 @@ public class AssetService {
     private void ensureAssetCanBeUpdated(Asset asset) {
         this.checkAssetExistence(asset.getId());
         Asset oldEntity = this.findById(asset.getId());
-        this.checkAssetNameUniquenessOnUpdate(asset, oldEntity);
+        this.checkAssetNameUniquenessOnUpdate(asset.getName(), oldEntity.getName());
         this.checkAssetModalityImmutabilityOnUpdate(asset.getModality(), oldEntity.getModality());
         this.checkAssetModalityConstraintsCompliance(asset);
     }
@@ -97,10 +97,10 @@ public class AssetService {
         }
     }
 
-    private void checkAssetNameUniquenessOnUpdate(Asset newEntity, Asset oldEntity) {
-        if (!oldEntity.getName().equals(newEntity.getName()) &&
-                this.assetRepository.existsByName(newEntity.getName())) {
-            throw new ResourceAlreadyExistsException("The asset with the name '" + newEntity.getName()
+    private void checkAssetNameUniquenessOnUpdate(String newName, String oldName) {
+        if (!oldName.equals(newName) &&
+                this.assetRepository.existsByName(newName)) {
+            throw new ResourceAlreadyExistsException("The asset with the name '" + newName
                     + "' already exists. Please, provide a different name.");
         }
     }
@@ -138,10 +138,10 @@ public class AssetService {
         }
     }
 
-    private void checkAssetInexistence(Asset asset) {
-        if (this.assetRepository.existsByName(asset.getName())) {
+    private void checkAssetNonexistence(String name) {
+        if (this.assetRepository.existsByName(name)) {
             throw new ResourceAlreadyExistsException(
-                    "The asset with the name '" + asset.getName() + "' already exists.");
+                    "The asset with the name '" + name + "' already exists.");
         }
     }
 

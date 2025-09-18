@@ -43,7 +43,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeSaved(Flow flow) {
-        this.checkAssetExistence(flow);
+        this.checkAssetExistence(flow.getAsset().getName());
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class FlowService {
     private void ensureFlowCanBeUpdated(Flow flow) {
         this.checkFlowExistence(flow.getId());
         Flow oldEntity = this.findById(flow.getId());
-        this.checkFlowAssetImmutabilityOnUpdate(flow, oldEntity);
+        this.checkFlowAssetImmutabilityOnUpdate(flow.getAsset().getName(), oldEntity.getAsset().getName());
     }
 
     @Transactional
@@ -80,15 +80,15 @@ public class FlowService {
         return this.flowRepository.sumByFieldAndFilter(spec, fieldToSum);
     }
 
-    private void checkAssetExistence(Flow flow) {
-        if (!this.assetRepository.existsByName(flow.getAsset().getName())) {
+    private void checkAssetExistence(String assetName) {
+        if (!this.assetRepository.existsByName(assetName)) {
             throw new ResourceAlreadyExistsException(
-                    "The asset with the name '" + flow.getAsset().getName() + "' does not exists.");
+                    "The asset with the name '" + assetName + "' does not exists.");
         }
     }
 
-    private void checkFlowAssetImmutabilityOnUpdate(Flow newEntity, Flow oldEntity) {
-        if (!oldEntity.getAsset().getName().equals(newEntity.getAsset().getName())) {
+    private void checkFlowAssetImmutabilityOnUpdate(String newAssetName, String oldAssetName) {
+        if (!newAssetName.equals(oldAssetName)) {
             throw new UnmodifiableResourceReferenceException(
                     "The flow asset can not be changed.");
         }

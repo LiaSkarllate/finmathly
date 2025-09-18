@@ -43,7 +43,7 @@ public class ModalityService {
     }
 
     private void ensureModalityCanBeSaved(Modality modality) {
-        this.checkModalityInexistence(modality);
+        this.checkModalityNonexistence(modality.getName());
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class ModalityService {
     private void ensureModalityCanBeUpdated(Modality modality) {
         this.checkModalityExistence(modality.getId());
         Modality oldEntity = this.findById(modality.getId());
-        this.checkModalityNameUniquenessOnUpdate(modality, oldEntity);
+        this.checkModalityNameUniquenessOnUpdate(modality.getName(), oldEntity.getName());
     }
 
     @Transactional
@@ -68,18 +68,18 @@ public class ModalityService {
         this.checkModalityExistence(id);
     }
 
-    private void checkModalityNameUniquenessOnUpdate(Modality newEntity, Modality oldEntity) {
-        if (!oldEntity.getName().equals(newEntity.getName()) &&
-                this.modalityRepository.existsByName(newEntity.getName())) {
-            throw new ResourceAlreadyExistsException("The modality with the name '" + newEntity.getName()
+    private void checkModalityNameUniquenessOnUpdate(String newName, String oldName) {
+        if (!oldName.equals(newName) &&
+                this.modalityRepository.existsByName(newName)) {
+            throw new ResourceAlreadyExistsException("The modality with the name '" + newName
                     + "' already exists. Please, provide a different name.");
         }
     }
 
-    private void checkModalityInexistence(Modality modality) {
-        if (this.modalityRepository.existsByName(modality.getName())) {
+    private void checkModalityNonexistence(String name) {
+        if (this.modalityRepository.existsByName(name)) {
             throw new ResourceAlreadyExistsException(
-                    "The modality with the name '" + modality.getName() + "' already exists.");
+                    "The modality with the name '" + name + "' already exists.");
         }
     }
 
