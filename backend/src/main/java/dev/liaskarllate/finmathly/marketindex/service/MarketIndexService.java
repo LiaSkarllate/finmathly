@@ -45,7 +45,7 @@ public class MarketIndexService {
     }
 
     private void ensureMarketIndexCanBeSaved(MarketIndex marketIndex) {
-        this.checkMarketIndexInexistence(marketIndex);
+        this.checkMarketIndexNonexistence(marketIndex.getName());
     }
 
     @Transactional
@@ -57,7 +57,7 @@ public class MarketIndexService {
     private void ensureMarketIndexCanBeUpdated(MarketIndex marketIndex) {
         this.checkMarketIndexExistence(marketIndex.getId());
         MarketIndex oldEntity = this.findById(marketIndex.getId());
-        this.checkMarketIndexNameUniquenessOnUpdate(marketIndex, oldEntity);
+        this.checkMarketIndexNameUniquenessOnUpdate(marketIndex.getName(), oldEntity.getName());
     }
 
     @Transactional
@@ -70,17 +70,17 @@ public class MarketIndexService {
         this.checkMarketIndexExistence(id);
     }
 
-    private void checkMarketIndexInexistence(MarketIndex marketIndex) {
-        if (this.marketIndexRepository.existsByName(marketIndex.getName())) {
+    private void checkMarketIndexNonexistence(String name) {
+        if (this.marketIndexRepository.existsByName(name)) {
             throw new ResourceAlreadyExistsException(
-                    "The market index with the name '" + marketIndex.getName() + "' already exists.");
+                    "The market index with the name '" + name + "' already exists.");
         }
     }
 
-    private void checkMarketIndexNameUniquenessOnUpdate(MarketIndex newEntity, MarketIndex oldEntity) {
-        if (!oldEntity.getName().equals(newEntity.getName()) &&
-                this.marketIndexRepository.existsByName(newEntity.getName())) {
-            throw new ResourceAlreadyExistsException("The market index with the name '" + newEntity.getName()
+    private void checkMarketIndexNameUniquenessOnUpdate(String newName, String oldName) {
+        if (!oldName.equals(newName) &&
+                this.marketIndexRepository.existsByName(newName)) {
+            throw new ResourceAlreadyExistsException("The market index with the name '" + newName
                     + "' already exists. Please, provide a different name.");
         }
     }
