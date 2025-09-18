@@ -64,13 +64,14 @@ public class ModalityController {
 
         Page<ModalityDTO> modalities = this.modalityService.findByFilter(filter, pageable)
                 .map(this.modalityMapper::toDTO);
-        return ResponseEntity.ok(modalities);
+
+        return modalities.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(modalities);
     }
 
     @Operation(summary = "Get modality", tags = { "Modalities" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK. Returns the modality.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModalityDTO.class))),
-            @ApiResponse(responseCode = "204", description = "No content. No modality found for the given id to return."),
+            @ApiResponse(responseCode = "404", description = "Not found. No modality found for the given id to return."),
             @ApiResponse(responseCode = "400", description = "Bad request.")
     })
     @GetMapping("/{id}")
