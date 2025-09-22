@@ -1,71 +1,48 @@
 import {
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
+    Route,
+    createBrowserRouter,
+    createRoutesFromElements,
+    RouterProvider,
 } from 'react-router-dom';
+
+import {
+    create as createModality,
+    deleteById as deleteModalityById,
+    update as updateModality,
+} from './services/modality/requests.js';
+
 import MainLayout from './layouts/MainLayout';
-import HomePage from './pages/HomePage';
-import JobsPage from './pages/JobsPage';
-import NotFoundPage from './pages/NotFoundPage';
-import JobPage, { jobLoader } from './pages/JobPage';
-import AddJobPage from './pages/AddJobPage';
-import EditJobPage from './pages/EditJobPage';
+import HomePage from './pages/shared/HomePage';
+import NotFoundPage from './pages/shared/NotFoundPage';
+
+import ModalitiesPage from './pages/modality/ModalitiesPage';
+import ModalityPage, { modalityLoader } from './pages/modality/ModalityPage';
+import CreateModalityPage from './pages/modality/CreateModalityPage';
+import UpdateModalityPage from './pages/modality/UpdateModalityPage';
 
 const App = () => {
-  // Add New Job
-  const addJob = async (newJob) => {
-    const res = await fetch('/api/jobs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newJob),
-    });
-    return;
-  };
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path='/' element={<MainLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path='/modalities' element={<ModalitiesPage />} />
+                <Route path='/modalities/create' element={<CreateModalityPage onCreateModality={createModality} />} />
+                <Route
+                    path='/modalities/update/:id'
+                    element={<UpdateModalityPage onUpdateModality={updateModality} />}
+                    loader={modalityLoader}
+                />
+                <Route
+                    path='/modalities/:id'
+                    element={<ModalityPage onDeleteModality={deleteModalityById} />}
+                    loader={modalityLoader}
+                />
+                <Route path='*' element={<NotFoundPage />} />
+            </Route>
+        )
+    );
 
-  // Delete Job
-  const deleteJob = async (id) => {
-    const res = await fetch(`/api/jobs/${id}`, {
-      method: 'DELETE',
-    });
-    return;
-  };
-
-  // Update Job
-  const updateJob = async (job) => {
-    const res = await fetch(`/api/jobs/${job.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(job),
-    });
-    return;
-  };
-
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path='/' element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path='/jobs' element={<JobsPage />} />
-        <Route path='/add-job' element={<AddJobPage addJobSubmit={addJob} />} />
-        <Route
-          path='/edit-job/:id'
-          element={<EditJobPage updateJobSubmit={updateJob} />}
-          loader={jobLoader}
-        />
-        <Route
-          path='/jobs/:id'
-          element={<JobPage deleteJob={deleteJob} />}
-          loader={jobLoader}
-        />
-        <Route path='*' element={<NotFoundPage />} />
-      </Route>
-    )
-  );
-
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
 };
+
 export default App;
