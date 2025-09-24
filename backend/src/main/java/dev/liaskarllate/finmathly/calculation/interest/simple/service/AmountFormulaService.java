@@ -3,6 +3,7 @@ package dev.liaskarllate.finmathly.calculation.interest.simple.service;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.simple.model.AmountFormulaOutput;
@@ -84,18 +85,18 @@ public class AmountFormulaService {
 
         } else if (principal == null) {
             BigDecimal fcs = BigDecimal.ONE.add(interestRate.multiply(time));
-            BigDecimal fas = BigDecimal.ONE.divide(fcs);
+            BigDecimal fas = BigDecimal.ONE.divide(fcs, MathContext.DECIMAL64);
             principal = amount.multiply(fas);
             amountFormulaOutput.setPrincipal(principal);
 
         } else if (interestRate == null) {
-            BigDecimal ratio = amount.divide(principal);
-            interestRate = ratio.subtract(BigDecimal.ONE).divide(time);
+            BigDecimal ratio = amount.divide(principal, MathContext.DECIMAL64);
+            interestRate = ratio.subtract(BigDecimal.ONE).divide(time, MathContext.DECIMAL64);
             amountFormulaOutput.setInterestRate(interestRate);
 
         } else if (time == null) {
-            BigDecimal ratio = amount.divide(principal);
-            time = ratio.subtract(BigDecimal.ONE).divide(interestRate);
+            BigDecimal ratio = amount.divide(principal, MathContext.DECIMAL64);
+            time = ratio.subtract(BigDecimal.ONE).divide(interestRate, MathContext.DECIMAL64);
             amountFormulaOutput.setTime(time);
 
         } else {
