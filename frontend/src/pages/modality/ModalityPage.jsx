@@ -10,7 +10,7 @@ const ModalityPage = ({ onDeleteModality }) => {
 
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const onDeleteClick = (modalityId) => {
+    const onDeleteClick = async (modalityId) => {
         const confirmDelete = window.confirm(
             'Are you sure you want to delete this modality?'
         );
@@ -20,11 +20,12 @@ const ModalityPage = ({ onDeleteModality }) => {
         setIsDeleting(true);
 
         try {
-            onDeleteModality(modalityId);
+            await onDeleteModality(modalityId);
             toast.success('Modality deleted successfully.');
             navigate('/modalities');
-        } catch (err) {
-            toast.error(err?.message || 'Failed to delete modality.');
+        } catch (error) {
+            toast.error('Failed to delete modality.');
+            console.log(error);
         } finally {
             setIsDeleting(false);
         }
@@ -106,17 +107,4 @@ const ModalityPage = ({ onDeleteModality }) => {
     );
 };
 
-const modalityLoader = async ({ params, request }) => {
-    const endpoint = `/modalities/${params.id}`;
-
-    const response = await fetch(endpoint, { signal: request.signal });
-
-    if (!response.ok) {
-        throw new Response('Fetch failed', { status: response.status });
-    }
-
-    const data = await response.json();
-    return data;
-};
-
-export { ModalityPage as default, modalityLoader };
+export default ModalityPage;

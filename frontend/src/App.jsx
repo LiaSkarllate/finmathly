@@ -8,15 +8,17 @@ import {
 import {
     create as createModality,
     deleteById as deleteModalityById,
-    update as updateModality,
+    update as updateModality
 } from './services/modality/requests.js';
+
+import { modalityLoader} from './services/modality/loaders.js';
 
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/shared/HomePage';
 import NotFoundPage from './pages/shared/NotFoundPage';
 
 import ModalitiesPage from './pages/modality/ModalitiesPage';
-import ModalityPage, { modalityLoader } from './pages/modality/ModalityPage';
+import ModalityPage from './pages/modality/ModalityPage';
 import CreateModalityPage from './pages/modality/CreateModalityPage';
 import UpdateModalityPage from './pages/modality/UpdateModalityPage';
 
