@@ -17,7 +17,7 @@ import lombok.Setter;
 public class FlowSearchFilter {
     @Size(max = 25, message = "The asset name cannot exceed 25 characters. Please, provide a shorter name.")
     private String assetName;
-    private UUID assetID;
+    private UUID assetId;
     private EventType type;
     private LocalDate eventDate;
 }
