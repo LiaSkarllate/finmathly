@@ -2,6 +2,7 @@ package dev.liaskarllate.finmathly.calculation.interest.simple.service;
 
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import dev.liaskarllate.finmathly.calculation.interest.shared.service.BaseEquivalentInterestRateService;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
@@ -17,7 +18,7 @@ public class EquivalentSimpleInterestRateService extends BaseEquivalentInterestR
             CapitalizationPeriod from,
             CapitalizationPeriod to) {
 
-        BigDecimal conversionFactor = to.getFactor().divide(from.getFactor());
+        BigDecimal conversionFactor = to.getFactor().divide(from.getFactor(), MathContext.DECIMAL64);
         return interestRate.multiply(conversionFactor);
     }
 

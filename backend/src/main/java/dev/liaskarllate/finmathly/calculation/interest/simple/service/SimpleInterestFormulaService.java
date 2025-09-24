@@ -1,6 +1,7 @@
 package dev.liaskarllate.finmathly.calculation.interest.simple.service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.simple.model.SimpleInterestFormulaOutput;
@@ -72,15 +73,15 @@ public class SimpleInterestFormulaService {
             simpleInterestFormulaOutput.setInterest(interest);
         } else if (principal == null) {
             BigDecimal denominator = interestRate.multiply(time);
-            principal = interest.divide(denominator);
+            principal = interest.divide(denominator, MathContext.DECIMAL64);
             simpleInterestFormulaOutput.setPrincipal(principal);
         } else if (interestRate == null) {
             BigDecimal denominator = principal.multiply(time);
-            interestRate = interest.divide(denominator);
+            interestRate = interest.divide(denominator, MathContext.DECIMAL64);
             simpleInterestFormulaOutput.setInterestRate(interestRate);
         } else if (time == null) {
             BigDecimal denominator = principal.multiply(interestRate);
-            time = interest.divide(denominator);
+            time = interest.divide(denominator, MathContext.DECIMAL64);
             simpleInterestFormulaOutput.setTime(time);
         } else {
             throw new NothingToBeCalculatedException();
