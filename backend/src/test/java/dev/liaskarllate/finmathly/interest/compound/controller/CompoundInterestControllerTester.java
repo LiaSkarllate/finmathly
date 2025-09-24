@@ -8,9 +8,9 @@ import dev.liaskarllate.finmathly.calculation.interest.compound.dto.FutureValueF
 import dev.liaskarllate.finmathly.calculation.interest.compound.dto.PresentValueCashFlowInputDTO;
 import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowOutputDTO;
 import dev.liaskarllate.finmathly.shared.controller.Helper;
+import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
 import lombok.AllArgsConstructor;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,11 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AllArgsConstructor
 @Component
-@AutoConfigureMockMvc
+@AllArgsConstructor
 public class CompoundInterestControllerTester {
-    private static final String BASE = "/calculations/interest/compound";
+    private static final String BASE_PATH = "/calculations/interest/compound";
 
     private MockMvc mvc;
     private ObjectMapper json;
@@ -44,7 +43,7 @@ public class CompoundInterestControllerTester {
                 Helper.toParam(interestRate),
                 Helper.toParam(time));
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -68,7 +67,7 @@ public class CompoundInterestControllerTester {
                 Helper.toParam(interestRate),
                 Helper.toParam(time));
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -80,7 +79,7 @@ public class CompoundInterestControllerTester {
     public FlowOutputDTO calculatePresentValueOfCashFlow(PresentValueCashFlowInputDTO input) throws Exception {
         final String path = "/present-value/cash-flow";
 
-        String responseBody = mvc.perform(post(BASE + path)
+        String responseBody = mvc.perform(post(BASE_PATH + path)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(input)))
                 .andExpect(status().isOk())
@@ -89,8 +88,10 @@ public class CompoundInterestControllerTester {
         return json.readValue(responseBody, FlowOutputDTO.class);
     }
 
-    public EquivalentInterestRateOutputDTO calculateEquivalentInterestRate(BigDecimal interestRate,
-            String from, String to) throws Exception {
+    public EquivalentInterestRateOutputDTO calculateEquivalentInterestRate(
+            BigDecimal interestRate,
+            CapitalizationPeriod from,
+            CapitalizationPeriod to) throws Exception {
 
         final String path = "/equivalent-interest-rate";
 
@@ -99,10 +100,10 @@ public class CompoundInterestControllerTester {
                         "&from=%s" +
                         "&to=%s",
                 Helper.toParam(interestRate),
-                from,
-                to);
+                from.name(),
+                to.name());
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()

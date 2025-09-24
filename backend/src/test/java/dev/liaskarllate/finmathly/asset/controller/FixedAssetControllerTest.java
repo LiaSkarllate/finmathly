@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +17,15 @@ import dev.liaskarllate.finmathly.modality.controller.ModalityControllerTester;
 import dev.liaskarllate.finmathly.modality.dto.ModalityDTO;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
 import dev.liaskarllate.finmathly.shared.enums.YieldType;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 @Transactional
 class FixedAssetControllerTest {
-    private final AssetControllerTester assetTester;
-    private final ModalityControllerTester modalityTester;
+    @Autowired
+    private AssetControllerTester assetTester;
+    @Autowired
+    private ModalityControllerTester modalityTester;
 
     @Test
     void shouldPerformCRUDFunctionality() throws Exception {

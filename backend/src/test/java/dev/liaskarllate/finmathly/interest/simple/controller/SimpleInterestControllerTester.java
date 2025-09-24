@@ -8,8 +8,8 @@ import dev.liaskarllate.finmathly.calculation.interest.simple.dto.AmountFormulaO
 import dev.liaskarllate.finmathly.calculation.interest.simple.dto.EquivalenceCashFlowInputDTO;
 import dev.liaskarllate.finmathly.calculation.interest.simple.dto.SimpleInterestFormulaOutputDTO;
 import dev.liaskarllate.finmathly.shared.controller.Helper;
+import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,11 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AllArgsConstructor
 @Component
-@AutoConfigureMockMvc
+@AllArgsConstructor
 public class SimpleInterestControllerTester {
-    private static final String BASE = "/calculations/interest/simple";
+    private static final String BASE_PATH = "/calculations/interest/simple";
 
     private MockMvc mvc;
     private ObjectMapper json;
@@ -46,7 +45,7 @@ public class SimpleInterestControllerTester {
                 Helper.toParam(interestRate),
                 Helper.toParam(time));
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -73,7 +72,7 @@ public class SimpleInterestControllerTester {
                 Helper.toParam(interestRate),
                 Helper.toParam(time));
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -86,7 +85,7 @@ public class SimpleInterestControllerTester {
             EquivalenceCashFlowInputDTO input) throws Exception {
         final String path = "/equivalence-cash-flow";
 
-        String responseBody = mvc.perform(post(BASE + path)
+        String responseBody = mvc.perform(post(BASE_PATH + path)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(input)))
                 .andExpect(status().isOk())
@@ -99,8 +98,8 @@ public class SimpleInterestControllerTester {
 
     public EquivalentInterestRateOutputDTO calculateEquivalentInterestRate(
             BigDecimal interestRate,
-            String from,
-            String to) throws Exception {
+            CapitalizationPeriod from,
+            CapitalizationPeriod to) throws Exception {
 
         final String path = "/equivalent-interest-rate";
 
@@ -109,10 +108,10 @@ public class SimpleInterestControllerTester {
                         "&from=%s" +
                         "&to=%s",
                 Helper.toParam(interestRate),
-                from,
-                to);
+                from.name(),
+                to.name());
 
-        String responseBody = mvc.perform(get(BASE + path + queryParams))
+        String responseBody = mvc.perform(get(BASE_PATH + path + queryParams))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()

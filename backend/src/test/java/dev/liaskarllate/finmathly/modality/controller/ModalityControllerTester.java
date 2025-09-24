@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,17 +24,16 @@ import dev.liaskarllate.finmathly.modality.query.ModalitySearchFilter;
 import dev.liaskarllate.finmathly.modality.query.ModalitySearchSortingField;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Component
-@AutoConfigureMockMvc
+@AllArgsConstructor
 public class ModalityControllerTester {
-    private static final String BASE = "/modalities";
+    private static final String BASE_PATH = "/modalities";
 
     private final MockMvc mvc;
     private final ObjectMapper json;
 
     public ModalityDTO create(ModalityDTO toBeCreated) throws Exception {
-        String responseBody = mvc.perform(post(BASE)
+        String responseBody = mvc.perform(post(BASE_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(toBeCreated)))
                 .andExpect(status().isCreated())
@@ -56,7 +54,7 @@ public class ModalityControllerTester {
     }
 
     public ModalityDTO readById(UUID id, ModalityDTO expected) throws Exception {
-        String responseBody = mvc.perform(get(BASE + "/" + id))
+        String responseBody = mvc.perform(get(BASE_PATH + "/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -74,7 +72,7 @@ public class ModalityControllerTester {
     }
 
     public ModalityDTO update(UUID id, ModalityDTO toBeUpdated) throws Exception {
-        String responseBody = mvc.perform(put(BASE + "/" + id)
+        String responseBody = mvc.perform(put(BASE_PATH + "/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(toBeUpdated)))
                 .andExpect(status().isOk())
@@ -94,10 +92,10 @@ public class ModalityControllerTester {
     }
 
     public void remove(UUID id) throws Exception {
-        mvc.perform(delete(BASE + "/" + id))
+        mvc.perform(delete(BASE_PATH + "/" + id))
                 .andExpect(status().isNoContent());
 
-        mvc.perform(get(BASE + "/" + id))
+        mvc.perform(get(BASE_PATH + "/" + id))
                 .andExpect(status().isNotFound());
     }
 
@@ -108,7 +106,7 @@ public class ModalityControllerTester {
             int pageSize,
             List<ModalityDTO> expected) throws Exception {
 
-        MockHttpServletRequestBuilder request = get(BASE)
+        MockHttpServletRequestBuilder request = get(BASE_PATH)
                 .param("page", String.valueOf(pageNumber))
                 .param("size", String.valueOf(pageSize));
 
