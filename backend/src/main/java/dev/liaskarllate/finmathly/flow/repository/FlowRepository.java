@@ -10,5 +10,5 @@ import dev.liaskarllate.finmathly.flow.entity.Flow;
 public interface FlowRepository extends
         JpaRepository<Flow, UUID>,
         JpaSpecificationExecutor<Flow>,
-        FlowSummaryRepository {
+        FlowSummaryRepository{
 }
