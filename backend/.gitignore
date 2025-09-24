@@ -128,3 +128,6 @@ README.html
 *.iml
 .exercism
 *.pdf
+
+.env.development
+.env.production
