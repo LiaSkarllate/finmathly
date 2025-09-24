@@ -4,20 +4,21 @@ import { toast } from 'react-toastify';
 import ModalityListing from './ModalityListing';
 import Spinner from '../shared/Spinner';
 
+import { findByFilter } from '../../services/modality/requests';
+
 const ModalityListings = () => {
     const [modalities, setModalities] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchModalities = async () => {
-            const endpoint = '/modalities';
+            setLoading(true);
+
             try {
-                const response = await fetch(endpoint);
-                const data = await response.json();
-                setModalities(data);
+                await findByFilter().then((data) => setModalities(data.content));
             } catch (error) {
-                toast.error('Erro ao buscar dados do backend');
-                console.log('Error fetching data', error);
+                toast.error('Failed to fetch modalities.');
+                console.log(error);
             } finally {
                 setLoading(false);
             }

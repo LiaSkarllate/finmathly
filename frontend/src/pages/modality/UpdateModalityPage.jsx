@@ -31,8 +31,9 @@ const UpdateModalityPage = ({ onUpdateModality }) => {
             await onUpdateModality(updatedModality);
             toast.success('Modality updated successfully.');
             navigate(`/modalities/${id}`);
-        } catch (err) {
-            toast.error(err?.message || 'Failed to update modality.');
+        } catch (error) {
+            toast.error('Failed to update modality.');
+            console.log(error);
         } finally {
             setIsSubmitting(false);
         }

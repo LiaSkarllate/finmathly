@@ -28,8 +28,9 @@ const CreateModalityPage = ({ onCreateModality }) => {
             await onCreateModality(newModality);
             toast.success('Modality created successfully.');
             navigate('/modalities');
-        } catch (err) {
-            toast.error(err?.message || 'Failed to create modality.');
+        } catch (error) {
+            toast.error('Failed to create modality.');
+            console.log(error);
         } finally {
             setIsSubmitting(false);
         }
