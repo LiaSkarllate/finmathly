@@ -108,21 +108,21 @@ public class EquivalentCashFlowService {
             BigDecimal interestRate) {
 
         if (Objects.isNull(originalFlows) || Objects.isNull(proposedFlows) || Objects.isNull(targetFlow)) {
-            throw new InvalidInputException("Os esquemas de pagamento e o evento de interesse não podem ser nulos.");
+            throw new InvalidInputException("Payment flows and the target flow cannot be null.");
         }
 
         if (Objects.isNull(focalTime) || focalTime.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("O tempo focal deve ser maior que zero e não pode ser nulo.");
+            throw new InvalidInputException("The focal time must be bigger than zero and cannot be null.");
         }
 
         if (Objects.isNull(interestRate) || interestRate.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("A taxa de juros deve ser maior que zero e não pode ser nula.");
+            throw new InvalidInputException("The interest rate must be bigger than zero and cannot be null.");
         }
 
         originalFlows.forEach(flow -> this.validateFlow(flow, "flow from the original ones"));
         proposedFlows.forEach(flow -> this.validateFlow(flow, "flow from the proposed ones"));
 
-        this.validateFlow(targetFlow, "evento de interesse");
+        this.validateFlow(targetFlow, "target flow");
     }
 
     private void validateFlow(FlowInput flow, String flowDescription) {
