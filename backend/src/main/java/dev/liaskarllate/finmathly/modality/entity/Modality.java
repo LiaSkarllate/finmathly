@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.generator.EventType;
 
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
@@ -32,11 +34,13 @@ public class Modality {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "yield_type", nullable = false)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "yield_type", nullable = false, columnDefinition = "yield_type_enum")
     private YieldType yieldType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "capitalization_period", nullable = false)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "capitalization_period", nullable = false, columnDefinition = "capitalization_period_enum") 
     private CapitalizationPeriod capitalizationPeriod;
 
     @Column(name = "supports_flows", nullable = false)
