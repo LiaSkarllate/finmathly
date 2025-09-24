@@ -3,6 +3,8 @@ package dev.liaskarllate.finmathly.modality.controller;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,13 +13,13 @@ import dev.liaskarllate.finmathly.modality.query.ModalitySearchFilter;
 import dev.liaskarllate.finmathly.modality.query.ModalitySearchSortingField;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
 import dev.liaskarllate.finmathly.shared.enums.YieldType;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 @Transactional
 class FixedModalityControllerTest {
-    private final ModalityControllerTester tester;
+    @Autowired
+    private ModalityControllerTester tester;
 
     @Test
     void shouldPerformCRUDFunctionality() throws Exception {

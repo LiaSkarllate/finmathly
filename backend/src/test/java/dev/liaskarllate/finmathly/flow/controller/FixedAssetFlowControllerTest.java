@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +19,17 @@ import dev.liaskarllate.finmathly.flow.dto.FlowDTO;
 import dev.liaskarllate.finmathly.flow.query.FlowSearchFilter;
 import dev.liaskarllate.finmathly.asset.controller.AssetControllerTester;
 import dev.liaskarllate.finmathly.modality.controller.ModalityControllerTester;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 @Transactional
 class FixedAssetFlowControllerTest {
-    private final ModalityControllerTester modalityTester;
-    private final AssetControllerTester assetTester;
-    private final FlowControllerTester flowTester;
+    @Autowired
+    private ModalityControllerTester modalityTester;
+    @Autowired
+    private AssetControllerTester assetTester;
+    @Autowired
+    private FlowControllerTester flowTester;
 
     @Test
     void shouldPerformCRUDFunctionality() throws Exception {

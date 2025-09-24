@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,12 +17,11 @@ import dev.liaskarllate.finmathly.calculation.interest.compound.dto.PresentValue
 import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowInputDTO;
 import dev.liaskarllate.finmathly.calculation.interest.shared.dto.FlowOutputDTO;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class CompoundInterestControllerTest {
+    @Autowired
     private CompoundInterestControllerTester tester;
 
     @Test
@@ -94,14 +94,14 @@ class CompoundInterestControllerTest {
     @Test
     void shouldCalculateEquivalentCompoundInterestRateForSamePeriod() throws Exception {
         BigDecimal interestRate = new BigDecimal("0.25");
-        String from = CapitalizationPeriod.YEARLY.getDescription();
-        String to = CapitalizationPeriod.MONTHLY.getDescription();
+        CapitalizationPeriod from = CapitalizationPeriod.YEARLY;
+        CapitalizationPeriod to = CapitalizationPeriod.MONTHLY;
         BigDecimal expectedRate = new BigDecimal("0.01877");
 
         EquivalentInterestRateOutputDTO result = tester.calculateEquivalentInterestRate(
                 interestRate, from, to);
 
         assertEquals(expectedRate, result.getInterestRate());
-        assertEquals(to, result.getCapitalizationPeriod().getDescription());
+        assertEquals(to, result.getCapitalizationPeriod());
     }
 }

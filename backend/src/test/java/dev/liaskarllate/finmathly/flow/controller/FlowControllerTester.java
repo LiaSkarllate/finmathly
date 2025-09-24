@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,17 +23,16 @@ import dev.liaskarllate.finmathly.flow.dto.FlowDTO;
 import dev.liaskarllate.finmathly.flow.query.FlowSearchFilter;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Component
-@AutoConfigureMockMvc
+@AllArgsConstructor
 public class FlowControllerTester {
-    private static final String BASE = "/flows";
+    private static final String BASE_PATH = "/flows";
 
     private final MockMvc mvc;
     private final ObjectMapper json;
 
     public FlowDTO create(FlowDTO toBeCreated) throws Exception {
-        String responseBody = mvc.perform(post(BASE)
+        String responseBody = mvc.perform(post(BASE_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(toBeCreated)))
                 .andExpect(status().isCreated())
@@ -58,7 +56,7 @@ public class FlowControllerTester {
     }
 
     public FlowDTO readById(UUID id, FlowDTO expected) throws Exception {
-        String responseBody = mvc.perform(get(BASE + "/" + id))
+        String responseBody = mvc.perform(get(BASE_PATH + "/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -78,7 +76,7 @@ public class FlowControllerTester {
     }
 
     public FlowDTO update(UUID id, FlowDTO toBeUpdated) throws Exception {
-        String responseBody = mvc.perform(put(BASE + "/" + id)
+        String responseBody = mvc.perform(put(BASE_PATH + "/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json.writeValueAsString(toBeUpdated)))
                 .andExpect(status().isOk())
@@ -100,10 +98,10 @@ public class FlowControllerTester {
     }
 
     public void remove(UUID id) throws Exception {
-        mvc.perform(delete(BASE + "/" + id))
+        mvc.perform(delete(BASE_PATH + "/" + id))
                 .andExpect(status().isNoContent());
 
-        mvc.perform(get(BASE + "/" + id))
+        mvc.perform(get(BASE_PATH + "/" + id))
                 .andExpect(status().isNotFound());
     }
 
@@ -114,15 +112,15 @@ public class FlowControllerTester {
             int pageSize,
             List<FlowDTO> expected) throws Exception {
 
-        MockHttpServletRequestBuilder request = get(BASE)
+        MockHttpServletRequestBuilder request = get(BASE_PATH)
                 .param("page", String.valueOf(pageNumber))
                 .param("size", String.valueOf(pageSize));
 
         if (filter.getAssetName() != null) {
             request.param("assetName", filter.getAssetName());
         }
-        if (filter.getAssetID() != null) {
-            request.param("assetID", filter.getAssetID().toString());
+        if (filter.getAssetId() != null) {
+            request.param("assetID", filter.getAssetId().toString());
         }
         if (filter.getType() != null) {
             request.param("type", filter.getType().name());

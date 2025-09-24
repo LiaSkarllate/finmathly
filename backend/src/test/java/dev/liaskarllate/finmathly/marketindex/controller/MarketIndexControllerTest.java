@@ -2,18 +2,18 @@ package dev.liaskarllate.finmathly.marketindex.controller;
 
 import dev.liaskarllate.finmathly.marketindex.dto.MarketIndexDTO;
 import dev.liaskarllate.finmathly.marketindex.query.MarketIndexSearchFilter;
-import lombok.AllArgsConstructor;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@AllArgsConstructor
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class MarketIndexControllerTest {
+    @Autowired
     private MarketIndexControllerTester tester;
 
     @Test
