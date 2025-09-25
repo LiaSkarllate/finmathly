@@ -1,6 +1,9 @@
-import PropTypes from 'prop-types';
+interface HeroProps {
+    title?: string;
+    subtitle?: string;
+}
 
-const Hero = ({
+const Hero: React.FC<HeroProps> = ({
     title = 'finmathly',
     subtitle = 'The financial math solutions app',
 }) => {
@@ -16,11 +19,6 @@ const Hero = ({
             </div>
         </section>
     );
-};
-
-Hero.propTypes = {
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
 };
 
 export default Hero;

@@ -1,21 +1,36 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useLoaderData, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CreateModalityPage = ({ onCreateModality }) => {
+interface Modality {
+    id: string;
+    name: string;
+    yieldType: string;
+    capitalizationPeriod: string;
+    supportsFlows: boolean;
+}
+
+interface UpdateModalityPageProps {
+    onUpdateModality: (modality: Modality) => Promise<void>;
+}
+
+const UpdateModalityPage: React.FC<UpdateModalityPageProps> = ({ onUpdateModality }) => {
+    const modality = useLoaderData() as Modality;
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    const [name, setName] = useState('');
-    const [yieldType, setYieldType] = useState('');
-    const [capitalizationPeriod, setCapitalizationPeriod] = useState('');
-    const [supportsFlows, setSupportsFlows] = useState(false);
+    const [name, setName] = useState(modality.name);
+    const [yieldType, setYieldType] = useState(modality.yieldType);
+    const [capitalizationPeriod, setCapitalizationPeriod] = useState(modality.capitalizationPeriod);
+    const [supportsFlows, setSupportsFlows] = useState(Boolean(modality.supportsFlows));
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const submitForm = async (e) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newModality = {
+        const updatedModality: Modality = {
+            id: id || '',
             name,
             yieldType,
             capitalizationPeriod,
@@ -25,11 +40,11 @@ const CreateModalityPage = ({ onCreateModality }) => {
         setIsSubmitting(true);
 
         try {
-            await onCreateModality(newModality);
-            toast.success('Modality created successfully.');
-            navigate('/modalities');
+            await onUpdateModality(updatedModality);
+            toast.success('Modality updated successfully.');
+            navigate(`/modalities/${id}`);
         } catch (error) {
-            toast.error('Failed to create modality.');
+            toast.error('Failed to update modality.');
             console.log(error);
         } finally {
             setIsSubmitting(false);
@@ -41,7 +56,7 @@ const CreateModalityPage = ({ onCreateModality }) => {
             <div className="container m-auto max-w-2xl py-24">
                 <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
                     <form onSubmit={submitForm}>
-                        <h2 className="text-3xl text-center font-semibold mb-6">Create Modality</h2>
+                        <h2 className="text-3xl text-center font-semibold mb-6">Update Modality</h2>
 
                         <div className="mb-4">
                             <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
@@ -109,9 +124,9 @@ const CreateModalityPage = ({ onCreateModality }) => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline disabled:opacity-50"
+                                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                             >
-                                {isSubmitting ? 'Creating...' : 'Create modality'}
+                                {isSubmitting ? 'Updating...' : 'Update modality'}
                             </button>
                         </div>
                     </form>
@@ -121,4 +136,4 @@ const CreateModalityPage = ({ onCreateModality }) => {
     );
 };
 
-export default CreateModalityPage;
+export default UpdateModalityPage;

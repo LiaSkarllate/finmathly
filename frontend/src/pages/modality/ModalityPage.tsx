@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
-import { useParams, useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-const ModalityPage = ({ onDeleteModality }) => {
-    const modality = useLoaderData();
-    const { id } = useParams();
+interface Modality {
+    id: string;
+    name: string;
+    yieldType: string;
+    capitalizationPeriod: string;
+    supportsFlows: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface ModalityPageProps {
+    onDeleteModality: (id: string) => Promise<void>;
+}
+
+const ModalityPage: React.FC<ModalityPageProps> = ({ onDeleteModality }) => {
+    const modality = useLoaderData() as Modality;
     const navigate = useNavigate();
 
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const onDeleteClick = async (modalityId) => {
+    const onDeleteClick = async (modalityId: string) => {
         const confirmDelete = window.confirm(
             'Are you sure you want to delete this modality?'
         );

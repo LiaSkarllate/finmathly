@@ -1,4 +1,11 @@
-const Card = ({
+import { ReactNode } from 'react';
+
+interface CardProps {
+    children: ReactNode;
+    bg?: string;
+}
+
+const Card: React.FC<CardProps> = ({
     children,
     bg = 'bg-gray-100'
 }) => {

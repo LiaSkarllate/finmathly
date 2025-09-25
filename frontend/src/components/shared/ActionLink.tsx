@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
 
-const ActionLink = ({
+interface ActionLinkProps {
+    to: string;
+    children: ReactNode;
+}
+
+const ActionLink: React.FC<ActionLinkProps> = ({
     to,
     children
 }) => (
