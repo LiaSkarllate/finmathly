@@ -2,7 +2,17 @@ import { parseAndCheckResponse } from '../../services/shared/requests';
 
 const MODALITIES_PATH = '/api/modalities';
 
-export const create = async (modality) => {
+interface Modality {
+    id?: string;
+    name: string;
+    yieldType: string;
+    capitalizationPeriod: string;
+    supportsFlows: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export const create = async (modality: Modality) => {
     const response = await fetch(MODALITIES_PATH, {
         method: 'POST',
         headers: {
@@ -14,7 +24,7 @@ export const create = async (modality) => {
     return await parseAndCheckResponse(response);
 };
 
-export const deleteById = async (id) => {
+export const deleteById = async (id: string) => {
     const response = await fetch(`${MODALITIES_PATH}/${id}`, {
         method: 'DELETE',
     });
@@ -22,7 +32,7 @@ export const deleteById = async (id) => {
     return await parseAndCheckResponse(response);
 };
 
-export const update = async (modality) => {
+export const update = async (modality: Modality) => {
     const response = await fetch(`${MODALITIES_PATH}/${modality.id}`, {
         method: 'PUT',
         headers: {
@@ -34,14 +44,12 @@ export const update = async (modality) => {
     return await parseAndCheckResponse(response);
 };
 
-export const findById = async (id) => {
+export const findById = async (id: string) => {
     const response = await fetch(`${MODALITIES_PATH}/${id}`);
-
     return await parseAndCheckResponse(response);
 };
 
 export const findByFilter = async () => {
     const response = await fetch(MODALITIES_PATH);
-
     return await parseAndCheckResponse(response);
 };

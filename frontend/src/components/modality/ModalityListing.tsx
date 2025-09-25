@@ -1,7 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function ModalityListing({ modality }) {
+interface Modality {
+    id: string;
+    name: string;
+    yieldType: string;
+    capitalizationPeriod: string;
+    supportsFlows: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface ModalityListingProps {
+    modality: Modality;
+}
+
+const ModalityListing: React.FC<ModalityListingProps> = ({ modality }) => {
     const [showDetails, setShowDetails] = useState(false);
     const detailsId = `modality-details-${modality.id}`;
 
@@ -33,7 +47,7 @@ function ModalityListing({ modality }) {
                 </button>
 
                 {showDetails && (
-                    <div id={detailsId} className="mb-4 text-sm text-gray-800" role="region" aria-live="polite">
+                    <div id={detailsId} className="mb-4 text-sm text-gray-800" aria-live="polite">
                         <div>
                             <strong>Created at:</strong>{' '}
                             {new Date(modality.createdAt).toLocaleString()}

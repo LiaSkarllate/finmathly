@@ -9,9 +9,9 @@ import {
     create as createModality,
     deleteById as deleteModalityById,
     update as updateModality
-} from './services/modality/requests.js';
+} from './services/modality/requests';
 
-import { modalityLoader} from './services/modality/loaders.js';
+import { modalityLoader } from './services/modality/loaders';
 
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/shared/HomePage';

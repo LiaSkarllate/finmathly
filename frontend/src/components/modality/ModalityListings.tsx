@@ -6,8 +6,18 @@ import Spinner from '../shared/Spinner';
 
 import { findByFilter } from '../../services/modality/requests';
 
-const ModalityListings = () => {
-    const [modalities, setModalities] = useState([]);
+interface Modality {
+    id: string;
+    name: string;
+    yieldType: string;
+    capitalizationPeriod: string;
+    supportsFlows: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+const ModalityListings: React.FC = () => {
+    const [modalities, setModalities] = useState<Modality[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,7 +25,8 @@ const ModalityListings = () => {
             setLoading(true);
 
             try {
-                await findByFilter().then((data) => setModalities(data.content));
+                const data = await findByFilter();
+                setModalities(data.content);
             } catch (error) {
                 toast.error('Failed to fetch modalities.');
                 console.log(error);
