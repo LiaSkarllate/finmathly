@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { useParams, useLoaderData, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Spinner from '../../components/shared/Spinner';
+
+import { findById, update } from '../../services/modality/requests';
 
 interface Modality {
     id: string;
@@ -8,29 +11,63 @@ interface Modality {
     yieldType: string;
     capitalizationPeriod: string;
     supportsFlows: boolean;
+    createdAt: string;
+    updatedAt?: string;
 }
 
-interface UpdateModalityPageProps {
-    onUpdateModality: (modality: Modality) => Promise<void>;
-}
-
-const UpdateModalityPage: React.FC<UpdateModalityPageProps> = ({ onUpdateModality }) => {
-    const modality = useLoaderData() as Modality;
+const UpdateModalityPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    const [name, setName] = useState(modality.name);
-    const [yieldType, setYieldType] = useState(modality.yieldType);
-    const [capitalizationPeriod, setCapitalizationPeriod] = useState(modality.capitalizationPeriod);
-    const [supportsFlows, setSupportsFlows] = useState(Boolean(modality.supportsFlows));
+    const [readModality, setReadModality] = useState<Modality | null>(null);
 
+    const [loading, setLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [name, setName] = useState('');
+    const [yieldType, setYieldType] = useState('');
+    const [capitalizationPeriod, setCapitalizationPeriod] = useState('');
+    const [supportsFlows, setSupportsFlows] = useState(false);
+
+    useEffect(() => {
+        const fetchModality = async () => {
+            setLoading(true);
+
+            if (!id) {
+                toast.error('The id is missing.');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const data = await findById(id);
+                setReadModality(data);
+
+                setName(data.name);
+                setYieldType(data.yieldType);
+                setCapitalizationPeriod(data.capitalizationPeriod);
+                setSupportsFlows(Boolean(data.supportsFlows));
+            } catch (error) {
+                toast.error('Failed to fetch modality.');
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchModality();
+    }, [id]);
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (!readModality) {
+            toast.error('The modality was not loaded.');
+            return;
+        }
+
         const updatedModality: Modality = {
-            id: id || '',
+            ...readModality,
             name,
             yieldType,
             capitalizationPeriod,
@@ -40,16 +77,40 @@ const UpdateModalityPage: React.FC<UpdateModalityPageProps> = ({ onUpdateModalit
         setIsSubmitting(true);
 
         try {
-            await onUpdateModality(updatedModality);
+            await update(updatedModality);
             toast.success('Modality updated successfully.');
-            navigate(`/modalities/${id}`);
+            navigate(`/modalities/${readModality.id}`);
         } catch (error) {
             toast.error('Failed to update modality.');
-            console.log(error);
+            console.error(error);
         } finally {
             setIsSubmitting(false);
         }
     };
+
+    if (loading) {
+        return (
+            <section className="bg-indigo-50">
+                <div className="container m-auto py-24">
+                    <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+                        <Spinner />
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (!readModality) {
+        return (
+            <section className="bg-indigo-50">
+                <div className="container m-auto py-24">
+                    <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+                        <div>Nothing here.</div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="bg-indigo-50">

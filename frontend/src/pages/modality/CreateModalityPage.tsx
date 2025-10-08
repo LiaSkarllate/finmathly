@@ -2,18 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { create } from '../../services/modality/requests';
+
 interface NewModality {
     name: string;
     yieldType: string;
     capitalizationPeriod: string;
     supportsFlows: boolean;
 }
-
-interface CreateModalityPageProps {
-    onCreateModality: (modality: NewModality) => Promise<void>;
-}
-
-const CreateModalityPage: React.FC<CreateModalityPageProps> = ({ onCreateModality }) => {
+const CreateModalityPage: React.FC = () => {
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
@@ -36,7 +33,7 @@ const CreateModalityPage: React.FC<CreateModalityPageProps> = ({ onCreateModalit
         setIsSubmitting(true);
 
         try {
-            await onCreateModality(newModality);
+            await create(newModality);
             toast.success('Modality created successfully.');
             navigate('/modalities');
         } catch (error) {
