@@ -2,36 +2,25 @@ import { Route, Routes } from "react-router-dom"
 
 import MainLayout from "../layouts/MainLayout"
 
-import CreateModalityPage from "../pages/modality/CreateModalityPage"
-import ModalitiesPage from "../pages/modality/ModalitiesPage"
-import ModalityPage from "../pages/modality/ModalityPage"
-import UpdateModalityPage from "../pages/modality/UpdateModalityPage"
+import ModalityListings from '../pages/Definitions/Modalities';
 
-import HomePage from "../pages/shared/HomePage"
-import NotFoundPage from "../pages/shared/NotFoundPage"
+import HomePage from "../pages/HomePage"
+import NotFoundPage from "../pages/NotFoundPage"
+import ModalityOperations from "../pages/Definitions/Modalities/Operations";
 
-export const RouteComponent: React.FC = () => {
+const RouteComponent: React.FC = () => {
     return (
         <Routes>
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<HomePage />} />
 
-                <Route path="modalities" element={<ModalitiesPage />} />
-                <Route
-                    path="modalities/create"
-                    element={<CreateModalityPage />}
-                />
-                <Route
-                    path="modalities/update/:id"
-                    element={<UpdateModalityPage />}
-                />
-                <Route
-                    path="modalities/:id"
-                    element={<ModalityPage />}
-                />
+                <Route path="definitions/modalities" element={<ModalityListings />} />
+                <Route path="definitions/modalities/:operation/:id?" element={<ModalityOperations />} />
 
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
         </Routes>
     )
 }
+
+export default RouteComponent;
