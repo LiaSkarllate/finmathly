@@ -17,8 +17,18 @@ import lombok.NoArgsConstructor;
 public class ModalitySearchSpecificationBuilder {
     public static Specification<Modality> build(ModalitySearchFilter filter) {
         return Specification
-                .where(nameLike(filter.getName()))
+                .where(idEquals(filter.getId()))
+                .and(nameLike(filter.getName()))
                 .and(nameEquals(filter.getYieldType()));
+    }
+
+    private static Specification<Modality> idEquals(java.util.UUID id) {
+        return (Root<Modality> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+            if (id == null) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get(Modality_.id), id);
+        };
     }
 
     private static Specification<Modality> nameEquals(YieldType yieldType) {
