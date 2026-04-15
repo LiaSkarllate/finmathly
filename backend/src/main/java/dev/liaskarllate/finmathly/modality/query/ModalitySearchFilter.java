@@ -1,5 +1,7 @@
 package dev.liaskarllate.finmathly.modality.query;
 
+import java.util.UUID;
+
 import dev.liaskarllate.finmathly.shared.enums.YieldType;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModalitySearchFilter {
+    private UUID id;
+    
     @Size(max = 25, message = "The modality name cannot exceed 25 characters. Please, provide a shorter name.")
     private String name;
     private YieldType yieldType;

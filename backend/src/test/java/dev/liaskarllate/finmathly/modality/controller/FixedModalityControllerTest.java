@@ -86,6 +86,7 @@ class FixedModalityControllerTest {
 
         ModalitySearchFilter searchFilter = new ModalitySearchFilter(
                 null,
+                "",
                 YieldType.FIXED);
 
         tester.readFilteredSortedAndPaged(
