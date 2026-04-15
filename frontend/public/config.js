@@ -1,0 +1,4 @@
+window.config = {
+    VITE_FINMATHLY_APP_USER_INACTIVITY_TIME: 1800,
+    VITE_FINMATHLY_APP_MONOLITH_BACKEND_URL: 'http://localhost:8080'
+};

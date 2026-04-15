@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import Navbar from '../components/shared/Navbar';
+import Navbar from '../fragments/shared/Navbar';
 
 import 'react-toastify/dist/ReactToastify.css';
 

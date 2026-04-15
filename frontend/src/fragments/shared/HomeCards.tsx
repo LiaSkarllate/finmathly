@@ -6,8 +6,8 @@ const cards = [
         id: 'modalities',
         title: 'Modalities',
         description: 'Manage your modalities.',
-        browse: '/modalities',
-        create: '/modalities/create',
+        browse: '/definitions/modalities',
+        create: '/definitions/modalities/create',
         browseLabel: 'Browse modalities',
         createLabel: 'Create a modality',
     }
