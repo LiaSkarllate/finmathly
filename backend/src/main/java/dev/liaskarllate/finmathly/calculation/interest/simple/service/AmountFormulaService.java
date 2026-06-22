@@ -8,6 +8,7 @@ import java.math.MathContext;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.simple.model.AmountFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 /**
  * Service class for applying the simple interest amount formula.
@@ -81,23 +82,23 @@ public class AmountFormulaService {
         if (amount == null) {
             BigDecimal fcs = BigDecimal.ONE.add(interestRate.multiply(time));
             amount = principal.multiply(fcs);
-            amountFormulaOutput.setAmount(amount);
+            amountFormulaOutput.setAmount(Rounding.money(amount));
 
         } else if (principal == null) {
             BigDecimal fcs = BigDecimal.ONE.add(interestRate.multiply(time));
             BigDecimal fas = BigDecimal.ONE.divide(fcs, MathContext.DECIMAL64);
             principal = amount.multiply(fas);
-            amountFormulaOutput.setPrincipal(principal);
+            amountFormulaOutput.setPrincipal(Rounding.money(principal));
 
         } else if (interestRate == null) {
             BigDecimal ratio = amount.divide(principal, MathContext.DECIMAL64);
             interestRate = ratio.subtract(BigDecimal.ONE).divide(time, MathContext.DECIMAL64);
-            amountFormulaOutput.setInterestRate(interestRate);
+            amountFormulaOutput.setInterestRate(Rounding.rate(interestRate));
 
         } else if (time == null) {
             BigDecimal ratio = amount.divide(principal, MathContext.DECIMAL64);
             time = ratio.subtract(BigDecimal.ONE).divide(interestRate, MathContext.DECIMAL64);
-            amountFormulaOutput.setTime(time);
+            amountFormulaOutput.setTime(Rounding.time(time));
 
         } else {
             throw new NothingToBeCalculatedException();
