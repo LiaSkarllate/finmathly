@@ -65,14 +65,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceConflictException.class)
-    public ResponseEntity<ThrownExceptionDTO> handleResourceConflictException(InvalidInputException ex) {
+    public ResponseEntity<ThrownExceptionDTO> handleResourceConflictException(ResourceConflictException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new ThrownExceptionDTO(ex.getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ThrownExceptionDTO> handlResourceNotFoundException(InvalidInputException ex) {
+    public ResponseEntity<ThrownExceptionDTO> handlResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ThrownExceptionDTO(ex.getMessage()));
