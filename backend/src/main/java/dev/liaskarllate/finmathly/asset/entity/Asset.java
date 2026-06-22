@@ -83,6 +83,6 @@ public class Asset {
     }
 
     public boolean hasMarketIndex() {
-        return this.marketIndex != null;
+        return this.marketIndex != null && (this.marketIndex.hasId() || this.marketIndex.hasName());
     }
 }
