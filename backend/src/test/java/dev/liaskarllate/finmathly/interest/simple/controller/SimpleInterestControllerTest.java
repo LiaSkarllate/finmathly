@@ -45,7 +45,7 @@ class SimpleInterestControllerTest {
         final BigDecimal principal = new BigDecimal("50000.0");
         final BigDecimal interestRate = new BigDecimal("0.03");
         final BigDecimal interest = new BigDecimal("4500.0");
-        final BigDecimal expectedTime = new BigDecimal("3.0");
+        final BigDecimal expectedTime = new BigDecimal("3.00");
 
         SimpleInterestFormulaOutputDTO simpleInterestFormulaOutputDTO = tester.applyInterestFormula(
                 interest, principal, interestRate, null);

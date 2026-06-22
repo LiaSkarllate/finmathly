@@ -6,6 +6,7 @@ import java.math.MathContext;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.simple.model.SimpleInterestFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 import org.springframework.stereotype.Service;
 
@@ -70,19 +71,19 @@ public class SimpleInterestFormulaService {
             interest = principal
                     .multiply(interestRate)
                     .multiply(time);
-            simpleInterestFormulaOutput.setInterest(interest);
+            simpleInterestFormulaOutput.setInterest(Rounding.money(interest));
         } else if (principal == null) {
             BigDecimal denominator = interestRate.multiply(time);
             principal = interest.divide(denominator, MathContext.DECIMAL64);
-            simpleInterestFormulaOutput.setPrincipal(principal);
+            simpleInterestFormulaOutput.setPrincipal(Rounding.money(principal));
         } else if (interestRate == null) {
             BigDecimal denominator = principal.multiply(time);
             interestRate = interest.divide(denominator, MathContext.DECIMAL64);
-            simpleInterestFormulaOutput.setInterestRate(interestRate);
+            simpleInterestFormulaOutput.setInterestRate(Rounding.rate(interestRate));
         } else if (time == null) {
             BigDecimal denominator = principal.multiply(interestRate);
             time = interest.divide(denominator, MathContext.DECIMAL64);
-            simpleInterestFormulaOutput.setTime(time);
+            simpleInterestFormulaOutput.setTime(Rounding.time(time));
         } else {
             throw new NothingToBeCalculatedException();
         }
