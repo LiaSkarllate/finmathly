@@ -29,7 +29,7 @@ class CompoundInterestControllerTest {
         final BigDecimal presentValue = new BigDecimal("88000.0");
         final BigDecimal interestRate = new BigDecimal("0.045");
         final BigDecimal time = new BigDecimal("5.0");
-        final BigDecimal expectedInterest = new BigDecimal("21664.02");
+        final BigDecimal expectedInterest = new BigDecimal("21664.01");
 
         CompoundInterestFormulaOutputDTO compoundInterestFormulaOutputDTO = tester.applyInterestFormula(
                 null, presentValue, interestRate, time);

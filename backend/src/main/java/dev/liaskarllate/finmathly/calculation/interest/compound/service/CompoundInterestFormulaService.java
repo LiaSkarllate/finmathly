@@ -6,6 +6,7 @@ import java.math.MathContext;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.compound.model.CompoundInterestFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 import org.springframework.stereotype.Service;
 
@@ -72,25 +73,29 @@ public class CompoundInterestFormulaService {
         if (interest == null) {
             BigDecimal base = BigDecimal.ONE.add(interestRate);
             BigDecimal exponentiated = BigDecimalMath.pow(base, time, MathContext.DECIMAL64);
-            interest = presentValue.multiply(exponentiated, MathContext.DECIMAL64);
-            compoundInterestFormulaOutput.setInterest(interest);
+            BigDecimal futureValue = presentValue.multiply(exponentiated, MathContext.DECIMAL64);
+            interest = futureValue.subtract(presentValue, MathContext.DECIMAL64);
+            compoundInterestFormulaOutput.setInterest(Rounding.money(interest));
         } else if (presentValue == null) {
             BigDecimal base = BigDecimal.ONE.add(interestRate);
             BigDecimal exponentiated = BigDecimalMath.pow(base, time, MathContext.DECIMAL64);
-            presentValue = interest.divide(exponentiated, MathContext.DECIMAL64);
-            compoundInterestFormulaOutput.setPresentValue(presentValue);
+            BigDecimal denominator = exponentiated.subtract(BigDecimal.ONE, MathContext.DECIMAL64);
+            presentValue = interest.divide(denominator, MathContext.DECIMAL64);
+            compoundInterestFormulaOutput.setPresentValue(Rounding.money(presentValue));
         } else if (interestRate == null) {
-            BigDecimal base = interest.divide(presentValue, MathContext.DECIMAL64);
+            BigDecimal base = interest.add(presentValue, MathContext.DECIMAL64).divide(presentValue,
+                    MathContext.DECIMAL64);
             BigDecimal root = BigDecimalMath.pow(base, BigDecimal.ONE.divide(time, MathContext.DECIMAL64),
                     MathContext.DECIMAL64);
             interestRate = root.subtract(BigDecimal.ONE, MathContext.DECIMAL64);
-            compoundInterestFormulaOutput.setInterestRate(interestRate);
+            compoundInterestFormulaOutput.setInterestRate(Rounding.rate(interestRate));
         } else if (time == null) {
-            BigDecimal ratio = interest.divide(presentValue, MathContext.DECIMAL64);
+            BigDecimal ratio = interest.add(presentValue, MathContext.DECIMAL64).divide(presentValue,
+                    MathContext.DECIMAL64);
             BigDecimal numerator = BigDecimalMath.log(ratio, MathContext.DECIMAL64);
             BigDecimal denominator = BigDecimalMath.log(BigDecimal.ONE.add(interestRate), MathContext.DECIMAL64);
             time = numerator.divide(denominator, MathContext.DECIMAL64);
-            compoundInterestFormulaOutput.setTime(time);
+            compoundInterestFormulaOutput.setTime(Rounding.time(time));
         } else {
             throw new NothingToBeCalculatedException();
         }
