@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import dev.liaskarllate.finmathly.calculation.interest.shared.model.FlowInput;
 import dev.liaskarllate.finmathly.shared.exception.global.InvalidInputException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 import lombok.AllArgsConstructor;
 
 /**
@@ -25,9 +26,9 @@ public class PresentValueCashFlowService {
                 flows,
                 interestRate);
 
-        return this.calculate(
+        return Rounding.money(this.calculate(
                 flows,
-                interestRate);
+                interestRate));
     }
 
     private void validateProvidedParameters(
