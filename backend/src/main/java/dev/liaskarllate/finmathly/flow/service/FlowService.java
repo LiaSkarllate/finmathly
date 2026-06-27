@@ -16,7 +16,7 @@ import dev.liaskarllate.finmathly.flow.query.FlowSumField;
 import dev.liaskarllate.finmathly.flow.repository.FlowRepository;
 import dev.liaskarllate.finmathly.flow.specification.FlowSearchSpecificationBuilder;
 import dev.liaskarllate.finmathly.shared.exception.UnmodifiableResourceReferenceException;
-import dev.liaskarllate.finmathly.shared.exception.ResourceAlreadyExistsException;
+import dev.liaskarllate.finmathly.shared.exception.RelatedResourceNotFoundException;
 import dev.liaskarllate.finmathly.shared.exception.global.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 
@@ -82,8 +82,8 @@ public class FlowService {
 
     private void checkAssetExistence(String assetName) {
         if (!this.assetRepository.existsByName(assetName)) {
-            throw new ResourceAlreadyExistsException(
-                    "The asset with the name '" + assetName + "' does not exists.");
+            throw new RelatedResourceNotFoundException(
+                    "The asset with the name '" + assetName + "' was not found.");
         }
     }
 
