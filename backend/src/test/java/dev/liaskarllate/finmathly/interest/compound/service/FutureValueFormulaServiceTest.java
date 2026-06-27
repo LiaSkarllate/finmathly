@@ -90,7 +90,11 @@ class FutureValueFormulaServiceTest {
 
         assertThatThrownBy(
                 () -> futureValueFormulaService.applyFormula(futureValue, presentValue, interestRate, time))
-                .isInstanceOf(InvalidMissingParametersCountException.class);
+                .isInstanceOfSatisfying(InvalidMissingParametersCountException.class, e -> {
+                    assertThat(e.getMissingParametersCount()).isEqualTo(0);
+                    assertThat(e.getExpectedMissingParametersCount()).isEqualTo(1);
+                    assertThat(e.getTotalParametersCount()).isEqualTo(4);
+                });
     }
 
     @Test
