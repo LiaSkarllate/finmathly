@@ -98,7 +98,7 @@ class SimpleInterestControllerTest {
         final FlowInputDTO targetFlow = new FlowInputDTO(new BigDecimal("0.0"), new BigDecimal(0));
         final BigDecimal focalTime = new BigDecimal("2.0");
         final BigDecimal interestRate = new BigDecimal("0.05");
-        final BigDecimal expectedValue = new BigDecimal("14285.71");
+        final BigDecimal expectedValue = new BigDecimal("-4090.91");
 
         var equivalenceCashFlowInputDTO = new EquivalenceCashFlowInputDTO(
                 originalFlows, proposedFlows, targetFlow, focalTime, interestRate);

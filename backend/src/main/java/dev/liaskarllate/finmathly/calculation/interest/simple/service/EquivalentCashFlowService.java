@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import dev.liaskarllate.finmathly.calculation.interest.shared.model.FlowInput;
 import dev.liaskarllate.finmathly.shared.exception.global.InvalidInputException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 import lombok.AllArgsConstructor;
 
 /**
@@ -60,16 +61,16 @@ public class EquivalentCashFlowService {
         BigDecimal targetValue = netDifference;
 
         if (flowTime.compareTo(focalTime) < 0) {
-            targetValue = amountFormulaService.applyFormula(netDifference, interestRate, focalTime.subtract(flowTime))
-                    .getAmount();
+            targetValue = amountFormulaService
+                    .applyFormula(netDifference, null, interestRate, focalTime.subtract(flowTime)).getPrincipal();
         }
 
         if (flowTime.compareTo(focalTime) > 0) {
-            targetValue = amountFormulaService
-                    .applyFormula(netDifference, null, interestRate, flowTime.subtract(focalTime)).getPrincipal();
+            targetValue = amountFormulaService.applyFormula(netDifference, interestRate, flowTime.subtract(focalTime))
+                    .getAmount();
         }
 
-        return targetValue;
+        return Rounding.money(targetValue);
     }
 
     private BigDecimal calculateAdjustedFlowsValuesSum(
@@ -119,25 +120,26 @@ public class EquivalentCashFlowService {
             throw new InvalidInputException("The interest rate must be bigger than zero and cannot be null.");
         }
 
-        originalFlows.forEach(flow -> this.validateFlow(flow, "flow from the original ones"));
-        proposedFlows.forEach(flow -> this.validateFlow(flow, "flow from the proposed ones"));
+        originalFlows.forEach(flow -> this.validateFlow(flow, "flow from the original ones", false));
+        proposedFlows.forEach(flow -> this.validateFlow(flow, "flow from the proposed ones", false));
 
-        this.validateFlow(targetFlow, "target flow");
+        this.validateFlow(targetFlow, "target flow", true);
     }
 
-    private void validateFlow(FlowInput flow, String flowDescription) {
+    private void validateFlow(FlowInput flow, String flowDescription, boolean isTargetFlow) {
         if (Objects.isNull(flow)) {
             throw new InvalidInputException("One " + flowDescription + " is null.");
         }
 
-        if (Objects.isNull(flow.getValue()) || flow.getValue().compareTo(BigDecimal.ZERO) <= 0) {
+        if (!isTargetFlow
+                && (Objects.isNull(flow.getValue()) || flow.getValue().compareTo(BigDecimal.ZERO) <= 0)) {
             throw new InvalidInputException(
                     "The value of " + flowDescription + " must be bigger than zero and it can't be null.");
         }
 
-        if (Objects.isNull(flow.getTime()) || flow.getTime().compareTo(BigDecimal.ZERO) <= 0) {
+        if (Objects.isNull(flow.getTime()) || flow.getTime().compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidInputException(
-                    "The time of " + flowDescription + " must be bigger than zero and it can't be null.");
+                    "The time of " + flowDescription + " must not be negative and it can't be null.");
         }
     }
 }
