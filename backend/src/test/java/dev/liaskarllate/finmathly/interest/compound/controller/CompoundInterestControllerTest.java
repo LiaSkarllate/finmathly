@@ -96,7 +96,7 @@ class CompoundInterestControllerTest {
         BigDecimal interestRate = new BigDecimal("0.25");
         CapitalizationPeriod from = CapitalizationPeriod.YEARLY;
         CapitalizationPeriod to = CapitalizationPeriod.MONTHLY;
-        BigDecimal expectedRate = new BigDecimal("0.01877");
+        BigDecimal expectedRate = new BigDecimal("0.0188");
 
         EquivalentInterestRateOutputDTO result = tester.calculateEquivalentInterestRate(
                 interestRate, from, to);

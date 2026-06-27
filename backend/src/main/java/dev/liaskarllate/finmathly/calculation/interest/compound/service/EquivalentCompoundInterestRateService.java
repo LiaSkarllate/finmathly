@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ch.obermuhlner.math.big.BigDecimalMath;
 import dev.liaskarllate.finmathly.calculation.interest.shared.service.BaseEquivalentInterestRateService;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 /**
  * Service class for calculating equivalent compound interest rates.
@@ -24,6 +25,6 @@ public class EquivalentCompoundInterestRateService extends BaseEquivalentInteres
         BigDecimal base = BigDecimal.ONE.add(interestRate);
         BigDecimal exponentiated = BigDecimalMath.pow(base, conversionFactor, MathContext.DECIMAL64);
 
-        return exponentiated.subtract(BigDecimal.ONE, MathContext.DECIMAL64);
+        return Rounding.rate(exponentiated.subtract(BigDecimal.ONE, MathContext.DECIMAL64));
     }
 }
