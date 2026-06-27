@@ -147,7 +147,7 @@ public class AssetService {
 
     private void checkAssetExistence(UUID id) {
         if (!this.assetRepository.existsById(id)) {
-            throw new ResourceAlreadyExistsException(
+            throw new ResourceNotFoundException(
                     "The asset with the id '" + id + "' was not found.");
         }
     }
