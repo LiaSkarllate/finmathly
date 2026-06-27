@@ -6,6 +6,7 @@ import java.math.MathContext;
 
 import dev.liaskarllate.finmathly.calculation.interest.shared.service.BaseEquivalentInterestRateService;
 import dev.liaskarllate.finmathly.shared.enums.CapitalizationPeriod;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 /**
  * Service class for calculating equivalent simple interest rates.
@@ -19,7 +20,7 @@ public class EquivalentSimpleInterestRateService extends BaseEquivalentInterestR
             CapitalizationPeriod to) {
 
         BigDecimal conversionFactor = to.getFactor().divide(from.getFactor(), MathContext.DECIMAL64);
-        return interestRate.multiply(conversionFactor);
+        return Rounding.rate(interestRate.multiply(conversionFactor));
     }
 
 }

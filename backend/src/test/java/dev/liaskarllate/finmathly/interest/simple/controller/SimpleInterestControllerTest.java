@@ -114,7 +114,7 @@ class SimpleInterestControllerTest {
         final BigDecimal interestRate = new BigDecimal("0.09");
         final CapitalizationPeriod from = CapitalizationPeriod.QUARTERLY;
         final CapitalizationPeriod to = CapitalizationPeriod.YEARLY;
-        final BigDecimal expectedRate = new BigDecimal("0.0361");
+        final BigDecimal expectedRate = new BigDecimal("0.3600");
 
         EquivalentInterestRateOutputDTO equivalentInterestRateOutputDTO = tester.calculateEquivalentInterestRate(
                 interestRate, from, to);
