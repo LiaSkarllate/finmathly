@@ -6,6 +6,7 @@ import java.math.MathContext;
 import dev.liaskarllate.finmathly.shared.exception.NothingToBeCalculatedException;
 import dev.liaskarllate.finmathly.calculation.interest.compound.model.FutureValueFormulaOutput;
 import dev.liaskarllate.finmathly.shared.exception.InvalidMissingParametersCountException;
+import dev.liaskarllate.finmathly.shared.util.Rounding;
 
 import org.springframework.stereotype.Service;
 
@@ -84,27 +85,27 @@ public class FutureValueFormulaService {
             BigDecimal base = BigDecimal.ONE.add(interestRate);
             BigDecimal factor = BigDecimalMath.pow(base, time, MathContext.DECIMAL64);
             futureValue = presentValue.multiply(factor, MathContext.DECIMAL64);
-            futureValueFormulaOutput.setFutureValue(futureValue);
+            futureValueFormulaOutput.setFutureValue(Rounding.money(futureValue));
 
         } else if (presentValue == null) {
             BigDecimal base = BigDecimal.ONE.add(interestRate);
             BigDecimal factor = BigDecimalMath.pow(base, time, MathContext.DECIMAL64);
             presentValue = futureValue.divide(factor, MathContext.DECIMAL64);
-            futureValueFormulaOutput.setPresentValue(presentValue);
+            futureValueFormulaOutput.setPresentValue(Rounding.money(presentValue));
 
         } else if (interestRate == null) {
             BigDecimal ratio = futureValue.divide(presentValue, MathContext.DECIMAL64);
             BigDecimal root = BigDecimalMath.pow(ratio, BigDecimal.ONE.divide(time, MathContext.DECIMAL64),
                     MathContext.DECIMAL64);
             interestRate = root.subtract(BigDecimal.ONE, MathContext.DECIMAL64);
-            futureValueFormulaOutput.setInterestRate(interestRate);
+            futureValueFormulaOutput.setInterestRate(Rounding.rate(interestRate));
 
         } else if (time == null) {
             BigDecimal ratio = futureValue.divide(presentValue, MathContext.DECIMAL64);
             BigDecimal numerator = BigDecimalMath.log(ratio, MathContext.DECIMAL64);
             BigDecimal denominator = BigDecimalMath.log(BigDecimal.ONE.add(interestRate), MathContext.DECIMAL64);
             time = numerator.divide(denominator, MathContext.DECIMAL64);
-            futureValueFormulaOutput.setTime(time);
+            futureValueFormulaOutput.setTime(Rounding.time(time));
 
         } else {
             throw new NothingToBeCalculatedException();
