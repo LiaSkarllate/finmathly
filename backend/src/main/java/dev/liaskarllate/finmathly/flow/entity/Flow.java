@@ -6,6 +6,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.generator.EventType;
 
 import dev.liaskarllate.finmathly.asset.entity.Asset;
@@ -38,6 +40,7 @@ public class Flow {
     private Asset asset;
 
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(name = "type", nullable = false)
     private dev.liaskarllate.finmathly.shared.enums.EventType type;
 
