@@ -1,14 +1,24 @@
 package dev.liaskarllate.finmathly.flow.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.asset.dto.AssetDTO;
 import dev.liaskarllate.finmathly.modality.dto.ModalityDTO;
@@ -30,6 +40,10 @@ class FixedAssetFlowControllerTest {
     private AssetControllerTester assetTester;
     @Autowired
     private FlowControllerTester flowTester;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper json;
 
     @Test
     void shouldPerformCRUDFunctionality() throws Exception {
@@ -169,5 +183,57 @@ class FixedAssetFlowControllerTest {
                 0,
                 10,
                 List.of(flowCreatedA, flowCreatedB));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenCreatingFlowForNonexistentAsset() throws Exception {
+        FlowDTO flowToBeCreated = new FlowDTO();
+        flowToBeCreated.setAssetName("Nonexistent Asset");
+        flowToBeCreated.setType(EventType.INTEREST);
+        flowToBeCreated.setEventDate(LocalDate.now().plusMonths(6));
+        flowToBeCreated.setAmount(new BigDecimal("50.00"));
+        flowToBeCreated.setAmortizationPercentage(BigDecimal.ZERO);
+
+        mvc.perform(post("/flows")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(flowToBeCreated)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonexistentFlow() throws Exception {
+        ModalityDTO modalityToBeCreated = new ModalityDTO();
+        modalityToBeCreated.setName("LTN Flow Update Test");
+        modalityToBeCreated.setYieldType(YieldType.FIXED);
+        modalityToBeCreated.setCapitalizationPeriod(CapitalizationPeriod.HALF_YEARLY);
+        modalityToBeCreated.setSupportsFlows(true);
+        ModalityDTO createdModality = modalityTester.create(modalityToBeCreated);
+
+        AssetDTO assetToBeCreated = new AssetDTO();
+        assetToBeCreated.setName("Asset Flow Update Test");
+        assetToBeCreated.setMaturityDate(LocalDate.now().plusYears(1));
+        assetToBeCreated.setInterestRate(new BigDecimal("0.05"));
+        assetToBeCreated.setFaceValue(new BigDecimal("1000"));
+        assetToBeCreated.setModalityName(createdModality.getName());
+        AssetDTO createdAsset = assetTester.create(assetToBeCreated);
+
+        FlowDTO flowToBeUpdated = new FlowDTO();
+        flowToBeUpdated.setAssetId(createdAsset.getId());
+        flowToBeUpdated.setAssetName(createdAsset.getName());
+        flowToBeUpdated.setType(EventType.INTEREST);
+        flowToBeUpdated.setEventDate(LocalDate.now().plusMonths(6));
+        flowToBeUpdated.setAmount(new BigDecimal("50.00"));
+        flowToBeUpdated.setAmortizationPercentage(BigDecimal.ZERO);
+
+        mvc.perform(put("/flows/" + UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(flowToBeUpdated)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingNonexistentFlow() throws Exception {
+        mvc.perform(delete("/flows/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
     }
 }
