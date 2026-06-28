@@ -1,5 +1,6 @@
 package dev.liaskarllate.finmathly.flow.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -45,10 +46,23 @@ class FlowServiceTest {
     }
 
     @Test
+    void shouldResolveAssetByNameWhenSavingFlowReferencingAssetByNameOnly() {
+        Flow flow = flow(null, "Existing Asset");
+        Asset persistedAsset = new Asset(UUID.randomUUID(), "Existing Asset");
+
+        when(assetRepository.findByName("Existing Asset")).thenReturn(Optional.of(persistedAsset));
+        when(flowRepository.save(flow)).thenReturn(flow);
+
+        Flow saved = flowService.save(flow);
+
+        assertThat(saved.getAsset()).isEqualTo(persistedAsset);
+    }
+
+    @Test
     void shouldThrowRelatedResourceNotFoundExceptionWhenSavingFlowForNonexistentAsset() {
         Flow flow = flow(null, "Nonexistent Asset");
 
-        when(assetRepository.existsByName("Nonexistent Asset")).thenReturn(false);
+        when(assetRepository.findByName("Nonexistent Asset")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> flowService.save(flow))
                 .isInstanceOf(RelatedResourceNotFoundException.class);

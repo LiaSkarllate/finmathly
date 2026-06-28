@@ -1,11 +1,13 @@
 package dev.liaskarllate.finmathly.flow.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -183,6 +185,44 @@ class FixedAssetFlowControllerTest {
                 0,
                 10,
                 List.of(flowCreatedA, flowCreatedB));
+    }
+
+    @Test
+    void shouldCreateFlowWhenReferencingAssetByNameOnly() throws Exception {
+        ModalityDTO modalityToBeCreated = new ModalityDTO();
+        modalityToBeCreated.setName("LTN Flow By Name Test");
+        modalityToBeCreated.setYieldType(YieldType.FIXED);
+        modalityToBeCreated.setCapitalizationPeriod(CapitalizationPeriod.HALF_YEARLY);
+        modalityToBeCreated.setSupportsFlows(true);
+        ModalityDTO createdModality = modalityTester.create(modalityToBeCreated);
+
+        AssetDTO assetToBeCreated = new AssetDTO();
+        assetToBeCreated.setName("Asset Flow By Name Test");
+        assetToBeCreated.setMaturityDate(LocalDate.now().plusYears(1));
+        assetToBeCreated.setInterestRate(new BigDecimal("0.05"));
+        assetToBeCreated.setFaceValue(new BigDecimal("1000"));
+        assetToBeCreated.setModalityName(createdModality.getName());
+        AssetDTO createdAsset = assetTester.create(assetToBeCreated);
+
+        FlowDTO flowToBeCreated = new FlowDTO();
+        flowToBeCreated.setAssetName(createdAsset.getName());
+        flowToBeCreated.setType(EventType.INTEREST);
+        flowToBeCreated.setEventDate(LocalDate.now().plusMonths(6));
+        flowToBeCreated.setAmount(new BigDecimal("50.00"));
+        flowToBeCreated.setAmortizationPercentage(BigDecimal.ZERO);
+
+        String responseBody = mvc.perform(post("/flows")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(flowToBeCreated)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        FlowDTO created = json.readValue(responseBody, FlowDTO.class);
+
+        assertEquals(createdAsset.getId(), created.getAssetId());
+        assertEquals(createdAsset.getName(), created.getAssetName());
     }
 
     @Test

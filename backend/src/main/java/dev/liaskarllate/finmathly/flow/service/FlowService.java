@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.liaskarllate.finmathly.asset.entity.Asset;
 import dev.liaskarllate.finmathly.asset.repository.AssetRepository;
 import dev.liaskarllate.finmathly.flow.entity.Flow;
 import dev.liaskarllate.finmathly.flow.query.FlowSearchFilter;
@@ -43,7 +44,7 @@ public class FlowService {
     }
 
     private void ensureFlowCanBeSaved(Flow flow) {
-        this.checkAssetExistence(flow.getAsset().getName());
+        flow.setAsset(this.resolveAsset(flow.getAsset().getName()));
     }
 
     @Transactional
@@ -56,6 +57,7 @@ public class FlowService {
         this.checkFlowExistence(flow.getId());
         Flow oldEntity = this.findById(flow.getId());
         this.checkFlowAssetImmutabilityOnUpdate(flow.getAsset().getName(), oldEntity.getAsset().getName());
+        flow.setAsset(oldEntity.getAsset());
     }
 
     @Transactional
@@ -80,11 +82,10 @@ public class FlowService {
         return this.flowRepository.sumByFieldAndFilter(spec, fieldToSum);
     }
 
-    private void checkAssetExistence(String assetName) {
-        if (!this.assetRepository.existsByName(assetName)) {
-            throw new RelatedResourceNotFoundException(
-                    "The asset with the name '" + assetName + "' was not found.");
-        }
+    private Asset resolveAsset(String assetName) {
+        return this.assetRepository.findByName(assetName)
+                .orElseThrow(() -> new RelatedResourceNotFoundException(
+                        "The asset with the name '" + assetName + "' was not found."));
     }
 
     private void checkFlowAssetImmutabilityOnUpdate(String newAssetName, String oldAssetName) {
