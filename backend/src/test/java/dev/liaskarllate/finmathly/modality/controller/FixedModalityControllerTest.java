@@ -1,12 +1,22 @@
 package dev.liaskarllate.finmathly.modality.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.modality.dto.ModalityDTO;
 import dev.liaskarllate.finmathly.modality.query.ModalitySearchFilter;
@@ -20,6 +30,10 @@ import dev.liaskarllate.finmathly.shared.enums.YieldType;
 class FixedModalityControllerTest {
     @Autowired
     private ModalityControllerTester tester;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper json;
 
     @Test
     void shouldPerformCRUDFunctionality() throws Exception {
@@ -95,5 +109,41 @@ class FixedModalityControllerTest {
                 0,
                 10,
                 List.of(createdA));
+    }
+
+    @Test
+    void shouldReturnConflictWhenCreatingModalityWithDuplicateName() throws Exception {
+        ModalityDTO toBeCreated = new ModalityDTO();
+        toBeCreated.setName("Duplicate Modality");
+        toBeCreated.setYieldType(YieldType.FIXED);
+        toBeCreated.setCapitalizationPeriod(CapitalizationPeriod.MONTHLY);
+        toBeCreated.setSupportsFlows(false);
+
+        tester.create(toBeCreated);
+
+        mvc.perform(post("/modalities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(toBeCreated)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonexistentModality() throws Exception {
+        ModalityDTO toBeUpdated = new ModalityDTO();
+        toBeUpdated.setName("Some Modality");
+        toBeUpdated.setYieldType(YieldType.FIXED);
+        toBeUpdated.setCapitalizationPeriod(CapitalizationPeriod.MONTHLY);
+        toBeUpdated.setSupportsFlows(false);
+
+        mvc.perform(put("/modalities/" + UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(toBeUpdated)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingNonexistentModality() throws Exception {
+        mvc.perform(delete("/modalities/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
     }
 }
