@@ -59,7 +59,7 @@ public class ModalityController {
         pageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                by.map(field -> Sort.by(Sort.Direction.DESC, field.toString()))
+                by.map(field -> Sort.by(Sort.Direction.ASC, field.toString()))
                         .orElse(Sort.unsorted()));
 
         Page<ModalityDTO> modalities = this.modalityService.findByFilter(filter, pageable)

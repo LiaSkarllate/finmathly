@@ -59,7 +59,7 @@ public class AssetController {
         pageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                by.map(field -> Sort.by(Sort.Direction.DESC, field.toString()))
+                by.map(field -> Sort.by(Sort.Direction.ASC, field.toString()))
                         .orElse(Sort.unsorted()));
 
         Page<AssetDTO> assets = this.assetService
