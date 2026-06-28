@@ -18,12 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.asset.dto.AssetDTO;
 import dev.liaskarllate.finmathly.asset.query.AssetSearchFilter;
 import dev.liaskarllate.finmathly.asset.query.AssetSearchSortingField;
+import dev.liaskarllate.finmathly.shared.controller.PageEnvelope;
 import lombok.AllArgsConstructor;
 
 @Component
@@ -143,8 +143,8 @@ public class AssetControllerTester {
                 .andReturn().getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        JsonNode content = json.readTree(responseBody).get("content");
-        List<AssetDTO> read = json.convertValue(content, new TypeReference<List<AssetDTO>>() {});
+        PageEnvelope<AssetDTO> page = json.readValue(responseBody, new TypeReference<PageEnvelope<AssetDTO>>() {});
+        List<AssetDTO> read = page.content;
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

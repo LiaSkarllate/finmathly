@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.flow.dto.FlowDTO;
 import dev.liaskarllate.finmathly.flow.query.FlowSearchFilter;
+import dev.liaskarllate.finmathly.shared.controller.PageEnvelope;
 import lombok.AllArgsConstructor;
 
 @Component
@@ -140,8 +140,8 @@ public class FlowControllerTester {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        JsonNode content = json.readTree(responseBody).get("content");
-        List<FlowDTO> read = json.convertValue(content, new TypeReference<List<FlowDTO>>() {});
+        PageEnvelope<FlowDTO> page = json.readValue(responseBody, new TypeReference<PageEnvelope<FlowDTO>>() {});
+        List<FlowDTO> read = page.content;
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

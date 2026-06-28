@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.marketindex.dto.MarketIndexDTO;
 import dev.liaskarllate.finmathly.marketindex.query.MarketIndexSearchFilter;
+import dev.liaskarllate.finmathly.shared.controller.PageEnvelope;
 import lombok.AllArgsConstructor;
 
 @Component
@@ -119,8 +119,8 @@ public class MarketIndexControllerTester {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        JsonNode content = json.readTree(response).get("content");
-        List<MarketIndexDTO> read = json.convertValue(content, new TypeReference<List<MarketIndexDTO>>() {});
+        PageEnvelope<MarketIndexDTO> page = json.readValue(response, new TypeReference<PageEnvelope<MarketIndexDTO>>() {});
+        List<MarketIndexDTO> read = page.content;
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

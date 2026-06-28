@@ -18,12 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.modality.dto.ModalityDTO;
 import dev.liaskarllate.finmathly.modality.query.ModalitySearchFilter;
 import dev.liaskarllate.finmathly.modality.query.ModalitySearchSortingField;
+import dev.liaskarllate.finmathly.shared.controller.PageEnvelope;
 import lombok.AllArgsConstructor;
 
 @Component
@@ -128,8 +128,8 @@ public class ModalityControllerTester {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        JsonNode content = json.readTree(responseBody).get("content");
-        List<ModalityDTO> read = json.convertValue(content, new TypeReference<List<ModalityDTO>>() {});
+        PageEnvelope<ModalityDTO> page = json.readValue(responseBody, new TypeReference<PageEnvelope<ModalityDTO>>() {});
+        List<ModalityDTO> read = page.content;
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);
