@@ -72,6 +72,7 @@ public class AssetService {
         Asset oldEntity = this.findById(asset.getId());
         this.checkAssetNameUniquenessOnUpdate(asset.getName(), oldEntity.getName());
         this.checkAssetModalityImmutabilityOnUpdate(asset.getModality(), oldEntity.getModality());
+        asset.setModality(oldEntity.getModality());
         this.checkAssetModalityConstraintsCompliance(asset);
     }
 
@@ -121,21 +122,21 @@ public class AssetService {
         }
     }
 
-    private void checkMarketIndexExistence(MarketIndex marketIndex) {
-        if (marketIndex.hasName() && !marketIndexRepository.existsByName(marketIndex.getName())) {
-            throw new RelatedResourceNotFoundException(
-                    "The asset market index with the name '" + marketIndex.getName() + "' was not found.");
+    private MarketIndex resolveMarketIndex(MarketIndex marketIndex) {
+        if (marketIndex.hasName()) {
+            return this.marketIndexRepository.findByName(marketIndex.getName())
+                    .orElseThrow(() -> new RelatedResourceNotFoundException(
+                            "The asset market index with the name '" + marketIndex.getName() + "' was not found."));
         }
 
-        if (marketIndex.hasId() && !marketIndexRepository.existsById(marketIndex.getId())) {
-            throw new RelatedResourceNotFoundException(
-                    "The asset market index with the id '" + marketIndex.getId() + "' was not found.");
+        if (marketIndex.hasId()) {
+            return this.marketIndexRepository.findById(marketIndex.getId())
+                    .orElseThrow(() -> new RelatedResourceNotFoundException(
+                            "The asset market index with the id '" + marketIndex.getId() + "' was not found."));
         }
 
-        if (!marketIndex.hasName() && !marketIndex.hasId()) {
-            throw new MissingArgumentException(
-                    "The asset market index is missing, which is required for floating or hybrid modalities. Please, provide the asset market index.");
-        }
+        throw new MissingArgumentException(
+                "The asset market index is missing, which is required for floating or hybrid modalities. Please, provide the asset market index.");
     }
 
     private void checkAssetNonexistence(String name) {
@@ -162,10 +163,13 @@ public class AssetService {
         }
 
         assetModality.getYieldType().validate(asset);
+        asset.setModality(assetModality);
 
         if (assetModality.getYieldType() == YieldType.FLOATING
                 || assetModality.getYieldType() == YieldType.HYBRID) {
-            this.checkMarketIndexExistence(asset.getMarketIndex());
+            asset.setMarketIndex(this.resolveMarketIndex(asset.getMarketIndex()));
+        } else {
+            asset.setMarketIndex(null);
         }
     }
 }

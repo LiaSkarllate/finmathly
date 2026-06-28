@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -129,7 +130,7 @@ class AssetServiceTest {
         when(assetRepository.existsByName("Asset B")).thenReturn(false);
         when(modalityRepository.existsByName("LFT")).thenReturn(true);
         when(modalityService.findByName("LFT")).thenReturn(floatingModality);
-        when(marketIndexRepository.existsByName("SELIC")).thenReturn(true);
+        when(marketIndexRepository.findByName("SELIC")).thenReturn(Optional.of(new MarketIndex(UUID.randomUUID(), "SELIC")));
         when(assetRepository.save(asset)).thenReturn(asset);
 
         Asset saved = assetService.save(asset);
@@ -147,7 +148,7 @@ class AssetServiceTest {
         when(assetRepository.existsByName("Asset B")).thenReturn(false);
         when(modalityRepository.existsByName("LFT")).thenReturn(true);
         when(modalityService.findByName("LFT")).thenReturn(floatingModality);
-        when(marketIndexRepository.existsByName("Nonexistent Index")).thenReturn(false);
+        when(marketIndexRepository.findByName("Nonexistent Index")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> assetService.save(asset))
                 .isInstanceOf(RelatedResourceNotFoundException.class);
