@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.flow.dto.FlowDTO;
@@ -38,7 +40,7 @@ public class FlowControllerTester {
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         FlowDTO created = json.readValue(responseBody, FlowDTO.class);
 
@@ -60,7 +62,7 @@ public class FlowControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         FlowDTO read = json.readValue(responseBody, FlowDTO.class);
 
@@ -82,7 +84,7 @@ public class FlowControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         FlowDTO updated = json.readValue(responseBody, FlowDTO.class);
 
@@ -136,11 +138,10 @@ public class FlowControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
-        List<FlowDTO> read = Arrays.asList(json.readValue(
-                responseBody,
-                json.getTypeFactory().constructArrayType(FlowDTO.class)));
+        JsonNode content = json.readTree(responseBody).get("content");
+        List<FlowDTO> read = json.convertValue(content, new TypeReference<List<FlowDTO>>() {});
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

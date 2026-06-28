@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.asset.dto.AssetDTO;
@@ -39,7 +41,7 @@ public class AssetControllerTester {
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         AssetDTO created = json.readValue(responseBody, AssetDTO.class);
 
@@ -61,7 +63,7 @@ public class AssetControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         AssetDTO read = json.readValue(responseBody, AssetDTO.class);
 
@@ -82,7 +84,7 @@ public class AssetControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         AssetDTO updated = json.readValue(responseBody, AssetDTO.class);
 
@@ -139,11 +141,10 @@ public class AssetControllerTester {
         String responseBody = mvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn().getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
-        List<AssetDTO> read = Arrays.asList(json.readValue(
-                responseBody,
-                json.getTypeFactory().constructArrayType(AssetDTO.class)));
+        JsonNode content = json.readTree(responseBody).get("content");
+        List<AssetDTO> read = json.convertValue(content, new TypeReference<List<AssetDTO>>() {});
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

@@ -8,6 +8,7 @@ import dev.liaskarllate.finmathly.shared.enums.YieldType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class ModalityDTO {
     private UUID id;
 

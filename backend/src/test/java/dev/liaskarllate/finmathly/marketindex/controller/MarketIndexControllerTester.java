@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.marketindex.dto.MarketIndexDTO;
@@ -38,7 +40,7 @@ public class MarketIndexControllerTester {
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         MarketIndexDTO created = json.readValue(response, MarketIndexDTO.class);
 
@@ -56,7 +58,7 @@ public class MarketIndexControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         MarketIndexDTO read = json.readValue(response, MarketIndexDTO.class);
 
@@ -74,7 +76,7 @@ public class MarketIndexControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         MarketIndexDTO updated = json.readValue(response, MarketIndexDTO.class);
 
@@ -115,11 +117,10 @@ public class MarketIndexControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
-        List<MarketIndexDTO> read = Arrays.asList(json.readValue(
-                response,
-                json.getTypeFactory().constructArrayType(MarketIndexDTO.class)));
+        JsonNode content = json.readTree(response).get("content");
+        List<MarketIndexDTO> read = json.convertValue(content, new TypeReference<List<MarketIndexDTO>>() {});
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);

@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.liaskarllate.finmathly.modality.dto.ModalityDTO;
@@ -39,7 +41,7 @@ public class ModalityControllerTester {
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         ModalityDTO created = json.readValue(responseBody, ModalityDTO.class);
 
@@ -58,7 +60,7 @@ public class ModalityControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         ModalityDTO read = json.readValue(responseBody, ModalityDTO.class);
 
@@ -78,7 +80,7 @@ public class ModalityControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
         ModalityDTO updated = json.readValue(responseBody, ModalityDTO.class);
 
@@ -124,11 +126,10 @@ public class ModalityControllerTester {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString(StandardCharsets.UTF_8);
 
-        List<ModalityDTO> read = Arrays.asList(json.readValue(
-                responseBody,
-                json.getTypeFactory().constructArrayType(ModalityDTO.class)));
+        JsonNode content = json.readTree(responseBody).get("content");
+        List<ModalityDTO> read = json.convertValue(content, new TypeReference<List<ModalityDTO>>() {});
 
         assertEquals(expected.size(), read.size());
         assertEquals(expected, read);
