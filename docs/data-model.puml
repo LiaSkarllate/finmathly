@@ -1,0 +1,155 @@
+@startuml data-model
+' finmathly data model: class diagram of the registry (write side) service
+hide empty members
+hide circle
+skinparam shadowing false
+skinparam roundCorner 10
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam nodesep 45
+skinparam ranksep 60
+skinparam ArrowColor #6b7280
+skinparam ArrowThickness 1.2
+skinparam ArrowFontColor #2b2f36
+skinparam ClassBorderColor #9ca3af
+skinparam ClassBorderThickness 1.2
+skinparam ClassBackgroundColor #ffffff
+skinparam ClassHeaderBackgroundColor #eceff3
+skinparam ClassFontStyle bold
+skinparam ClassFontColor #2b2f36
+skinparam ClassStereotypeFontStyle italic
+skinparam ClassStereotypeFontColor #6b7280
+skinparam class {
+  HeaderBackgroundColor<<enumeration>> #dfe3e8
+}
+
+class Modality {
+  UUID id
+  String code
+  String name
+  RateClass rateClass
+  IndexFactorApplication indexFactorApplication
+  boolean hasContractualRate
+  DayCountConvention dayCountConvention
+  boolean allowsInterestPayment
+  boolean allowsAmortization
+  boolean allowsInterestCapitalization
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+  --
+  +allows(EventType type) : boolean
+  +allowedEventTypes() : Set<EventType>
+}
+
+class Security {
+  UUID id
+  String code
+  String name
+  BigDecimal faceValueAtIssue
+  LocalDate issueDate
+  LocalDate accrualStartDate
+  LocalDate maturityDate
+  BigDecimal contractualRate
+  BigDecimal indexPercentage
+  AmortizationBase amortizationBase
+  int version
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+class Event {
+  UUID id
+  LocalDate eventDate
+  EventType eventType
+  BigDecimal amortizationFraction
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+class SecurityHistory {
+  UUID id
+  int version
+  String snapshot
+  Instant publishedAt
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+class Index {
+  UUID id
+  String code
+  String name
+  IndexValueType valueType
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+class IndexValue {
+  UUID id
+  LocalDate referenceDate
+  BigDecimal value
+  Instant publishedAt
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+enum EventType <<enumeration>> {
+  INTEREST_PAYMENT
+  AMORTIZATION
+  INTEREST_CAPITALIZATION
+}
+
+enum RateClass <<enumeration>> {
+  FIXED_RATE
+  FLOATING_RATE
+  HYBRID
+}
+
+enum IndexFactorApplication <<enumeration>> {
+  OUTSTANDING_FACE_VALUE
+  RATE_FACTOR
+}
+
+enum AmortizationBase <<enumeration>> {
+  FACE_VALUE_AT_ISSUE
+  OUTSTANDING_FACE_VALUE
+}
+
+enum IndexValueType <<enumeration>> {
+  MONTHLY_INDEX_NUMBER
+  DAILY_RATE
+}
+
+enum DayCountConvention <<enumeration>> {
+  BUSINESS_252
+  ACTUAL_365
+  ACTUAL_360
+}
+
+Security "0..*" --> "1" Modality : follows
+Security "0..*" --> "0..1" Index : indexed to
+Security "1" *-- "0..*" Event : schedule
+Security "1" *-- "1..*" SecurityHistory : versions
+Index "1" *-- "0..*" IndexValue : values
+Modality ..> EventType : allows()
+
+' Enums without lines: they appear as attribute types, kept together in a grid
+RateClass -[hidden]d- IndexFactorApplication
+IndexFactorApplication -[hidden]d- DayCountConvention
+AmortizationBase -[hidden]d- IndexValueType
+RateClass -[hidden]r- AmortizationBase
+IndexFactorApplication -[hidden]r- IndexValueType
+@enduml
