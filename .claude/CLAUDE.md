@@ -11,7 +11,7 @@ A reference system for Brazilian fixed-income securities, made of a registry ser
 
 ## Rules
 
-- Use `finmathly-committer` for every commit, and `finmathly-strategic-coder` when writing backend code.
+- Use `finmathly-committer` for every commit, `finmathly-strategic-coder` when writing backend code, and `finmathly-frontend-designer` when designing or writing frontend code.
 - Everything is written in English: code, comments, commit messages and documentation.
 - Work on short branches (`feat/...`, `fix/...`) and open a pull request to `dev`. `dev` goes to `main` only in releases. Never commit directly to `main`.
 - The backend and the frontend are developed in separate sessions. A change to `README.md`, `docs/` or `.claude/` goes in its own pull request, for the maintainer to review.
