@@ -87,6 +87,8 @@ The rules shared by a kind of security are held by a **modality**. A modality de
 
 All rates and percentages in finmathly are written as **decimals**, so 10% is written as 0.10. The rule holds everywhere: in the formulas, in the code, in the databases, in the messages and in the API.
 
+Every rate in finmathly is also an **effective annual rate**: its rate period and its compounding period are both one year. This holds for the contractual rate, for the market rate and for the daily rates of indexes such as DI and Selic, which are published as annual rates. No rate therefore stores its period, and the term of each calculation is measured in years by the [day count convention](#123-day-count-conventions). The conversions between effective, nominal and equivalent rates below are part of the domain, but finmathly does not need them to store or exchange any rate.
+
 #### 1.2.1 Compound interest
 
 $$FV = PV \cdot (1+i)^n \qquad PV = \frac{FV}{(1+i)^n}$$
