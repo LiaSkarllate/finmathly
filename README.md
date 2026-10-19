@@ -179,6 +179,93 @@ For now, finmathly does not calculate the unit price of securities with an index
 
 Prices are **not stored**. Each price is calculated and returned on request, so no stored result can become outdated.
 
+### 1.6 Glossary
+
+Each concept of the domain has one English name and one Portuguese name, and each name is used for that concept and for nothing else. The frontend uses the Portuguese term in its Portuguese interface. When the market uses two names for the same concept, both are listed. Each English term links to the section that defines it. **Name in code** is the English term in camelCase or, for a value of an enum, the enum value. **Name in database** is the table and column, in snake_case, where the registry service stores the value, as in the [class diagram](#31-class-diagram-of-the-write-side); a dash means that the value is not stored.
+
+| English term | Portuguese term | Name in code | Name in database |
+| --- | --- | --- | --- |
+| **Compound interest and time** | | | |
+| [Present value](#121-compound-interest) | Capital | `presentValue` | — |
+| [Future value](#121-compound-interest) | Montante | `futureValue` | — |
+| [Interest](#121-compound-interest) | Juros | `interest` | — |
+| [Compounding](#121-compound-interest) | Capitalizar | `compounding` | — |
+| [Discounting](#121-compound-interest) | Descontar | `discounting` | — |
+| [Compounding factor](#121-compound-interest) | Fator de juros | `compoundingFactor` | — |
+| [Discounting factor](#121-compound-interest) | Fator de desconto | `discountingFactor` | — |
+| [Rate period](#122-effective-nominal-and-equivalent-rates) | Período da taxa | `ratePeriod` | — |
+| [Compounding period](#122-effective-nominal-and-equivalent-rates) | Período de capitalização | `compoundingPeriod` | — |
+| [Long period, short period](#122-effective-nominal-and-equivalent-rates) | Período longo, período curto | `longPeriod`, `shortPeriod` | — |
+| [Effective rate](#122-effective-nominal-and-equivalent-rates) | Taxa efetiva | `effectiveRate` | — |
+| [Nominal rate](#122-effective-nominal-and-equivalent-rates) | Taxa nominal | `nominalRate` | — |
+| [Equivalent rates](#122-effective-nominal-and-equivalent-rates) | Taxas equivalentes | `equivalentRates` | — |
+| [Business days](#123-day-count-conventions) | Dias úteis | `businessDays` | — |
+| [Calendar days](#123-day-count-conventions) | Dias corridos | `calendarDays` | — |
+| [Day count convention](#123-day-count-conventions) | Convenção de contagem de dias | `dayCountConvention` | `modality.day_count_convention` |
+| [Business days over 252](#123-day-count-conventions) | Dias úteis sobre 252 | `BUSINESS_252` | `modality.day_count_convention` |
+| [Calendar days over 365](#123-day-count-conventions) | Dias corridos sobre 365 | `ACTUAL_365` | `modality.day_count_convention` |
+| [Calendar days over 360](#123-day-count-conventions) | Dias corridos sobre 360 | `ACTUAL_360` | `modality.day_count_convention` |
+| [Days in year](#123-day-count-conventions) | Base anual | `daysInYear` | — |
+| **Loan and security** | | | |
+| [Borrower](#111-loan-and-security) | Devedor | `borrower` | — |
+| [Lender](#111-loan-and-security) | Credor | `lender` | — |
+| [Principal](#111-loan-and-security) | Principal | `principal` | — |
+| [Security](#111-loan-and-security) | Título | `security` | `security` |
+| [Unit](#111-loan-and-security) | Unidade | `unit` | — |
+| [Issuer](#111-loan-and-security) | Emissor | `issuer` | — |
+| [Investor](#111-loan-and-security) | Investidor | `investor` | — |
+| [Code](#332-security) | Código | `code` | `security.code`, `modality.code`, `index.code` |
+| [Name](#332-security) | Nome | `name` | `security.name`, `modality.name`, `index.name` |
+| [Issue date](#112-dates) | Data de emissão | `issueDate` | `security.issue_date` |
+| [Accrual start date](#112-dates) | Data de início da rentabilidade, data-base | `accrualStartDate` | `security.accrual_start_date` |
+| [Maturity date](#112-dates) | Data de vencimento | `maturityDate` | `security.maturity_date` |
+| [Calculation date](#112-dates) | Data do cálculo | `calculationDate` | — |
+| [Version](#36-versioning-and-the-snapshot) | Versão | `version` | `security.version` |
+| **Principal and its evolution** | | | |
+| [Face value at issue](#113-principal-and-its-evolution) | Valor nominal de emissão (VNE) | `faceValueAtIssue` | `security.face_value_at_issue` |
+| [Amortization](#113-principal-and-its-evolution) | Amortização | `amortization`, `AMORTIZATION` | `event.event_type` |
+| [Amortization base](#113-principal-and-its-evolution) | Base de amortização | `amortizationBase` | `security.amortization_base` |
+| [Amortization fraction](#333-event) | Fração de amortização | `amortizationFraction` | `event.amortization_fraction` |
+| [Outstanding face value](#113-principal-and-its-evolution) | Saldo do VNE | `outstandingFaceValue` | — |
+| [Index](#113-principal-and-its-evolution) | Indexador | `index` | `index` |
+| [Index value](#335-index-and-index_value) | Valor do indexador | `value` | `index_value.value` |
+| [Reference date](#335-index-and-index_value) | Data de referência | `referenceDate` | `index_value.reference_date` |
+| [Index value type](#335-index-and-index_value) | Tipo de valor do indexador | `valueType` | `index.value_type` |
+| [Monthly index number](#335-index-and-index_value) | Número-índice mensal | `MONTHLY_INDEX_NUMBER` | `index.value_type` |
+| [Daily rate](#335-index-and-index_value) | Taxa diária | `DAILY_RATE` | `index.value_type` |
+| [Index factor](#113-principal-and-its-evolution) | Fator do indexador | `indexFactor` | — |
+| [Index factor application](#113-principal-and-its-evolution) | Incidência do fator do indexador | `indexFactorApplication` | `modality.index_factor_application` |
+| [Monetary adjustment](#113-principal-and-its-evolution) | Atualização monetária, correção monetária | `monetaryAdjustment` | — |
+| [Adjustment factor](#113-principal-and-its-evolution) | Fator de atualização | `adjustmentFactor` | — |
+| [Adjusted face value](#113-principal-and-its-evolution) | Valor nominal atualizado (VNA) | `adjustedFaceValue` | — |
+| **Remuneration and events** | | | |
+| [Contractual rate](#114-remuneration-and-events) | Taxa do contrato | `contractualRate` | `security.contractual_rate` |
+| [Rate factor](#114-remuneration-and-events) | Fator da taxa | `rateFactor` | — |
+| [Index percentage](#114-remuneration-and-events) | Percentual do indexador | `indexPercentage` | `security.index_percentage` |
+| [Event](#114-remuneration-and-events) | Evento | `event` | `event` |
+| [Event type](#333-event) | Tipo de evento | `eventType` | `event.event_type` |
+| [Event date](#333-event) | Data do evento | `eventDate` | `event.event_date` |
+| [Interest payment, coupon payment](#114-remuneration-and-events) | Pagamento de juros, pagamento de cupom | `INTEREST_PAYMENT` | `event.event_type` |
+| [Interest capitalization](#114-remuneration-and-events) | Incorporação de juros | `INTEREST_CAPITALIZATION` | `event.event_type` |
+| [Event schedule](#114-remuneration-and-events) | Agenda de eventos | `eventSchedule` | — |
+| [Grace period](#114-remuneration-and-events) | Carência | `gracePeriod` | — |
+| [Payment](#114-remuneration-and-events) | Pagamento | `payment` | — |
+| [Payment schedule](#13-payment-schedule) | Fluxo de pagamentos | `paymentSchedule` | — |
+| **Classes and modalities** | | | |
+| [Modality](#115-classes-and-modalities) | Modalidade | `modality` | `modality` |
+| [Rate class](#331-modality) | Classe | `rateClass` | `modality.rate_class` |
+| [Fixed-rate](#115-classes-and-modalities) | Prefixado | `FIXED_RATE` | `modality.rate_class` |
+| [Floating-rate](#115-classes-and-modalities) | Pós-fixado | `FLOATING_RATE` | `modality.rate_class` |
+| [Hybrid](#115-classes-and-modalities) | Híbrido | `HYBRID` | `modality.rate_class` |
+| **Market and price** | | | |
+| [Market rate](#142-unit-price) | Taxa de mercado | `marketRate` | — |
+| [Unit price](#142-unit-price) | Preço unitário (PU) | `unitPrice` | — |
+| [Par unit price](#141-par-unit-price) | PU ao par | `parUnitPrice` | — |
+| [At par](#143-reading-a-price) | Ao par | `atPar` | — |
+| [Premium](#143-reading-a-price) | Ágio | `premium` | — |
+| [Discount](#143-reading-a-price) | Deságio | `discount` | — |
+| [Appreciation, depreciation](#143-reading-a-price) | Valorização, desvalorização | `appreciation`, `depreciation` | — |
+
 ---
 
 ## 2. System design
