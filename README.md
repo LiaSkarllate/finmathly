@@ -1,4 +1,4 @@
-# finmathly
+# <img src="docs/logo.svg" alt="" height="40"> finmathly
 
 finmathly is a reference system for Brazilian fixed-income securities. It records debt securities, such as government bonds, debentures and bank deposit certificates, together with their contractual rules and event schedules, and it calculates their prices for any calculation date.
 
