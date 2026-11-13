@@ -9,7 +9,7 @@ Each kind of record, a security, a modality or an index, has two screens:
 - a **list screen**, with a search field, a **New** button and a table with one row per record; clicking a row opens that record;
 - a **record screen**, used both for creating and for editing, with the record's fields and a **Save** button.
 
-What exists only inside another record, a composition in the class diagram of the README (section 3.1), is edited on the record screen of its owner: the **event schedule** on the security's record screen, and the **index values** on the index's record screen.
+What exists only inside another record, a composition in the class diagram in the README, is edited on the record screen of its owner: the **event schedule** on the security's record screen, and the **index values** on the index's record screen.
 
 ## 2. The security's record screen
 

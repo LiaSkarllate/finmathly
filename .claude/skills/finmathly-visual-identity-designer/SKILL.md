@@ -16,7 +16,7 @@ This skill is the only place in the repository where the visual identity is reco
 | [`content.md`](content.md) | Languages, numbers and tables, voice, concept tips, messages, read-only data, names of the design |
 | [`screens.md`](screens.md) | List and record screens, the security's record screen, the unit price calculation and its calculation details |
 
-Two other documents complete it: the **glossary** of `README.md` (section 1.6), which gives each domain concept one English and one Portuguese name, and `.claude/skills/finmathly-committer/SKILL.md`, for commits, where frontend commits take the `frontend` scope.
+Two other documents complete it: the **glossary** in `README.md`, which gives each domain concept one English and one Portuguese name, and `.claude/skills/finmathly-committer/SKILL.md`, for commits, where frontend commits take the `frontend` scope.
 
 ## How to work
 

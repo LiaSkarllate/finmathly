@@ -11,7 +11,7 @@ All translation happens in the frontend, because the API returns only stable cod
 - **Visible text** comes from the message dictionaries, one per language. No component contains visible text.
 - **Enum values**, such as `BUSINESS_252`, are never shown. Each one is mapped to a label, such as "Dias úteis sobre 252" or "Business days over 252".
 - **Errors** arrive with a code and parameters, from which the interface writes the message in each language.
-- **Labels** always use the terms of the glossary of the README (section 1.6) for their language. A new concept enters the glossary before it enters the interface.
+- **Labels** always use the terms of the glossary in the README for their language. A new concept enters the glossary before it enters the interface.
 - **Numbers and dates** are formatted with `Intl` for the selected language, never by hand: `966,662019` and `19/10/2026` in Portuguese, `966.662019` and `10/19/2026` in English. A decimal is passed to `Intl.NumberFormat` as a string, which it formats without turning it into a binary number.
 
 ## 2. Numbers and tables
