@@ -1,5 +1,4 @@
 @startuml data-model
-' finmathly data model: class diagram of the registry (write side) service
 hide empty members
 hide circle
 skinparam shadowing false
@@ -7,7 +6,7 @@ skinparam roundCorner 10
 skinparam classAttributeIconSize 0
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
-skinparam nodesep 45
+skinparam nodesep 70
 skinparam ranksep 60
 skinparam ArrowColor #6b7280
 skinparam ArrowThickness 1.2
@@ -18,20 +17,21 @@ skinparam ClassBackgroundColor #ffffff
 skinparam ClassHeaderBackgroundColor #eceff3
 skinparam ClassFontStyle bold
 skinparam ClassFontColor #2b2f36
-skinparam ClassStereotypeFontStyle italic
-skinparam ClassStereotypeFontColor #6b7280
-skinparam class {
-  HeaderBackgroundColor<<enumeration>> #dfe3e8
-}
 
 class Modality {
   UUID id
   String code
   String name
-  RateClass rateClass
+  Category category
   IndexFactorApplication indexFactorApplication
   boolean hasContractualRate
-  DayCountConvention dayCountConvention
+  DayCountConvention contractualRateDayCountConvention
+  DaysOverFixedBase marketRateDayCountConvention
+  Integer inputDecimalPlaces
+  RoundingRule intermediateRounding
+  Integer intermediateDecimalPlaces
+  RoundingRule outputRounding
+  Integer outputDecimalPlaces
   boolean allowsInterestPayment
   boolean allowsAmortization
   boolean allowsInterestCapitalization
@@ -39,9 +39,6 @@ class Modality {
   String createdBy
   Instant updatedAt
   String updatedBy
-  --
-  +allows(EventType type) : boolean
-  +allowedEventTypes() : Set<EventType>
 }
 
 class Security {
@@ -50,7 +47,8 @@ class Security {
   String name
   BigDecimal faceValueAtIssue
   LocalDate issueDate
-  LocalDate accrualStartDate
+  LocalDate compoundingStartDate
+  LocalDate adjustmentStartDate
   LocalDate maturityDate
   BigDecimal contractualRate
   BigDecimal indexPercentage
@@ -99,6 +97,17 @@ class IndexValue {
   UUID id
   LocalDate referenceDate
   BigDecimal value
+  int version
+  Instant createdAt
+  String createdBy
+  Instant updatedAt
+  String updatedBy
+}
+
+class IndexValueHistory {
+  UUID id
+  int version
+  String snapshot
   Instant publishedAt
   Instant createdAt
   String createdBy
@@ -106,50 +115,11 @@ class IndexValue {
   String updatedBy
 }
 
-enum EventType <<enumeration>> {
-  INTEREST_PAYMENT
-  AMORTIZATION
-  INTEREST_CAPITALIZATION
-}
-
-enum RateClass <<enumeration>> {
-  FIXED_RATE
-  FLOATING_RATE
-  HYBRID
-}
-
-enum IndexFactorApplication <<enumeration>> {
-  OUTSTANDING_FACE_VALUE
-  RATE_FACTOR
-}
-
-enum AmortizationBase <<enumeration>> {
-  FACE_VALUE_AT_ISSUE
-  OUTSTANDING_FACE_VALUE
-}
-
-enum IndexValueType <<enumeration>> {
-  MONTHLY_INDEX_NUMBER
-  DAILY_RATE
-}
-
-enum DayCountConvention <<enumeration>> {
-  BUSINESS_252
-  ACTUAL_365
-  ACTUAL_360
-}
-
-Security "0..*" --> "1" Modality : follows
-Security "0..*" --> "0..1" Index : indexed to
+Security "0..*" -l-> "1" Modality : follows
+Security "0..*" -r-> "0..1" Index : indexed to
 Security "1" *-- "0..*" Event : schedule
 Security "1" *-- "1..*" SecurityHistory : versions
 Index "1" *-- "0..*" IndexValue : values
-Modality ..> EventType : allows()
+IndexValue "1" *-l- "1..*" IndexValueHistory : versions
 
-' Enums without lines: they appear as attribute types, kept together in a grid
-RateClass -[hidden]d- IndexFactorApplication
-IndexFactorApplication -[hidden]d- DayCountConvention
-AmortizationBase -[hidden]d- IndexValueType
-RateClass -[hidden]r- AmortizationBase
-IndexFactorApplication -[hidden]r- IndexValueType
 @enduml
