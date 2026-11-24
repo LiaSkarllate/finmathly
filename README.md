@@ -384,9 +384,9 @@ The **security** requirement is that each part of the system reaches only what i
 
 #### 2.2.1 Overview
 
-![Architecture of finmathly on AWS](docs/architecture.svg)
+![Architecture of finmathly on AWS](docs/architecture-production.svg)
 
-The numbers in the diagram follow the paths described in [the path of a price query](#223-path-of-a-price-query) and in the [background message flow](#224-background-message-flow). The source of the diagram is [`docs/architecture.py`](docs/architecture.py), and the image above is generated from it by `docs/render.sh`, with the official AWS icons.
+The numbers in the diagram follow the paths described in [the path of a price query](#223-path-of-a-price-query) and in the [background message flow](#224-background-message-flow). The source of the diagram is [`docs/architecture-production.py`](docs/architecture-production.py), and the image above is generated from it by `docs/render.sh`, with the official AWS icons.
 
 #### 2.2.2 Components
 

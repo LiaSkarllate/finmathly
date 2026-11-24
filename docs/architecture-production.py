@@ -1,4 +1,4 @@
-"""Architecture of finmathly on AWS, drawn as SVG. Rendered into docs/architecture.svg by docs/render.sh.
+"""Architecture of finmathly on AWS, drawn as SVG. Rendered into docs/architecture-production.svg by docs/render.sh.
 
 The layout is explicit (coordinates), because the diagram follows the usual AWS conventions:
 a region with a VPC, two availability zones, and a public and a private subnet in each one.
@@ -212,5 +212,5 @@ for label, color, dashed in swatches:
 
 add("</svg>")
 
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "architecture.svg"), "w", encoding="utf-8") as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "architecture-production.svg"), "w", encoding="utf-8") as f:
     f.write("\n".join(out))
