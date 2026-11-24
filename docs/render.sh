@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
-# Renders the diagrams of this folder:
-#   data-model.puml -> data-model.svg   (PlantUML)
-#   architecture-production.py -> architecture-production.svg (Python, with the official AWS icons of the package "diagrams")
-# Needs Java, Python 3 and Graphviz (the `dot` command, for example `sudo apt install graphviz`).
-# Pinned versions of PlantUML and of "diagrams" are downloaded into ~/.cache/finmathly.
-# Set PLANTUML_JAR to use a PlantUML jar you already have.
 set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
 
 plantuml_version=1.2024.7
 diagrams_version=0.24.4
@@ -24,4 +19,6 @@ if [ ! -x "$venv/bin/python" ]; then
   python3 -m venv "$venv"
   "$venv/bin/pip" install --quiet "diagrams==$diagrams_version"
 fi
-"$venv/bin/python" architecture-production.py
+for script in architecture-production.py architecture-staging.py; do
+  "$venv/bin/python" "$script"
+done
