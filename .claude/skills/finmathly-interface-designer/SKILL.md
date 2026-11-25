@@ -161,6 +161,8 @@ finmathly therefore uses common patterns: a table that lists records and opens a
 
 ### 2.4 Feedback and response time
 
+When the user acts, such as clicking a button, they wait for the interface to answer. An answer that is missing, slow or unstable makes the user doubt the system, act twice or lose their place. The three (3) principles below set how finmathly answers each action.
+
 #### 2.4.1 Feedback for every action
 
 Feedback is the response of the interface to an action of the user. Without it, the user does not know whether a click worked, clicks again and may save twice.
@@ -171,9 +173,9 @@ finmathly shows a result only after the API confirms it. A price or a registrati
 
 #### 2.4.2 Response time
 
-The [Doherty Threshold↗](https://lawsofux.com/doherty-threshold/) states that productivity rises when the system responds in less than 400 milliseconds, so that neither the person nor the system waits for the other. It comes from an IBM study published in 1982, and it is an observation, not a hard limit.
+The [Doherty Threshold↗](https://lawsofux.com/doherty-threshold/) states that productivity rises when the system responds in less than 400 milliseconds, so that neither the person nor the system waits for the other. It is named after Walter J. Doherty, who published [the study behind it↗](https://jlelliotton.blogspot.com/p/the-economic-value-of-rapid-response.html) with Ahrvind J. Thadani, at IBM, in 1982. It is an observation, not a hard limit.
 
-finmathly takes it as the limit beyond which the user must see that the system is working. Content that takes longer than 400 milliseconds to load shows a [skeleton](#3611-skeletons) in its place.
+finmathly takes it as the limit beyond which the user must see that the system is working. Content that takes longer than 400 milliseconds to load shows a [skeleton](#3611-skeletons) in its place. Below that, nothing is shown in its place, so that a fast answer does not make a skeleton flash on the screen for an instant.
 
 #### 2.4.3 Layout shift
 
