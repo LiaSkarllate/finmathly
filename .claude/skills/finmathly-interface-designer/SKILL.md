@@ -39,8 +39,7 @@ Every screen of finmathly is built from the same decisions: how it looks, how it
     - [3.2.1 Palette and roles](#321-palette-and-roles)
     - [3.2.2 Light and dark themes](#322-light-and-dark-themes)
     - [3.2.3 Contrast](#323-contrast)
-    - [3.2.4 State colors](#324-state-colors)
-    - [3.2.5 Building the palette](#325-building-the-palette)
+    - [3.2.4 Message colors](#324-message-colors)
   - [3.3 Typography](#33-typography)
     - [3.3.1 Typefaces](#331-typefaces)
     - [3.3.2 Type scale and weights](#332-type-scale-and-weights)
@@ -252,7 +251,7 @@ Accessibility is the condition that people with disabilities can use the interfa
 Every screen meets these requirements:
 
 1. text contrast of at least 4.5:1, and 3:1 for what identifies a button or a field, as explained in [3.2.3](#323-contrast);
-2. no information carried by color alone, as explained in [3.2.4](#324-state-colors);
+2. no information carried by color alone, as explained in [3.2.4](#324-message-colors);
 3. every action [reachable with the keyboard↗](https://www.w3.org/TR/WCAG22/#keyboard), in reading order, with no place where the keyboard gets stuck, except inside an open dialog, which Esc closes;
 4. a visible focus, the mark that shows where the keyboard is, never hidden under the top bar, as explained in [3.6.1](#361-states);
 5. a [label on every field↗](https://www.w3.org/TR/WCAG22/#labels-or-instructions), with its error message linked to it, as explained in [3.6.4](#364-fields);
@@ -294,19 +293,21 @@ Next to the logo, the interface writes the product name, `finmathly`, always in 
 
 ### 3.2 Color
 
+Color in finmathly does few jobs, and each color has one (1): to set the page apart from what stands out on it, to mark what the user can act on, and to tell the level of a message. The four (4) parts below set the colors and the rules that keep them readable in both themes.
+
 #### 3.2.1 Palette and roles
 
-A palette is the closed set of colors of a product. Each color in it has a role, a job it does on every screen, and no color is used outside its role. A closed palette keeps every screen consistent and keeps the meaning of each color stable.
+A palette is the closed set of colors of a product. Each color in it has a role, a job it does on every screen, and no color is used outside its role. A closed palette keeps every screen consistent and keeps the meaning of each color stable. A new color enters the palette only as a new role, recorded here, with its contrast calculated as in [3.2.3](#323-contrast).
 
-finmathly has two (2) themes, light and dark, explained in [3.2.2](#322-light-and-dark-themes), and each role has a value in each:
+The names of the roles recall printing: the paper is the page, the ink is the text, and a rule is the thin line that separates rows or areas, as in a printed table. finmathly has two (2) themes, light and dark, explained in [3.2.2](#322-light-and-dark-themes), and each role has a value in each, written as a hexadecimal code, the usual notation of colors on the web:
 
 | Role | Light | Dark | Use |
 | --- | --- | --- | --- |
 | Paper | `#FAF7F2` | `#1A1917` | Background of the page |
 | Surface | `#FFFFFF` | `#22211E` | Background of fields, panels and of what floats above the page |
 | Ink | `#1F1D1A` | `#EDE9E2` | Text and numbers |
-| Muted ink | `#5E5A53` | `#A8A39A` | Labels, secondary text, the text of a disabled control and the left border of an information message box |
-| Rule | `#DDD7CD` | `#3A3833` | Thin rules between rows and around what has the surface background, the border of a disabled control, and skeletons |
+| Muted ink | `#5E5A53` | `#A8A39A` | Labels, secondary text, the text of a disabled button or field and the left border of an information message box |
+| Rule | `#DDD7CD` | `#3A3833` | Thin rules between rows and around what has the surface background, the border of a disabled button or field, and skeletons |
 | Strong rule | `#1F1D1A` | `#EDE9E2` | Rule under a table header and border of a field |
 | Accent | `#0F5C57` | `#5FB8AE` | Links, buttons and the focus |
 | Soft accent | `#E4EFED` | `#1F3330` | Background of what is under the mouse or chosen, as set in [3.6.1](#361-states) |
@@ -316,7 +317,7 @@ finmathly has two (2) themes, light and dark, explained in [3.2.2](#322-light-an
 | Soft error | `#F7E3E0` | `#3A2220` | Background of an error message box |
 | Warning | `#7A5200` | `#E0B45C` | Word and border of a warning |
 | Soft warning | `#F6ECD6` | `#352B18` | Background of a warning message box |
-| Backdrop | `#1F1D1A` at 40% | `#000000` at 60% | Layer that covers the screen behind a dialog |
+| Backdrop | `#1F1D1A` at 40% opacity | `#000000` at 60% opacity | Layer that covers the screen behind a dialog |
 
 The paper is warm, slightly yellow, rather than pure white, to recall printed financial reports. Forms and tables sit directly on it, as in a printed report, and the white surface is kept for what must stand out from the page: fields, [panels](#342-grouping) and what floats above the page. The discarded alternative was a white surface under every form and table, which would turn each one into a card, a box around a block, as explained in [4](#4-patterns-to-avoid).
 
@@ -326,7 +327,9 @@ A financial value is never colored by its meaning. A [premium or a discount](../
 
 #### 3.2.2 Light and dark themes
 
-A theme is a full set of values for the palette. finmathly has two (2): a light theme and a dark theme, with the same roles and different values, as listed in [3.2.1](#321-palette-and-roles). On the first visit, the interface follows the theme of the operating system. The user changes it in the [top bar](#343-layout-and-responsiveness), through a [selector](#363-buttons-and-links) of two (2) options, Light and Dark. The page also declares its theme to the browser with the CSS property [`color-scheme`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color-scheme), so that scroll bars and native controls follow it.
+A theme is a full set of values for the palette. finmathly has two (2): a light theme and a dark theme, with the same roles and different values, as listed in [3.2.1](#321-palette-and-roles). The dark theme exists because some users set their operating system to dark, above all in dim rooms, and a light page would then glare among their other windows.
+
+On the first visit, the interface follows the theme of the operating system. The user changes it in the [top bar](#343-layout-and-responsiveness), through a [selector](#363-buttons-and-links) of two (2) options, Light and Dark, and the choice is kept for the next visits. The page also declares its theme to the browser with the CSS property [`color-scheme`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color-scheme), so that what the browser draws itself, such as scroll bars and the calendar of a date field, follows the theme too.
 
 The dark values are not an inversion of the light ones. Each was chosen to keep the contrast of [3.2.3](#323-contrast), and the accent becomes lighter in the dark theme so that it remains visible on the dark paper.
 
@@ -334,9 +337,9 @@ The dark values are not an inversion of the light ones. Each was chosen to keep 
 
 Contrast is the difference in brightness between a text and its background. Low contrast makes text hard to read, above all for people who see poorly and for anyone in front of a bright window. WCAG measures it as a ratio from 1:1, no difference, to 21:1, black on white, and requires [at least 4.5:1 for normal text↗](https://www.w3.org/TR/WCAG22/#contrast-minimum).
 
-Every pair of text and background in finmathly meets 4.5:1, in both themes. The ratios below were calculated with the formula of WCAG from the values in [3.2.1](#321-palette-and-roles):
+Every pair of text and background in finmathly meets 4.5:1, in both themes. The table below gives the ratio of each pair, calculated with the formula of WCAG. Each name is a role of the palette in [3.2.1](#321-palette-and-roles), such as ink for text and paper for the page, and each number is the first term of the ratio, so 15.73 means 15.73:1:
 
-| Text on background | Light | Dark |
+| Text on background | Ratio in the light theme | Ratio in the dark theme |
 | --- | --- | --- |
 | Ink on paper | 15.73 | 14.52 |
 | Ink on surface | 16.81 | 13.31 |
@@ -358,19 +361,15 @@ Every pair of text and background in finmathly meets 4.5:1, in both themes. The 
 | Warning on soft warning | 5.89 | 7.19 |
 | Warning on surface | 6.92 | 8.32 |
 
-The thin rule between table rows has a ratio to the paper of 1.34 in the light theme and 1.50 in the dark theme, below the [3:1 that WCAG requires for what identifies a control↗](https://www.w3.org/TR/WCAG22/#non-text-contrast). It is allowed because it only separates rows and areas and identifies no active control, and WCAG exempts the border of a disabled control. The border of a field, which identifies a control, uses the strong rule, at 15.73 on the paper in the light theme and 14.52 in the dark theme.
+For what is not text, WCAG requires [at least 3:1 for what shows that something is a button or a field↗](https://www.w3.org/TR/WCAG22/#non-text-contrast), such as the border of a field. The border of a field uses the strong rule, at 15.73:1 on the paper in the light theme and 14.52:1 in the dark theme. These pairs are not text, so they are not in the table above.
 
-#### 3.2.4 State colors
+The thin rule has a ratio to the paper of 1.34:1 in the light theme and 1.50:1 in the dark theme, below 3:1. It is allowed because it only separates rows and areas and shows no button or field, and because WCAG exempts the border of a disabled button or field.
 
-A state color tells the level of a [message](#262-messages): brick red for an error, ocher for a warning. finmathly has no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Security saved as version 4.".
+#### 3.2.4 Message colors
 
-Color never carries meaning alone, as [WCAG requires↗](https://www.w3.org/TR/WCAG22/#use-of-color). A state color always comes with a word and a border, so that a user who does not distinguish red from green still reads the level of the message.
+A message color tells the level of a [message](#262-messages): brick red, the error role of the palette, for an error, and ocher, the warning role, for a warning. finmathly has no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Security saved as version 4.".
 
-#### 3.2.5 Building the palette
-
-The palette is stored in hexadecimal RGB, the format that every tool reads. A color is added or adjusted in [OKLCH↗](https://www.w3.org/TR/css-color-4/#ok-lab), a model whose lightness matches what the eye perceives, so that two (2) colors with the same lightness look about equally bright. The contrast of [3.2.3](#323-contrast) is then calculated again.
-
-The discarded alternative was HSL, whose lightness does not match what the eye perceives: a yellow and a blue with the same HSL lightness look very different in brightness.
+Color never carries meaning alone, as [WCAG requires↗](https://www.w3.org/TR/WCAG22/#use-of-color). A message color always comes with a word and a border, so that a user who does not distinguish red from green still reads the level of the message.
 
 ### 3.3 Typography
 
@@ -548,7 +547,7 @@ A message box shows a [message](#262-messages) of the information, warning or er
 2. warning, on the soft warning, with a left border in the warning color and the word "Warning";
 3. error, on the soft error, with a left border in the error color and the word "Error".
 
-The word is in the color of its level, and the sentence in the ink. In a warning or an error, the left border marks the level together with the word and the background, as required in [3.2.4](#324-state-colors). In an information, the left border alone sets the message apart from the text around it. The left border is never used on other elements, as explained in [4](#4-patterns-to-avoid). A validation error is not a message box: it sits below its field, as set in [3.6.4](#364-fields).
+The word is in the color of its level, and the sentence in the ink. In a warning or an error, the left border marks the level together with the word and the background, as required in [3.2.4](#324-message-colors). In an information, the left border alone sets the message apart from the text around it. The left border is never used on other elements, as explained in [4](#4-patterns-to-avoid). A validation error is not a message box: it sits below its field, as set in [3.6.4](#364-fields).
 
 #### 3.6.7 Tables
 
