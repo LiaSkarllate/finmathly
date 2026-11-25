@@ -267,9 +267,11 @@ Beyond level AA, finmathly also: (i) turns motion off for a user who asked for l
 
 ## 3. User interface
 
-User interface covers how each screen looks, from the basic choices of color, type and space to the components and the complete screens built from them.
+User interface covers how each screen looks, from the basic choices of color, letters and space to the components and the complete screens built from them.
 
 ### 3.1 Brand
+
+The brand of finmathly is what makes it recognizable at a glance: how it feels to use, and its logo and name. The two (2) parts below set both.
 
 #### 3.1.1 Personality and references
 
@@ -278,17 +280,17 @@ The personality of a brand is the set of qualities that a person should feel whe
 The design system draws on two (2) references, as inspiration and never as a copy:
 
 1. the Financial Times, for its tinted paper background instead of pure white, its dense tables with thin rules and its restrained use of color. finmathly does not use its paid typefaces or its salmon tint, which belong to the identity of the Financial Times;
-2. the [Swiss Style↗](https://en.wikipedia.org/wiki/International_Typographic_Style), also called the International Typographic Style, for its sans-serif type, its hierarchy through size and weight, and its white space.
+2. the [Swiss Style↗](https://en.wikipedia.org/wiki/International_Typographic_Style), also called the International Typographic Style, for its simple letters without [serifs](#331-typefaces), its hierarchy through size and boldness, and its white space.
 
 The discarded alternative was the bright and rounded look of consumer apps, which would make a reference system look like a game.
 
 #### 3.1.2 Logo and product name
 
-The logo is a square in `#0F5C57` with the letters `fm` in white, in IBM Plex Mono SemiBold. It is the file [`docs/logo.svg`](../../../docs/logo.svg), with its letters converted to outlines, so that it looks the same everywhere without depending on a font. It is always used from that file, never redrawn or retyped.
+The logo is a square in `#0F5C57` with the letters `fm` in white, in IBM Plex Mono SemiBold. It is the file [`docs/logo.svg`](../../../docs/logo.svg), with its letters drawn as shapes rather than typed as text, so that it looks the same everywhere, even where IBM Plex is not installed. It is always used from that file, never redrawn or retyped.
 
-The logo is fixed: it has the same colors in the [light and the dark theme](#322-light-and-dark-themes), so that the brand has one (1) appearance. It is also the icon of the browser tab, and finmathly does not control the theme of the browser around that tab. The logo is therefore the only element of the interface with literal colors, an exception to the rule of [5.1](#51-tokens-in-css).
+The logo is fixed: it has the same colors in the [light and the dark theme](#322-light-and-dark-themes), so that the brand has one (1) appearance. It is also the icon of the browser tab, and finmathly does not control the theme of the browser around that tab. The logo is therefore the only element of the interface whose colors are written directly in it, instead of coming from the theme through a [design token](#51-tokens-in-css).
 
-Next to the logo, the interface writes the product name, `finmathly`, always in lowercase, as text in IBM Plex Sans SemiBold, at the body size, in the [ink](#321-palette-and-roles) of the theme. Next to the product name, the logo is hidden from screen readers, so that they do not read the name twice.
+Next to the logo, the interface writes the product name, `finmathly`, always in lowercase, as text in IBM Plex Sans SemiBold, at the [body size](#332-type-scale-and-weights), in the [ink](#321-palette-and-roles) of the theme. Next to the product name, the logo is hidden from screen readers, so that they do not read the name twice.
 
 ### 3.2 Color
 
@@ -376,7 +378,7 @@ Typography is the choice and arrangement of letters: which typefaces, in which s
 
 #### 3.3.1 Typefaces
 
-A typeface is a family of letters with a common design, such as IBM Plex. It comes in members with different designs, such as Sans and Mono, and each member comes in weights, from thin to bold.
+A typeface is a family of letters with a common design, such as IBM Plex. It comes in members with different designs, such as Sans and Mono, and each member comes in weights, the technical name for the boldness of its letters, from thin to bold.
 
 finmathly uses two (2) members of [IBM Plex↗](https://github.com/IBM/plex), which is free under the SIL Open Font License:
 
