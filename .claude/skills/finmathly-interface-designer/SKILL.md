@@ -16,7 +16,7 @@ Every screen of finmathly is built from the same decisions: how it looks, how it
   - [2.3 How people read and use a screen](#23-how-people-read-and-use-a-screen)
     - [2.3.1 Visual hierarchy](#231-visual-hierarchy)
     - [2.3.2 Cognitive load](#232-cognitive-load)
-    - [2.3.3 Recognition over recall](#233-recognition-over-recall)
+    - [2.3.3 Recognition rather than recall](#233-recognition-rather-than-recall)
     - [2.3.4 Familiar patterns](#234-familiar-patterns)
   - [2.4 Feedback and response time](#24-feedback-and-response-time)
     - [2.4.1 Feedback for every action](#241-feedback-for-every-action)
@@ -145,17 +145,19 @@ Second, the same concept always has the same name, its name in the [glossary](..
 
 The domain has complexity of its own, such as [index factors](../../../README.md#216-index-its-values-and-index-factor) and [day count conventions](../../../README.md#252-day-count-conventions), and the interface cannot remove it. It can only avoid adding more.
 
-#### 2.3.3 Recognition over recall
+#### 2.3.3 Recognition rather than recall
 
 Recognizing something on the screen is easier than remembering it. Nielsen lists this as one (1) of his [usability heuristics↗](https://www.nngroup.com/articles/ten-usability-heuristics/), introduced in [1](#1-what-a-design-system-is), under the name "Recognition rather than recall".
 
-In finmathly, the user never has to remember a value from another screen. The [record screen](#371-list-and-record-screens) of a security shows the rules of its modality, and the price calculation screen shows the security and the conventions it uses, as [read-only data](#369-read-only-data). A modality or an index is chosen from a list, never typed from memory, as explained in [3.6.5](#365-combo-box).
+In finmathly, the user never has to remember a value from another screen. The [record screen](#371-list-and-record-screens) of a security shows the rules of its modality, and the [price calculation screen](#373-the-price-calculation-screen) shows the security and the conventions it uses, as [read-only data](#369-read-only-data). A modality or an index is chosen from a list, never typed from memory, as explained in [3.6.5](#365-combo-box).
+
+This does not conflict with [2.3.2](#232-cognitive-load): the task needs these values, and showing them spares the user the effort of remembering them, which is also cognitive load.
 
 #### 2.3.4 Familiar patterns
 
-People spend most of their time in other products, so they expect a new one to work like those. This observation is called [Jakob's Law↗](https://lawsofux.com/jakobs-law/).
+People spend most of their time in other products, so they expect a new one to work like those. This observation is called [Jakob's Law↗](https://lawsofux.com/jakobs-law/), after Jakob Nielsen, the author of the usability heuristics of [1](#1-what-a-design-system-is).
 
-finmathly therefore uses common patterns: a table that lists records and opens a record from its row, a form with its fields in reading order, a primary button at the end of the form, and a link that looks like a link. It invents no new control where a common one serves.
+finmathly therefore uses common patterns: a table that lists records and opens a record from its row, a form with its fields in reading order, a [primary button](#363-buttons-and-links) at the end of the form, and a link that looks like a link. It invents nothing new where a common pattern serves, because a new pattern makes the user learn it before using it.
 
 ### 2.4 Feedback and response time
 
