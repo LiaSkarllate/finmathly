@@ -185,19 +185,23 @@ In finmathly, every area that waits for data reserves at least its final height 
 
 ### 2.5 Forms
 
+A form is the set of fields where the user types or chooses the values of a record, such as the fields of a security on its record screen, or the market rate and the calculation date on the price calculation screen. The two (2) principles below set what a field accepts and what value it holds before the user types.
+
 #### 2.5.1 Tolerant input
 
-[Postel's Law↗](https://lawsofux.com/postels-law/) asks a system to be liberal in what it accepts and conservative in what it sends. It comes from the design of TCP, and interface design borrowed it.
+[Postel's Law↗](https://lawsofux.com/postels-law/) asks a system to be liberal in what it accepts and conservative in what it sends. In an interface, being liberal means accepting the small variations with which people type the same value, and being conservative means passing that value on in one (1) strict format.
 
-In finmathly, a numeric field accepts: (i) the decimal separator of the [language of the user](#263-languages-and-formats); (ii) spaces around the number; and (iii) a minus sign typed as a hyphen, because a [contractual rate](../../../README.md#219-contractual-rate-and-rate-factor), a [market rate](../../../README.md#225-unit-price-pu) and an [index value](../../../README.md#216-index-its-values-and-index-factor) of a daily rate can be negative. It never guesses a value it cannot read with certainty. A thousands separator is rejected, because `1.350` in Portuguese and `1,350` in English could each mean two (2) values, and the [message](#262-messages) shows the expected format. The value sent to the API always follows [README 3.8](../../../README.md#38-formats).
+In finmathly, a numeric field is liberal with spaces around the number and with a minus sign typed as a hyphen, because a [contractual rate](../../../README.md#219-contractual-rate-and-rate-factor), a [market rate](../../../README.md#225-unit-price-pu) and an [index value](../../../README.md#216-index-its-values-and-index-factor) of a daily rate can be negative. It is conservative in what it sends: the value goes to the API in the format of [README 3.8](../../../README.md#38-formats), whatever the language.
+
+Being liberal never means guessing. Portuguese writes `1.350,25` and English writes `1,350.25`, so each language uses as its decimal separator the mark that the other uses to group thousands. A field therefore accepts only the decimal separator of the [language of the user](#263-languages-and-formats), the comma in Portuguese and the point in English, and rejects any other mark, the thousands separator included, with a [message](#262-messages) that shows the expected format. Without this rule, `1.350`, copied from an English source into a field in Portuguese, would be read as `1350` instead of `1.35`.
 
 #### 2.5.2 Defaults
 
-A default is the value that a field holds before the user changes it. People tend to keep defaults, so a default must be the value that most users want, and a safe one.
+A default is the value that a field holds before the user changes it. [People tend to keep defaults↗](https://www.nngroup.com/articles/the-power-of-defaults/), so a default must be the value that most users want.
 
-In finmathly, a field starts empty when its value has no safe default, such as the [contractual rate](../../../README.md#219-contractual-rate-and-rate-factor) and the market rate, so that the user must type it. The defaults of the record screen of a security are the suggestions that [README 4.4.2](../../../README.md#442-security) sets.
+In finmathly, a field starts empty when no value is common enough to suggest, such as the [contractual rate](../../../README.md#219-contractual-rate-and-rate-factor) and the market rate, so that the user must type it. A rate kept by mistake would produce a wrong price without the user noticing. The defaults of the record screen of a security are the suggestions that [README 4.4.2](../../../README.md#442-security) sets.
 
-The calculation date starts with the current date, the most common choice, except for a security indexed to a [monthly index number](../../../README.md#216-index-its-values-and-index-factor). There it starts empty, because the current date is rarely a [monthly anniversary](../../../README.md#216-index-its-values-and-index-factor), the only kind of date that such a security accepts, and the frontend does not calculate which anniversary is valid, as set in [README 3.8](../../../README.md#38-formats).
+The calculation date starts with the current date, the most common choice, except for a security indexed to a [monthly index number](../../../README.md#216-index-its-values-and-index-factor). There it starts empty, because finmathly calculates such a security only on a [monthly anniversary](../../../README.md#216-index-its-values-and-index-factor), a choice of its own model, explained in [README 2.4](../../../README.md#24-what-finmathly-calculates-and-what-it-doesnt). The current date is rarely one, and the frontend does not calculate which anniversary is valid, as set in [README 3.8](../../../README.md#38-formats).
 
 ### 2.6 Text and languages
 
@@ -520,7 +524,11 @@ A field has a label above it, a border in the strong rule and, when it applies, 
 
 A field with an invalid value has a border in the error color and, below it, its error message, in the error color, with no background, linked to the field so that a screen reader reads them together.
 
-A number is typed as set in [2.5.1](#251-tolerant-input), and a date in the format of the language, as set in [README 3.8](../../../README.md#38-formats).
+A number is typed as set in [2.5.1](#251-tolerant-input). A numeric field keeps its value as the decimal that the API receives, and only shows it in the format of the language, so a change of language shows every field in the new format without changing any value. While the user types, the field shows only digits, the minus sign and the decimal separator. When the user leaves it, it shows the value with the thousands separator, as set in [README 3.8](../../../README.md#38-formats), so that a number such as the [face value at issue](../../../README.md#213-face-value-and-face-value-at-issue-vne) of `1.000,00` of an NTN-B is easy to read.
+
+The discarded alternative was a mask that inserts the separators as the user types, common in banking apps. It works for amounts with a fixed number of decimal places, such as cents, but values in finmathly have a variable number, such as rates with six (6) places and [index values](../../../README.md#253-rounding-and-truncation) with any number.
+
+A date is typed in the format of the language, as set in [README 3.8](../../../README.md#38-formats).
 
 A rate or percentage field is typed as a percentage, as set in [3.3.4](#334-financial-numbers). Below it, a decimal reference in IBM Plex Mono shows the decimal value that is sent to the API, in the format of the API whatever the language, such as `Decimal = 0.135678` for 13,5678 typed in Portuguese.
 
