@@ -1,5 +1,5 @@
 ---
-name: finmathly-visual-identity-designer
+name: finmathly-interface-designer
 description: Use when designing, building, changing or reviewing any screen of the finmathly frontend, to apply its visual identity: the reasoning behind it, its colors, typography, spacing, components, voice, accessibility and design tokens, and the way to review a screen against them.
 ---
 
