@@ -205,49 +205,45 @@ The calculation date starts with the current date, the most common choice, excep
 
 ### 2.6 Text and languages
 
+Besides numbers, what the user reads in finmathly is short text, such as labels, buttons, messages and definitions, in Portuguese or in English. The four (4) principles below set how that text is written and shown.
+
 #### 2.6.1 Voice
 
-The voice is the way the interface writes. finmathly writes in a technical and direct voice, with the terms of the [glossary](../../../README.md#26-glossary), because its users are specialists who want facts. It uses no exclamation marks and no filler words.
+The voice is the way the texts of the interface are worded, such as its labels, buttons and messages. finmathly writes in a technical and direct voice, with the terms of the [glossary](../../../README.md#26-glossary), because its users are specialists who want facts. It uses no exclamation marks and no filler words.
 
-It writes a button in the infinitive with its object, such as "Salvar título". It writes an error of the API in the three (3) parts that [README 5.3.6](../../../README.md#536-errors-defined-out-of-existence-and-early-failure) sets: (i) what happened; (ii) why; and (iii) the way around it, which starts with "Por favor" or "Please".
-
-Each kind of text has its own form:
-
-| Kind of text | Form | Example |
-| --- | --- | --- |
-| Error | What happened, why, and the way around it | "Não há valor do IPCA de setembro de 2026, necessário para 15/10/2026. O último valor divulgado é o de agosto de 2026. Por favor, cadastre o valor de setembro quando for divulgado, ou use uma data do cálculo em um aniversário mensal até 15/09/2026." |
-| Validation error | What a valid value is, in one (1) short sentence below the field | "A taxa de mercado precisa ser maior que −100%." |
-| Information | A sentence that explains a consequence, such as why a field is absent | "Este título é prefixado, por isso não tem indexador." |
-| Warning | The fact that the user should know before acting | "O último valor divulgado do IPCA é o de agosto de 2026." |
-| Success | The fact, and the new version when there is one | "Título salvo. Versão 4." |
-| Label | The term of the glossary, with its unit when it has one | "Taxa de mercado (% a.a.)" |
-| Button | The action and its object | "Salvar título" |
+A label is the term of the glossary, with its unit when it has one, such as "Market rate (% p.a.)". A button names the action and its object, with the verb in its base form, such as "Save security".
 
 #### 2.6.2 Messages
 
 A message is a sentence that the interface writes for the user. Messages have three (3) levels, so that the user knows how much a message matters before reading it:
 
-1. information, for a consequence that needs no action. A success is also an information message;
-2. warning, for something the user should know before acting;
-3. error, for something that failed or is invalid.
+1. information, for a consequence that needs no action, such as "This security is fixed-rate, so it has no index.". A success is also an information message, and states the fact and, when there is one, the new version, such as "Security saved as version 4.";
+2. warning, for something the user should know before acting, such as "The last published IPCA value is for August 2026.";
+3. error, for something that failed or is invalid, stated in the three (3) parts that [README 5.3.6](../../../README.md#536-errors-defined-out-of-existence-and-early-failure) sets: what happened, why, and the way around it, which starts with "Please".
 
-Each level has its own appearance, set in [3.6.6](#366-message-boxes). An error of the API comes as [Problem Details↗](https://www.rfc-editor.org/rfc/rfc9457), with each value in its own field, as set in [README 3.8](../../../README.md#38-formats). The [dictionary](#263-languages-and-formats) of each language holds one (1) sentence per type of error, filled with those values in the format of the language.
+An error has two (2) kinds. A validation error concerns the value of one (1) field. The frontend finds it while the user types, such as a number it cannot read, as set in [2.5.1](#251-tolerant-input), or the API returns it, such as a market rate of −100% or less. It sits below its field, in short sentences, such as "A market rate of −100% or less has no unit price. Please type a rate greater than −100%.".
+
+Any other error concerns the whole action and comes from the API, such as a missing index value. It sits at the top of the form, such as "No IPCA value for September 2026, needed for 10/15/2026. The last published value is for August 2026. Please register the September value once it is published, or use a calculation date on a monthly anniversary up to 09/15/2026.".
+
+Each level has its own appearance, set in [3.6.6](#366-message-boxes). An error of the API comes as [Problem Details↗](https://www.rfc-editor.org/rfc/rfc9457), with each value in its own field, as set in [README 3.8](../../../README.md#38-formats). The [dictionary](#263-languages-and-formats) of each language holds one (1) sentence per type of error, filled with those values in the format of the language, and the type also tells whether the error concerns a field, and which one.
 
 A message is a sentence. Values that come from another record are not written as a sentence but shown as [read-only data](#369-read-only-data).
 
 #### 2.6.3 Languages and formats
 
-The interface is available in Portuguese (`pt-BR`) and English (`en-US`), as set in [README 3.8](../../../README.md#38-formats), which also sets the format of numbers, dates and times in each language. On the first visit, it follows the language of the browser: Portuguese if its code starts with `pt`, and English otherwise. The user changes it in the [top bar](#343-layout-and-responsiveness), through a [selector](#363-buttons-and-links) of two (2) options, PT and EN.
+The interface is available in Portuguese (`pt-BR`) and English (`en-US`), as set in [README 3.8](../../../README.md#38-formats), which also sets the format of numbers, dates and times in each language.
 
-All visible text comes from one (1) dictionary per language, so that no screen has text written in its code. Every label uses the term of the [glossary](../../../README.md#26-glossary) in its language. An enumerated value of the API, such as `BUSINESS_252`, is never shown as it comes: each one has a label in each language, such as "Dias úteis sobre 252" and "Business days over 252".
+On the first visit, the interface follows the language of the browser: Portuguese if its code starts with `pt`, and English otherwise. The user changes it in the [top bar](#343-layout-and-responsiveness), through a [selector](#363-buttons-and-links) of two (2) options, PT and EN, and the choice is kept for the next visits.
+
+All visible text comes from a dictionary, a file that holds every text of the interface in one (1) language, so that no screen has text written in its code. Every label uses the term of the [glossary](../../../README.md#26-glossary) in its language, as set in [2.6.1](#261-voice). A code of the API, such as `BUSINESS_252`, is never shown as it comes: it has a label in each language, such as "Dias úteis sobre 252" and "Business days over 252".
 
 #### 2.6.4 Concept tips
 
 A concept tip is a short definition that opens next to the name of a concept of the domain. It serves a user who needs to recall a definition without leaving the screen.
 
-Only the concepts of the [glossary](../../../README.md#26-glossary) get a tip, never an ordinary field such as a name. The text of a tip follows the definition in the README, in one (1) or two (2) sentences, and is translated faithfully into Portuguese. When a definition changes in the README, its tip changes in the same commit.
+Only the concepts of the [glossary](../../../README.md#26-glossary) get a tip, never an ordinary field such as a name. The text of a tip follows the definition in the README, in one (1) or two (2) sentences. When a definition changes in the README, its tip changes in the same commit.
 
-The tip opens from a button with the [information icon](#352-icons), by click, tap or keyboard, and never on hover or focus, so that it never covers content the user did not ask to cover. It stays open until the user closes it with Esc, a second click or a click outside it. It floats above the page as set in [3.5.1](#351-corners-borders-and-shadows).
+The tip opens from a button with the [information icon](#352-icons), by click, tap or keyboard, and never when the pointer or the keyboard merely passes over it, so that it never covers content the user did not ask to cover. It stays open until the user closes it with Esc, a second click or a click outside it. It floats above the page as set in [3.5.1](#351-corners-borders-and-shadows).
 
 ### 2.7 Accessibility
 
@@ -364,7 +360,7 @@ The thin rule between table rows has a ratio to the paper of 1.34 in the light t
 
 #### 3.2.4 State colors
 
-A state color tells the level of a [message](#262-messages): brick red for an error, ocher for a warning. finmathly has no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Título salvo. Versão 4.".
+A state color tells the level of a [message](#262-messages): brick red for an error, ocher for a warning. finmathly has no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Security saved as version 4.".
 
 Color never carries meaning alone, as [WCAG requires↗](https://www.w3.org/TR/WCAG22/#use-of-color). A state color always comes with a word and a border, so that a user who does not distinguish red from green still reads the level of the message.
 
@@ -490,7 +486,7 @@ A state is a condition of a component that changes how it looks. Every component
 2. hover, when the mouse is over it: the primary button and a link take the accent hover, a secondary button and a row of a list take the soft accent background, and an option of a combo box becomes its active option, as set in [3.6.5](#365-combo-box);
 3. focus, when the keyboard is on it, shown by an outline of 2 pixels in the accent, 2 pixels away from the component, so that it shows even on the primary button. WCAG requires at level AA that [the focus be visible↗](https://www.w3.org/TR/WCAG22/#focus-visible) and [not entirely hidden by other content↗](https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum), such as the top bar. finmathly never hides any part of it, by keeping the scroll of the page clear of the top bar. The 2 pixels come from the [criterion for the appearance of the focus↗](https://www.w3.org/TR/WCAG22/#focus-appearance), at level AAA;
 4. error, for a field with an invalid value, as explained in [3.6.4](#364-fields);
-5. loading, while an action waits for the API, as required in [2.4.1](#241-feedback-for-every-action): the component keeps its size, cannot be activated again, and its text names the action in progress, such as "Salvando título", with no spinner, as set in [3.5.3](#353-motion);
+5. loading, while an action waits for the API, as required in [2.4.1](#241-feedback-for-every-action): the component keeps its size, cannot be activated again, and its text names the action in progress, such as "Saving security", with no spinner, as set in [3.5.3](#353-motion);
 6. empty, for a list or table with no records, with a sentence that says so and the action that creates the first one;
 7. disabled, for an action that cannot be done yet, with its text in the muted ink, its border in the rule and its reason close to it. A disabled button is marked as disabled for screen readers but stays reachable with the keyboard, so that a screen reader also reads its reason.
 
@@ -510,13 +506,13 @@ When the main pointer is a finger, which CSS detects with [`pointer: coarse`↗]
 
 finmathly has two (2) kinds of button and one (1) kind of link:
 
-1. the primary button, filled with the accent, for the main action of a screen, such as "Salvar título". There is at most one (1) per screen, and one (1) per dialog, so that the main action is always clear;
-2. the secondary button, with an accent border and no fill, for other actions, such as "Adicionar evento";
-3. the link, underlined and in the accent, for navigation to a screen that shows data, such as "Calcular preços", which opens the [price calculation screen](#373-the-price-calculation-screen). Creating or closing a record is an action, and uses a button.
+1. the primary button, filled with the accent, for the main action of a screen, such as "Save security". There is at most one (1) per screen, and one (1) per dialog, so that the main action is always clear;
+2. the secondary button, with an accent border and no fill, for other actions, such as "Add event";
+3. the link, underlined and in the accent, for navigation to a screen that shows data, such as "Calculate prices", which opens the [price calculation screen](#373-the-price-calculation-screen). Creating or closing a record is an action, and uses a button.
 
 A selector, such as the language and the theme in the top bar, is a group of two (2) buttons. The chosen one has the soft accent background and its text in the accent, and is marked as pressed for screen readers.
 
-The text of a button says the action and its object, as set in [2.6.1](#261-voice). A button that only says "OK" or "Sim" forces the user to read the rest of the screen to know what it does.
+The text of a button says the action and its object, as set in [2.6.1](#261-voice). A button that only says "OK" or "Yes" forces the user to read the rest of the screen to know what it does.
 
 #### 3.6.4 Fields
 
@@ -547,8 +543,8 @@ The index is chosen from a native select of the browser, because the indexes are
 A message box shows a [message](#262-messages) of the information, warning or error level. It has a background, a left border and, for a warning or an error, a word that names its level:
 
 1. information, on the paper, with a left border in the muted ink and no word;
-2. warning, on the soft warning, with a left border in the warning color and the word "Aviso" or "Warning";
-3. error, on the soft error, with a left border in the error color and the word "Erro" or "Error".
+2. warning, on the soft warning, with a left border in the warning color and the word "Warning";
+3. error, on the soft error, with a left border in the error color and the word "Error".
 
 The word is in the color of its level, and the sentence in the ink. In a warning or an error, the left border marks the level together with the word and the background, as required in [3.2.4](#324-state-colors). In an information, the left border alone sets the message apart from the text around it. The left border is never used on other elements, as explained in [4](#4-patterns-to-avoid). A validation error is not a message box: it sits below its field, as set in [3.6.4](#364-fields).
 
@@ -575,7 +571,7 @@ Read-only data is a set of labels and values that the user cannot change on that
 
 A dialog is an area that opens above the screen and asks for a decision before the user goes on. Its behavior for the keyboard and for screen readers follows the [dialog pattern of the W3C↗](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/), and its focus starts on the button that keeps the work, which is its primary button.
 
-finmathly opens a dialog only before an action that loses work or deletes a record. Its title names the action, such as "Descartar as alterações?", and not "Tem certeza?". Its buttons name their results, such as "Descartar alterações" and "Continuar editando", never "Sim" and "Não".
+finmathly opens a dialog only before an action that loses work or deletes a record. Its title names the action, such as "Discard changes?", and not "Are you sure?". Its buttons name their results, such as "Discard changes" and "Keep editing", never "Yes" and "No".
 
 When the user leaves a record screen with unsaved changes, by its close button or by navigation inside finmathly, the dialog asks whether to discard them, so that the close button never discards work silently. When the user closes the browser tab, only the dialog of the browser can ask, and its text cannot be changed.
 
@@ -589,7 +585,7 @@ A skeleton is a shape in the rule color that takes the place and the size of con
 
 Securities, modalities and indexes each have two (2) screens:
 
-1. a list screen, with a search field, a primary button that creates a record, such as "Cadastrar título", and a table with one (1) row per record;
+1. a list screen, with a search field, a primary button that creates a record, such as "Register security", and a table with one (1) row per record;
 2. a record screen, the same for creating and for editing, with the fields of the record, a primary button that saves it and a secondary button that closes it.
 
 A record that exists only inside another record is edited on the record screen of its owner, as in the [class diagram](../../../README.md#41-class-diagram): the [events](../../../README.md#2110-events) on the record screen of the security, and the [index values](../../../README.md#216-index-its-values-and-index-factor) on the record screen of the index.
@@ -604,7 +600,7 @@ The record screen of a security has four (4) sections: identification, dates, re
 
 #### 3.7.3 The price calculation screen
 
-The price calculation screen opens from the record screen of a security, by the link "Calcular preços", and shows the calculations that apply to it, as set in [README 2.4](../../../README.md#24-what-finmathly-calculates-and-what-it-doesnt). When a calculation does not apply, the screen says why instead of hiding it. The unit price, or the only price that applies, comes first and its [calculation details](#368-prices-and-calculation-details) follow below it, always visible, as explained in [2.3.1](#231-visual-hierarchy). Hiding the details behind a button would break [precision](#21-quality-attributes).
+The price calculation screen opens from the record screen of a security, by the link "Calculate prices", and shows the calculations that apply to it, as set in [README 2.4](../../../README.md#24-what-finmathly-calculates-and-what-it-doesnt). When a calculation does not apply, the screen says why instead of hiding it. The unit price, or the only price that applies, comes first and its [calculation details](#368-prices-and-calculation-details) follow below it, always visible, as explained in [2.3.1](#231-visual-hierarchy). Hiding the details behind a button would break [precision](#21-quality-attributes).
 
 ## 4. Patterns to avoid
 
