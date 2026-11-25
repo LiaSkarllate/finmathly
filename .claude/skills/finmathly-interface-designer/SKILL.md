@@ -247,14 +247,14 @@ The tip opens from a button with the [information icon](#352-icons), by click, t
 
 ### 2.7 Accessibility
 
-Accessibility is the condition that people with disabilities can use the interface: people who do not distinguish some colors, who see poorly or enlarge the screen, who use a screen reader, who use only a keyboard, or who touch the screen with less precision. The reference is the [Web Content Accessibility Guidelines (WCAG) 2.2↗](https://www.w3.org/TR/WCAG22/), and finmathly meets its level AA.
+Accessibility is the condition that people with disabilities can use the interface: people who do not distinguish some colors, who see poorly or enlarge the screen, who use a screen reader, a program that reads the screen aloud, who use only a keyboard, or who touch the screen with less precision. The reference is the [Web Content Accessibility Guidelines (WCAG) 2.2↗](https://www.w3.org/TR/WCAG22/), which has three (3) levels, A, AA and AAA, each stricter than the one before. finmathly meets level AA.
 
 Every screen meets these requirements:
 
-1. text contrast of at least 4.5:1, and 3:1 for what identifies a control, as explained in [3.2.3](#323-contrast);
+1. text contrast of at least 4.5:1, and 3:1 for what identifies a button or a field, as explained in [3.2.3](#323-contrast);
 2. no information carried by color alone, as explained in [3.2.4](#324-state-colors);
-3. every action [reachable with the keyboard↗](https://www.w3.org/TR/WCAG22/#keyboard), in reading order, with no trap except inside an open dialog, which Esc closes;
-4. a visible focus, never hidden under the top bar, as explained in [3.6.1](#361-states);
+3. every action [reachable with the keyboard↗](https://www.w3.org/TR/WCAG22/#keyboard), in reading order, with no place where the keyboard gets stuck, except inside an open dialog, which Esc closes;
+4. a visible focus, the mark that shows where the keyboard is, never hidden under the top bar, as explained in [3.6.1](#361-states);
 5. a [label on every field↗](https://www.w3.org/TR/WCAG22/#labels-or-instructions), with its error message linked to it, as explained in [3.6.4](#364-fields);
 6. click targets of at least 24 by 24 pixels, as explained in [3.6.2](#362-affordance-and-click-targets);
 7. a layout that [works at a width of 320 pixels↗](https://www.w3.org/TR/WCAG22/#reflow) and with text [enlarged to 200%↗](https://www.w3.org/TR/WCAG22/#resize-text), as explained in [3.4.3](#343-layout-and-responsiveness) and [3.3.2](#332-type-scale-and-weights);
