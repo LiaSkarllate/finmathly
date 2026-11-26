@@ -278,7 +278,7 @@ The personality of a brand is the set of qualities that a person should feel whe
 
 The design system draws on two (2) references, as inspiration and never as a copy:
 
-1. the Financial Times, for its tinted paper background instead of pure white, its dense tables with thin rules and its restrained use of color. finmathly does not use its paid typefaces or its salmon tint, which belong to the identity of the Financial Times;
+1. the Financial Times, for its tinted paper background instead of pure white, its dense tables with thin [rules](#321-palette-and-roles), the printing term for thin lines, and its restrained use of color. finmathly does not use its paid typefaces or its salmon tint, which belong to the identity of the Financial Times;
 2. the [Swiss Style↗](https://en.wikipedia.org/wiki/International_Typographic_Style), also called the International Typographic Style, for its simple letters without [serifs](#331-typefaces), its hierarchy through size and boldness, and its white space.
 
 The discarded alternative was the bright and rounded look of consumer apps, which would make a reference system look like a game.
@@ -490,27 +490,38 @@ The width at which a layout changes is called a breakpoint, and finmathly has on
 
 ### 3.5 Shape, icons and motion
 
+Beyond color, letters and space, a screen is also made of shapes, small images and changes over time. finmathly keeps all three (3) to a minimum, in keeping with its sober [personality](#311-personality-and-references), and the three (3) parts below set them.
+
 #### 3.5.1 Corners, borders and shadows
 
-Fields and buttons have almost square corners, with a radius of 2 pixels, and every other element, such as a panel, a dialog or a message box, has none. The square shape recalls printed reports and tables, as in the [references](#311-personality-and-references). The discarded alternative was large rounded corners, common in consumer apps, which would soften the sober look that the [personality](#311-personality-and-references) asks for.
+The shape of an element is set by three (3) things: its corners, its border and its shadow. The corners can be square or rounded. The border is the line around the element. The shadow is a soft dark area below the element, which makes it look raised above the page.
 
-Every rule and border is 1 pixel wide. Panels are separated by a thin rule, never by a shadow.
+The roundness of a corner is measured by its radius: the larger the radius, the rounder the corner. Fields and buttons have a radius of 2 pixels, so their corners are almost square. Every other element, such as a panel, a dialog or a message box, has square corners. Square shapes recall printed reports and tables, as in the [references](#311-personality-and-references). The discarded alternative was large rounded corners, common in consumer apps, which would soften the sober look that the [personality](#311-personality-and-references) asks for.
 
-A shadow suggests that an element floats above the page and blocks it, so the only element with a shadow is a [dialog](#3610-confirmation-dialogs). A concept tip, the list of a combo box and the navigation menu on a phone also open above the page, but block nothing: they have the surface background, a thin rule around them and no shadow. The shadow of a dialog is `0 8px 24px` in the backdrop color, over the [backdrop](#321-palette-and-roles), and in the dark theme, where a shadow barely shows, the dialog also has a thin rule around it.
+Every [rule](#321-palette-and-roles), the printing term for a thin line, and every border is 1 pixel wide. A panel is set apart from the page by a thin rule around it, never by a shadow.
+
+A shadow makes an element look as if it floats above the page, and a floating element suggests that the page behind it is blocked until the user answers. So the only element with a shadow is a [dialog](#3610-confirmation-dialogs), which does block the page. Its shadow is a blur of 24 pixels, shifted 8 pixels down, in the color of the [backdrop](#321-palette-and-roles). In the dark theme, a shadow barely shows on the dark page, so the dialog also gets a thin rule around it.
+
+Some other elements also open above the page without blocking it: a [concept tip](#264-concept-tips), the list of a [combo box](#365-combo-box) and the navigation menu on a phone. They have the [surface](#321-palette-and-roles) background and a thin rule around them, but no shadow, because the user can go on using the page behind them.
 
 #### 3.5.2 Icons
 
-An icon is a small image that stands for an action or an idea. finmathly uses few icons, because most of its actions are clearer as words, and an icon always comes with visible text or an accessible name. Every icon is drawn in SVG, never typed as a character, because a character missing from IBM Plex is drawn by another font, which differs from system to system.
+An icon is a small image that stands for an action or an idea, such as a magnifying glass for search. finmathly uses an icon only where a word would not fit, because most of its actions are clearer as words. It has two (2) icons, each with one (1) meaning:
 
-The only icon with a fixed meaning is the information icon, a lowercase i in a circle, which opens a [concept tip](#264-concept-tips) and is never used for anything else.
+1. the information icon, a lowercase i in a circle, which opens a [concept tip](#264-concept-tips);
+2. the menu icon, three (3) horizontal lines, which opens the navigation on a phone, as set in [3.4.3](#343-layout-and-responsiveness).
+
+Neither is used for anything else, so that the user learns its meaning once and trusts it on every screen. Each comes with an accessible name, a text that a screen reader reads in its place. A new icon is a decision recorded here, as a new color is in [3.2.1](#321-palette-and-roles).
+
+Every icon is a drawing in SVG, a format of images for the web, and never a character typed as text. A character that IBM Plex does not have would be drawn by another font of the computer, and so would look different from one (1) computer to the next.
 
 #### 3.5.3 Motion
 
-Motion is any change on the screen that happens over time, such as a color that fades or an element that slides. Motion helps the user follow a change, but too much of it distracts and slows down a frequent task.
+Motion is any change on the screen that happens over time, such as a color that fades or an element that slides. Motion helps the user follow a change, but too much of it distracts and slows down a task done many times a day.
 
-finmathly uses almost no motion. Only changes of color or opacity are animated, such as the hover of a button, and they take 100 milliseconds, with an ease-out curve, which starts fast and slows down at the end, as the Nielsen Norman Group [recommends for simple feedback↗](https://www.nngroup.com/articles/animation-duration/).
+finmathly uses almost no motion. Only changes of color or of transparency are animated, such as the color of a button that changes when the mouse is over it. Each takes 100 milliseconds, a tenth of a second, and starts fast and slows down at the end, a curve called ease-out. The Nielsen Norman Group [recommends this duration and this curve for simple feedback↗](https://www.nngroup.com/articles/animation-duration/).
 
-Nothing slides, bounces, pulses or appears in sequence. For a user who asked the operating system for less motion, through the setting that the browser exposes as [`prefers-reduced-motion`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion), even these changes are instant.
+Nothing slides, bounces, pulses or appears in sequence. Some users ask their operating system for less motion, for example because motion makes them dizzy. The browser passes that setting on to the page, under the name [`prefers-reduced-motion`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion), and for those users even these changes are instant.
 
 ### 3.6 Components
 
