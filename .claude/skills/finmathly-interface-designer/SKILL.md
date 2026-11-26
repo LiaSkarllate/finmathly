@@ -448,23 +448,45 @@ Some financial interfaces set the last decimal places smaller or lighter, to bri
 
 ### 3.4 Space and layout
 
+Empty space is as much a part of a screen as its text and its colors: the space around an element tells what belongs together and where one (1) part ends and the next begins. The three (3) parts below set the distances between elements, the way space groups them, and the way a screen adapts to its width.
+
 #### 3.4.1 Spacing scale
 
-A spacing scale is the fixed list of distances that may separate elements. finmathly uses 4, 8, 12, 16, 20, 24 and 32 pixels. A scale makes equal relations look equal on every screen: the space between a label and its field is always 4 pixels, between two (2) fields always 16 pixels, and between two (2) sections of a form always 32 pixels.
+A spacing scale is the short, fixed list of distances that may separate the elements of a screen, as the [type scale](#332-type-scale-and-weights) is for text sizes. finmathly uses seven (7): 4, 8, 12, 16, 20, 24 and 32 pixels.
 
-The discarded alternative was to choose each distance by eye, which produces distances such as 13 and 15 pixels that the eye cannot tell apart but that break the alignment of a screen.
+With a scale, the same relation has the same distance on every screen. A label sits 4 pixels above its field, two (2) fields are 16 pixels apart, and two (2) sections of a form are 32 pixels apart. The larger the distance, the weaker the relation, as explained in [3.4.2](#342-grouping).
+
+The book [*Refactoring UI*↗](https://refactoringui.com/) recommends such a system of distances.
 
 #### 3.4.2 Grouping
 
-People see elements as a group when they are close to each other, inside the same area or similar in appearance. The Gestalt laws of [proximity↗](https://lawsofux.com/law-of-proximity/), [common region↗](https://lawsofux.com/law-of-common-region/) and [similarity↗](https://lawsofux.com/law-of-similarity/) describe these three (3) cases.
+[Gestalt psychology↗](https://en.wikipedia.org/wiki/Gestalt_psychology) is a school of psychology, born in Germany and Austria in the early twentieth century, that studied how people perceive what they see as organized wholes, rather than as separate parts.
 
-finmathly groups with space first. The label of a field is closer to its field than to the field above, and the sections of a form are separated by more space than the fields inside them. A panel, an area with the surface background and a thin rule around it, is used only to separate a group that the space alone does not separate, such as the calculation details below a price. Elements with the same role, such as all the values of a column, always look the same.
+Its laws describe three (3) cases in which people see elements as a group:
+
+1. [proximity↗](https://lawsofux.com/law-of-proximity/): elements close to each other look related;
+2. [common region↗](https://lawsofux.com/law-of-common-region/): elements inside the same area, such as a box, look related;
+3. [similarity↗](https://lawsofux.com/law-of-similarity/): elements that look alike seem to have the same role.
+
+finmathly groups by proximity first, because space groups without adding anything to the screen. The label of a field is closer to its field than to the field above, and the sections of a form are farther apart than the fields inside them, as set in [3.4.1](#341-spacing-scale).
+
+It groups by common region only where space is not enough, with a panel: an area with the surface background and a thin rule around it, such as the calculation details below a price. A panel adds lines and color to the screen, so it is used sparingly, as explained in [4](#4-patterns-to-avoid).
+
+It groups by similarity always: elements with the same role, such as all the values of a column, look the same, and elements with different roles look different.
 
 #### 3.4.3 Layout and responsiveness
 
-The layout of a screen is the arrangement of its areas. Every screen of finmathly has a top bar and a content area below it. The top bar holds the logo, the navigation and, at its right, the selectors of language and theme. The content area is at most 1,180 pixels wide and centered on large screens, so that the eye does not cross a whole wide monitor to follow a row.
+The layout of a screen is the arrangement of its areas. Every screen of finmathly has two (2): a top bar and, below it, a content area.
 
-Responsiveness is the ability of a layout to adapt to the width of the screen. finmathly is a web application, and every screen works well from a width of 320 pixels, the width of a small phone, up to a large monitor. From 720 pixels up, the fields of a form sit in two (2) columns. Below 720 pixels, where two (2) columns no longer fit at a comfortable width: (i) the fields stack in one (1) column; (ii) the top bar keeps the logo and the selectors and folds the navigation into a menu; and (iii) a wide table scrolls sideways inside its own area, never the whole page.
+The top bar holds the logo, the navigation, which is the set of links to the screens of securities, modalities and indexes, and, at its right, the selectors of language and theme. The content area holds the screen itself. It is at most 1,180 pixels wide and centered on a large monitor, so that the eye does not have to cross the whole monitor to follow a row.
+
+Responsiveness is the ability of a layout to adapt to the width of the screen. finmathly is a web application, and every screen works well from a width of 320 pixels, the width of a small phone, up to a large monitor.
+
+The width at which a layout changes is called a breakpoint, and finmathly has one (1), at 720 pixels. From 720 pixels up, the fields of a form sit in two (2) columns. Below 720 pixels, two (2) columns no longer fit at a comfortable width, so:
+
+1. the fields of a form stack in one (1) column;
+2. the top bar keeps the logo and the selectors, and hides the navigation behind a menu button;
+3. a table wider than the screen slides sideways inside its own area, while the rest of the page stays in place.
 
 ### 3.5 Shape, icons and motion
 
