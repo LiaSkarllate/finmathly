@@ -377,23 +377,27 @@ Typography is the choice and arrangement of letters: which typefaces, in which s
 
 #### 3.3.1 Typefaces
 
-A typeface is a family of letters with a common design, such as IBM Plex. It comes in members with different designs, such as Sans and Mono, and each member comes in weights, the technical name for the boldness of its letters, from thin to bold.
+A typeface is a family of letters with a common design, such as IBM Plex. It comes in members with different designs, such as Sans and Mono, and each member comes in weights, the technical name for the boldness of its letters, from thin to bold. One (1) weight of one (1) member, such as IBM Plex Mono SemiBold, is a font.
 
-finmathly uses two (2) members of [IBM Plex↗](https://github.com/IBM/plex), which is free under the SIL Open Font License:
+finmathly uses two (2) members of [IBM Plex↗](https://github.com/IBM/plex), which is free to use under the [SIL Open Font License↗](https://openfontlicense.org/):
 
-1. IBM Plex Sans, for all text and numbers, except the three (3) uses of Mono below. Its letters have no serifs, the small strokes at the ends of letters, which suits the [Swiss Style](#311-personality-and-references), and its figures are tabular, as explained in [3.3.4](#334-financial-numbers);
-2. IBM Plex Mono, a monospaced member, in which every character has the same width. It sets only three (3) things: (i) identifiers, such as the code of a security or a UUID; (ii) the decimal reference of a rate or percentage field, as explained in [3.6.4](#364-fields); and (iii) the letters of the logo.
+1. IBM Plex Sans, for all text and numbers, except the three (3) uses of Mono below. Its letters have no serifs, the small strokes at the ends of letters, which suits the [Swiss Style](#311-personality-and-references), and its digits, from 0 to 9, all have the same width, as explained in [3.3.4](#334-financial-numbers);
+2. IBM Plex Mono, a monospaced member, in which every character has the same width. It sets only three (3) things: (i) identifiers, such as the code of a security; (ii) the decimal reference of a rate or percentage field, as explained in [3.6.4](#364-fields); and (iii) the letters of the logo.
 
-A financial value shown for reading is never set in Mono, because Mono gives the decimal and thousands separators the full width of a digit, which breaks a long number into gaps. The discarded alternatives were a pairing with a serif typeface for titles, which would give the editorial look that the design system avoids, and Inter, whose name would be confused with Banco Inter.
+A financial value shown for reading is never set in Mono, because Mono gives the decimal and thousands separators the full width of a digit, which breaks a long number into gaps. The discarded alternative was a pairing with a serif typeface for titles, which would give the look of a magazine that the design system avoids.
 
 #### 3.3.2 Type scale and weights
 
-A type scale is the short, fixed list of text sizes that a product uses. With a scale, two (2) sizes that are almost equal never appear side by side, and the size of a text tells its importance, as required by [visual hierarchy](#231-visual-hierarchy).
+In typography, type means letters, as in typeface. A type scale is the short, fixed list of text sizes that a product uses, and every text on every screen takes one (1) of them.
+
+A scale does two (2) things. It keeps sizes that are almost equal, such as 13 and 14 pixels, from appearing side by side, where they would look like a mistake. And it makes the size of a text tell its importance, as required by [visual hierarchy](#231-visual-hierarchy): the larger the text, the more it matters.
+
+The table gives each role of text its size, in pixels (px), and its weight. A figure is a number shown on its own, outside a table, such as a price. The number after each weight is its value in CSS, where 400 is normal text and 700 is bold.
 
 | Role | Size | Weight |
 | --- | --- | --- |
-| Page title | 24px | SemiBold (600) |
 | Key figure, such as the unit price | 28px | Medium (500) |
+| Page title | 24px | SemiBold (600) |
 | Secondary figure, such as the par unit price next to the unit price | 20px | Medium (500) |
 | Section title | 16px | SemiBold (600) |
 | Body text, form fields and buttons | 16px | Regular (400) |
@@ -402,30 +406,43 @@ A type scale is the short, fixed list of text sizes that a product uses. With a 
 | Hints, notes and validation errors | 12px | Regular (400) |
 | Table headers | 12px | SemiBold (600), uppercase |
 
-Form fields are 16px, the size below which [Safari on iOS enlarges the page↗](https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/) when a field gets the focus. Labels, hints and table headers share 12px and differ by weight and case.
+Form fields are 16px because, below that size, [Safari on the iPhone enlarges the page↗](https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/) when the user taps a field. Labels, hints and table headers share 12px and differ by weight and by uppercase.
 
-The sizes are stored in rem, a unit relative to the text size of the root element of the page, at 1 rem per 16px, so that 12px is 0.75rem. finmathly never sets that root size, so that it stays the size that the user set in the browser and the whole scale follows it. The discarded alternative was a scale with 12, 13, 14 and 15px, whose neighbors were too close to read as different.
+Every browser has a setting for the size of text, which is 16px unless the user changes it, for example to read more comfortably. finmathly follows that setting.
 
-Only three (3) weights are used: (i) Regular for text and numbers; (ii) Medium for figures and labels; and (iii) SemiBold for titles, section titles, table headers and the product name. More weights would create differences too small to read as hierarchy.
+For that, the code does not write the sizes in pixels, but in rem, a unit that means a number of times the text size of the browser. By default, 1rem is 16px, so the 12px of a label is written 0.75rem. If the user sets the browser to 20px, 1rem becomes 20px, the label becomes 15px, and every size of the scale grows in the same proportion.
 
-Uppercase is used only for table headers, which are short, with a letter spacing of 6% of the size, because text in uppercase reads tighter than lowercase. [*Practical Typography*↗](https://practicaltypography.com/letterspacing.html), by Matthew Butterick, recommends between 5% and 12% for uppercase, and finmathly takes a value near the bottom, because its headers are small and dense. Longer uppercase text, such as a subtitle, is avoided, because it reads slower than lowercase.
+Only three (3) weights are used: (i) Regular for text and numbers; (ii) Medium for figures and labels; and (iii) SemiBold for titles, section titles, table headers and the product name. More weights would create differences too small for the eye to notice.
+
+Uppercase is used only for table headers, which are short, because a long text in uppercase reads slower. Letters in uppercase also look crowded, so the headers get a little extra space between letters, 6% of the size. [*Practical Typography*↗](https://practicaltypography.com/letterspacing.html), by Matthew Butterick, recommends between 5% and 12% for uppercase, and finmathly stays near the bottom because its headers are small.
 
 #### 3.3.3 Line height and line length
 
-Line height, also called leading, is the vertical distance between two (2) lines of text. Line length is the number of characters on one (1) line. Both decide how comfortably a paragraph reads: lines too close or too long make the eye lose the start of the next line.
+Two (2) measures decide how comfortably a paragraph reads. Line height, also called leading, is the vertical distance from one (1) line of text to the next. Line length is the number of characters on one (1) line, spaces included.
 
-Body text in finmathly has a line height of 1.5 times its size. Table cells have 1.4, to keep tables dense, and titles and figures have 1.2, because they rarely wrap. Paragraphs, such as messages and tips, are at most 65 characters wide, within the 45 to 90 characters that [*Practical Typography*↗](https://practicaltypography.com/line-length.html) recommends.
+When lines are too close, they blur into each other. When they are too long, the eye has a long way back from the end of one (1) line to the start of the next, and easily lands on the wrong one.
+
+Line height is given as a multiple of the size of the text, so that it grows with the text. A line height of 1.5 on a text of 16px puts 24px from one (1) line to the next. finmathly uses three (3) values:
+
+1. body text, such as messages and tips, has 1.5, the most comfortable for reading a paragraph;
+2. table cells have 1.4, a little tighter, so that more rows fit on the screen;
+3. titles and figures have 1.2, the tightest, because they rarely take more than one (1) line, and the space between lines only matters when there are several.
+
+A paragraph, such as a message or a tip, is at most 65 characters wide. [*Practical Typography*↗](https://practicaltypography.com/line-length.html) recommends an average between 45 and 90 characters, including spaces, because shorter lines are more comfortable to read.
 
 The line height and the width of body text also meet two (2) of the requirements of the [WCAG criterion for blocks of text↗](https://www.w3.org/TR/WCAG22/#visual-presentation): a line spacing of at least 1.5 and a width of at most 80 characters. That criterion is at level AAA, above the AA that finmathly is required to meet.
 
 #### 3.3.4 Financial numbers
 
-Numbers are the main content of finmathly, and four (4) rules make them exact and easy to compare:
+Numbers are the main content of finmathly. Four (4) rules make them exact and easy to compare.
 
-1. every number that can appear in a column uses tabular figures, in which every digit has the same width, so that the units, tens and decimal places of a column line up. IBM Plex Sans draws its figures this way by default, and the CSS still asks for them with [`font-variant-numeric: tabular-nums`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variant-numeric), so that a fallback typeface also lines them up;
-2. numeric columns are aligned to the right, so that the decimal separators line up whenever the values of a column have the same number of decimal places;
-3. a value shows every digit that the API returns, as set in [README 3.8](../../../README.md#38-formats). The frontend never rounds, truncates or recalculates a value. It sets both the minimum and the maximum number of decimal places of [`Intl.NumberFormat`↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) to those of the value, because by default it keeps at most three (3) and drops trailing zeros. It passes the string that the API returns, never a JavaScript number, so that it formats [the exact value of the string↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format);
-4. a rate or a percentage is shown and typed as a percentage, as set in [README 3.8](../../../README.md#38-formats). A rate has its period in the label, `% a.a.` in Portuguese and `% p.a.` in English, because every rate is an [effective annual rate](../../../README.md#251-effective-annual-rates), and the [index percentage](../../../README.md#216-index-its-values-and-index-factor) has only `%`.
+First, digits that line up. In a column of numbers, the eye compares units with units and tens with tens. That works only when every digit, from 0 to 9, has the same width, so that a 1 takes as much room as an 8. Such digits are called tabular figures. IBM Plex Sans already draws its digits this way. The code still asks for them, with the CSS property [`font-variant-numeric: tabular-nums`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variant-numeric), so that they also line up if the browser has to show another typeface.
+
+Second, columns aligned to the right. A numeric column is aligned to the right, as in a sum written on paper, so that units fall under units. When the values of a column have the same number of decimal places, their decimal separators also fall under each other.
+
+Third, every digit, unchanged. A value shows every digit that the API returns, as set in [README 3.8](../../../README.md#38-formats), and the frontend never rounds, cuts or recalculates it. This needs care in the code. The browser formats numbers with [`Intl.NumberFormat`↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat), which by default keeps at most three (3) decimal places and drops the zeros at the end, so that `1000.00` would show as `1,000`. The code therefore sets the number of decimal places to that of each value. It also passes each value as the text that the API returns, never as a JavaScript number, which could change its last digits, so that the browser formats [the exact value of the text↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format).
+
+Fourth, rates as percentages. A rate or a percentage is shown and typed as a percentage, such as 13.5%, as set in [README 3.8](../../../README.md#38-formats), while the API works with decimals, such as 0.135. The label of a rate gives its period, `% p.a.` in English and `% a.a.` in Portuguese, both meaning per year, because every rate is an [effective annual rate](../../../README.md#251-effective-annual-rates). The [index percentage](../../../README.md#216-index-its-values-and-index-factor), which has no period, has only `%`.
 
 Some financial interfaces set the last decimal places smaller or lighter, to bring the integer part forward. finmathly does not, because the user checks exactly those last digits, and [precision](#21-quality-attributes) comes first.
 
