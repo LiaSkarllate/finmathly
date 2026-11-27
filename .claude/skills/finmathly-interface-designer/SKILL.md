@@ -27,7 +27,7 @@ Every screen of finmathly is built from the same decisions: how it looks, how it
     - [2.5.2 Defaults](#252-defaults)
   - [2.6 Text and languages](#26-text-and-languages)
     - [2.6.1 Voice](#261-voice)
-    - [2.6.2 Messages](#262-messages)
+    - [2.6.2 Messages and notes](#262-messages-and-notes)
     - [2.6.3 Languages and formats](#263-languages-and-formats)
     - [2.6.4 Concept tips](#264-concept-tips)
   - [2.7 Accessibility](#27-accessibility)
@@ -138,7 +138,7 @@ The discarded alternative was to make everything equally strong, with bold label
 
 finmathly reduces it in two (2) ways.
 
-First, a screen shows only what its task needs. For example, a field that a [modality](../../../README.md#2112-modalities) does not allow is hidden, instead of shown disabled, which would make the user wonder why it cannot be filled, and a message explains its absence, as set in [3.7.2](#372-the-record-screen-of-a-security).
+First, a screen shows only what its task needs. For example, a field that a [modality](../../../README.md#2112-modalities) does not allow is hidden, instead of shown disabled, which would make the user wonder why it cannot be filled, and a note explains its absence, as set in [3.7.2](#372-the-record-screen-of-a-security).
 
 Second, the same concept always has the same name, its name in the [glossary](../../../README.md#26-glossary).
 
@@ -166,7 +166,7 @@ When the user acts, such as clicking a button, they wait for the interface to an
 
 Feedback is the response of the interface to an action of the user. Without it, the user does not know whether a click worked, clicks again and may save twice.
 
-Every action in finmathly has a visible response: (i) a button shows that it was pressed; (ii) an action that waits for the API cannot be started again until it ends, and shows its [loading state](#361-states); and (iii) the end of the action shows its result, as a success or an error [message](#262-messages).
+Every action in finmathly has a visible response: (i) a button shows that it was pressed; (ii) an action that waits for the API cannot be started again until it ends, and shows its [loading state](#361-states); and (iii) the end of the action shows its result, as set in [2.6.2](#262-messages-and-notes).
 
 finmathly shows a result only after the API confirms it. A price or a registration that appears and then disappears would harm [trust](#21-quality-attributes) more than a short wait.
 
@@ -175,6 +175,12 @@ finmathly shows a result only after the API confirms it. A price or a registrati
 The [Doherty Threshold↗](https://lawsofux.com/doherty-threshold/) states that productivity rises when the system responds in less than 400 milliseconds, so that neither the person nor the system waits for the other. It is named after Walter J. Doherty, who published [the study behind it↗](https://jlelliotton.blogspot.com/p/the-economic-value-of-rapid-response.html) with Ahrvind J. Thadani, at IBM, in 1982. It is an observation, not a hard limit.
 
 finmathly takes it as the limit beyond which the user must see that the system is working. Content that takes longer than 400 milliseconds to load shows a [skeleton](#3611-skeletons) in its place. Below that, nothing is shown in its place, so that a fast answer does not make a skeleton flash on the screen for an instant.
+
+The Nielsen Norman Group puts [about 10 seconds as the limit for keeping the attention of the user↗](https://www.nngroup.com/articles/response-times-3-important-limits/). An action that takes longer than 10 seconds changes the text of its [loading state](#361-states) to say that it is still working, such as "Still saving security…", so that the user sees that the system has not frozen. The text never names a step that the system cannot confirm, such as "Almost done".
+
+An action that gets no answer after 30 seconds, or that cannot reach the API at all, ends with an error in a [message box](#366-message-boxes), written in the three (3) parts of [2.6.2](#262-messages-and-notes), such as "The server did not answer. It may be busy or out of reach. Please try again in a few minutes.". The frontend raises this error by itself, because there is no answer from the API to read. The form keeps everything the user typed, so that nothing has to be typed twice.
+
+A change whose answer was lost may still have reached the API. Trying it again never applies it twice, because the API rejects a save based on a version that is no longer the current one, as set in [3.7.1](#371-list-and-record-screens).
 
 #### 2.4.3 Layout shift
 
@@ -192,7 +198,7 @@ A form is the set of fields where the user types or chooses the values of a reco
 
 In finmathly, a numeric field is liberal with spaces around the number and with a minus sign typed as a hyphen, because a [contractual rate](../../../README.md#219-contractual-rate-and-rate-factor), a [market rate](../../../README.md#225-unit-price-pu) and an [index value](../../../README.md#216-index-its-values-and-index-factor) of a daily rate can be negative. It is conservative in what it sends: the value goes to the API in the format of [README 3.8](../../../README.md#38-formats), whatever the language.
 
-Being liberal never means guessing. Portuguese writes `1.350,25` and English writes `1,350.25`, so each language uses as its decimal separator the mark that the other uses to group thousands. A field therefore accepts only the decimal separator of the [language of the user](#263-languages-and-formats), the comma in Portuguese and the point in English, and rejects any other mark, the thousands separator included, with a [message](#262-messages) that shows the expected format. Without this rule, `1.350`, copied from an English source into a field in Portuguese, would be read as `1350` instead of `1.35`.
+Being liberal never means guessing. Portuguese writes `1.350,25` and English writes `1,350.25`, so each language uses as its decimal separator the mark that the other uses to group thousands. A field therefore accepts only the decimal separator of the [language of the user](#263-languages-and-formats), the comma in Portuguese and the point in English, and rejects any other mark, the thousands separator included, with a [validation error](#262-messages-and-notes) that shows the expected format. Without this rule, `1.350`, copied from an English source into a field in Portuguese, would be read as `1350` instead of `1.35`.
 
 #### 2.5.2 Defaults
 
@@ -212,21 +218,21 @@ The voice is the way the texts of the interface are worded, such as its labels, 
 
 A label is the term of the glossary, with its unit when it has one, such as "Market rate (% p.a.)". A button names the action and its object, with the verb in its base form, such as "Save security".
 
-#### 2.6.2 Messages
+#### 2.6.2 Messages and notes
 
-A message is a sentence that the interface writes for the user. Messages have three (3) levels, so that the user knows how much a message matters before reading it:
+Besides [labels and buttons](#261-voice), the interface writes two (2) kinds of sentence for the user: messages and notes. A message answers an action of the user and goes away once it has done its job. A note is part of the screen, stays next to what it explains and never disappears.
 
-1. information, for a consequence that needs no action, such as "This security is fixed-rate, so it has no index.". A success is also an information message, and states the fact and, when there is one, the new version, such as "Security saved as version 4.";
-2. warning, for something the user should know before acting, such as "The last published IPCA value is for August 2026.";
-3. error, for something that failed or is invalid, stated in the three (3) parts that [README 5.3.6](../../../README.md#536-errors-defined-out-of-existence-and-early-failure) sets: what happened, why, and the way around it, which starts with "Please".
+A message appears when an action ends, in a [message box](#366-message-boxes), which floats above the page. An action that changes data, such as saving or deleting a record, always shows a message, even when the screen then shows the record or the list, because the user must be sure that the data changed, and the message states what the screen does not, such as the new version. An action that only reads, such as calculating a [price](#368-prices-and-calculation-details), shows no message when it works, because its result is the value on the screen.
 
-An error has two (2) kinds. A validation error concerns the value of one (1) field. The frontend finds it while the user types, such as a number it cannot read, as set in [2.5.1](#251-tolerant-input), or the API returns it, such as a market rate of −100% or less. It sits below its field, in short sentences, such as "A market rate of −100% or less has no unit price. Please type a rate greater than −100%.".
+Messages have two (2) levels, so that the user knows how much a message matters before reading it: (i) information, for an action that worked, which states the fact and, when there is one, the new version, such as "Security saved as version 4."; and (ii) error, for an action that failed, stated in the three (3) parts that [README 5.3.6](../../../README.md#536-errors-defined-out-of-existence-and-early-failure) sets: what happened, why, and the way around it, which starts with "Please". An error usually comes from the API, such as "No IPCA value for September 2026, needed for 10/15/2026. The last published value is for August 2026. Please register the September value once it is published, or use a calculation date on a monthly anniversary up to 09/15/2026.". The frontend also raises one when the API does not answer, as set in [2.4.2](#242-response-time).
 
-Any other error concerns the whole action and comes from the API, such as a missing index value. It sits at the top of the form, such as "No IPCA value for September 2026, needed for 10/15/2026. The last published value is for August 2026. Please register the September value once it is published, or use a calculation date on a monthly anniversary up to 09/15/2026.".
+A validation error is a different kind of error. The frontend finds it before anything is sent, and it concerns the value of one (1) field, such as a number that the frontend cannot read, as set in [2.5.1](#251-tolerant-input), or a market rate of −100% or less. It does not appear in a message box, but below its [field](#364-fields), in short sentences with the same three (3) parts, such as "A market rate of −100% or less has no unit price. Please type a rate greater than −100%.". The API checks every value again, and when it rejects one, its error comes like any other error of the API, in a message box that names the field.
 
-Each level has its own appearance, set in [3.6.6](#366-message-boxes). An error of the API comes as [Problem Details↗](https://www.rfc-editor.org/rfc/rfc9457), with each value in its own field, as set in [README 3.8](../../../README.md#38-formats). The [dictionary](#263-languages-and-formats) of each language holds one (1) sentence per type of error, filled with those values in the format of the language, and the type also tells whether the error concerns a field, and which one.
+A note explains the screen. It is there from the moment the screen opens, next to what it explains, written in the [muted ink](#321-palette-and-roles) at the small size of the [type scale](#332-type-scale-and-weights). It never disappears, because the explanation is needed as long as the screen shows what it explains. For example, "This security is fixed-rate, so it has no index." sits in the place of the [absent index](#372-the-record-screen-of-a-security), and "The last published IPCA value is for August 2026." sits next to the [calculation date](#252-defaults). A note has no level, because it never reports a failure.
 
-A message is a sentence. Values that come from another record are not written as a sentence but shown as [read-only data](#369-read-only-data).
+Values that come from another record are neither messages nor notes: they are shown as [read-only data](#369-read-only-data).
+
+Every message, validation error and note is written in the [dictionary](#263-languages-and-formats) of each language, with one (1) sentence per type. An error of the API comes as [Problem Details↗](https://www.rfc-editor.org/rfc/rfc9457), with each value in its own field, as set in [README 3.8](../../../README.md#38-formats), and the dictionary fills the sentence of its type with those values, in the format of the language. An error that the frontend raises has its own type in the dictionary.
 
 #### 2.6.3 Languages and formats
 
@@ -253,8 +259,8 @@ Every screen meets these requirements:
 1. text contrast of at least 4.5:1, and 3:1 for what identifies a button or a field, as explained in [3.2.3](#323-contrast);
 2. no information carried by color alone, as explained in [3.2.4](#324-message-colors);
 3. every action [reachable with the keyboard↗](https://www.w3.org/TR/WCAG22/#keyboard), in reading order, with no place where the keyboard gets stuck, except inside an open dialog, which Esc closes;
-4. a visible focus, the mark that shows where the keyboard is, never hidden under the top bar, as explained in [3.6.1](#361-states);
-5. a [label on every field↗](https://www.w3.org/TR/WCAG22/#labels-or-instructions), with its error message linked to it, as explained in [3.6.4](#364-fields);
+4. a visible focus, the mark that shows where the keyboard is, never hidden under the top bar or a message box, as explained in [3.6.1](#361-states);
+5. a [label on every field↗](https://www.w3.org/TR/WCAG22/#labels-or-instructions), with its validation error linked to it, as explained in [3.6.4](#364-fields);
 6. click targets of at least 24 by 24 pixels, as explained in [3.6.2](#362-affordance-and-click-targets);
 7. a layout that [works at a width of 320 pixels↗](https://www.w3.org/TR/WCAG22/#reflow) and with text [enlarged to 200%↗](https://www.w3.org/TR/WCAG22/#resize-text), as explained in [3.4.3](#343-layout-and-responsiveness) and [3.3.2](#332-type-scale-and-weights);
 8. no text cut when the user [increases the spacing↗](https://www.w3.org/TR/WCAG22/#text-spacing) of lines, letters, words or paragraphs, because every height is a minimum, as explained in [2.4.3](#243-layout-shift);
@@ -306,7 +312,7 @@ The names of the roles recall printing: the paper is the page, the ink is the te
 | Paper | `#FAF7F2` | `#1A1917` | Background of the page |
 | Surface | `#FFFFFF` | `#22211E` | Background of fields, panels and of what floats above the page |
 | Ink | `#1F1D1A` | `#EDE9E2` | Text and numbers |
-| Muted ink | `#5E5A53` | `#A8A39A` | Labels, secondary text, the text of a disabled button or field and the left border of an information message box |
+| Muted ink | `#5E5A53` | `#A8A39A` | Labels, secondary text, the text of a disabled button or field, notes and the left border of an information message box |
 | Rule | `#DDD7CD` | `#3A3833` | Thin rules between rows and around what has the surface background, the border of a disabled button or field, and skeletons |
 | Strong rule | `#1F1D1A` | `#EDE9E2` | Rule under a table header and border of a field |
 | Accent | `#0F5C57` | `#5FB8AE` | Links, buttons and the focus |
@@ -315,8 +321,6 @@ The names of the roles recall printing: the paper is the page, the ink is the te
 | Text on accent | `#FFFFFF` | `#1A1917` | Text on the accent and on the accent hover |
 | Error | `#A3261D` | `#F08A7E` | Word, text and border of an error |
 | Soft error | `#F7E3E0` | `#3A2220` | Background of an error message box |
-| Warning | `#7A5200` | `#E0B45C` | Word and border of a warning |
-| Soft warning | `#F6ECD6` | `#352B18` | Background of a warning message box |
 | Backdrop | `#1F1D1A` at 40% opacity | `#000000` at 60% opacity | Layer that covers the screen behind a dialog |
 
 The paper is warm, slightly yellow, rather than pure white, to recall printed financial reports. Forms and tables sit directly on it, as in a printed report, and the white surface is kept for what must stand out from the page: fields, [panels](#342-grouping) and what floats above the page. The discarded alternative was a white surface under every form and table, which would turn each one into a card, a box around a block, as explained in [4](#4-patterns-to-avoid).
@@ -357,9 +361,6 @@ Every pair of text and background in finmathly meets 4.5:1, in both themes. The 
 | Error on paper | 6.89 | 7.23 |
 | Error on soft error | 5.97 | 6.04 |
 | Error on surface | 7.36 | 6.63 |
-| Ink on soft warning | 14.32 | 11.49 |
-| Warning on soft warning | 5.89 | 7.19 |
-| Warning on surface | 6.92 | 8.32 |
 
 For what is not text, WCAG requires [at least 3:1 for what shows that something is a button or a field↗](https://www.w3.org/TR/WCAG22/#non-text-contrast), such as the border of a field. The border of a field uses the strong rule, at 15.73:1 on the paper in the light theme and 14.52:1 in the dark theme. These pairs are not text, so they are not in the table above.
 
@@ -367,9 +368,9 @@ The thin rule has a ratio to the paper of 1.34:1 in the light theme and 1.50:1 i
 
 #### 3.2.4 Message colors
 
-A message color tells the level of a [message](#262-messages): brick red, the error role of the palette, for an error, and ocher, the warning role, for a warning. finmathly has no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Security saved as version 4.".
+Only one (1) level of [message](#262-messages-and-notes) has a color of its own: the error, in brick red, the error role of the palette. finmathly has no warning level, and no success color, because a green would be confused with the accent. A success is an information message, in neutral colors, such as "Security saved as version 4.".
 
-Color never carries meaning alone, as [WCAG requires↗](https://www.w3.org/TR/WCAG22/#use-of-color). A message color always comes with a word and a border, so that a user who does not distinguish red from green still reads the level of the message.
+Color never carries meaning alone, as [WCAG requires↗](https://www.w3.org/TR/WCAG22/#use-of-color). The error color always comes with a word and a border, so that a user who does not distinguish red from green still reads that the message is an error.
 
 ### 3.3 Typography
 
@@ -436,13 +437,13 @@ The line height and the width of body text also meet two (2) of the requirements
 
 Numbers are the main content of finmathly. Four (4) rules make them exact and easy to compare.
 
-First, digits that line up. In a column of numbers, the eye compares units with units and tens with tens. That works only when every digit, from 0 to 9, has the same width, so that a 1 takes as much room as an 8. Such digits are called tabular figures. IBM Plex Sans already draws its digits this way. The code still asks for them, with the CSS property [`font-variant-numeric: tabular-nums`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variant-numeric), so that they also line up if the browser has to show another typeface.
+First, the digits of a column must line up. In a column of numbers, the eye compares units with units and tens with tens. That works only when every digit, from 0 to 9, has the same width, so that a 1 takes as much room as an 8. Such digits are called tabular figures. IBM Plex Sans already draws its digits this way. The code still asks for them, with the CSS property [`font-variant-numeric: tabular-nums`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variant-numeric), so that they also line up if the browser has to show another typeface.
 
-Second, columns aligned to the right. A numeric column is aligned to the right, as in a sum written on paper, so that units fall under units. When the values of a column have the same number of decimal places, their decimal separators also fall under each other.
+Second, a numeric column is aligned to the right, as in a sum written on paper, so that units fall under units. When the values of a column have the same number of decimal places, their decimal separators also fall under each other.
 
-Third, every digit, unchanged. A value shows every digit that the API returns, as set in [README 3.8](../../../README.md#38-formats), and the frontend never rounds, cuts or recalculates it. This needs care in the code. The browser formats numbers with [`Intl.NumberFormat`↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat), which by default keeps at most three (3) decimal places and drops the zeros at the end, so that `1000.00` would show as `1,000`. The code therefore sets the number of decimal places to that of each value. It also passes each value as the text that the API returns, never as a JavaScript number, which could change its last digits, so that the browser formats [the exact value of the text↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format).
+Third, a value shows every digit that the API returns, unchanged, as set in [README 3.8](../../../README.md#38-formats), and the frontend never rounds, cuts or recalculates it. This needs care in the code. The browser formats numbers with [`Intl.NumberFormat`↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat), which by default keeps at most three (3) decimal places and drops the zeros at the end, so that `1000.00` would show as `1,000`. The code therefore sets the number of decimal places to that of each value. It also passes each value as the text that the API returns, never as a JavaScript number, which could change its last digits, so that the browser formats [the exact value of the text↗](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format).
 
-Fourth, rates as percentages. A rate or a percentage is shown and typed as a percentage, such as 13.5%, as set in [README 3.8](../../../README.md#38-formats), while the API works with decimals, such as 0.135. The label of a rate gives its period, `% p.a.` in English and `% a.a.` in Portuguese, both meaning per year, because every rate is an [effective annual rate](../../../README.md#251-effective-annual-rates). The [index percentage](../../../README.md#216-index-its-values-and-index-factor), which has no period, has only `%`.
+Fourth, a rate or a percentage is shown and typed as a percentage, such as 13.5%, as set in [README 3.8](../../../README.md#38-formats), while the API works with decimals, such as 0.135. The label of a rate gives its period, `% p.a.` in English and `% a.a.` in Portuguese, both meaning per year, because every rate is an [effective annual rate](../../../README.md#251-effective-annual-rates). The [index percentage](../../../README.md#216-index-its-values-and-index-factor), which has no period, has only `%`.
 
 Some financial interfaces set the last decimal places smaller or lighter, to bring the integer part forward. finmathly does not, because the user checks exactly those last digits, and [precision](#21-quality-attributes) comes first.
 
@@ -478,7 +479,7 @@ It groups by similarity always: elements with the same role, such as all the val
 
 The layout of a screen is the arrangement of its areas. Every screen of finmathly has two (2): a top bar and, below it, a content area.
 
-The top bar holds the logo, the navigation, which is the set of links to the screens of securities, modalities and indexes, and, at its right, the selectors of language and theme. The content area holds the screen itself. It is at most 1,180 pixels wide and centered on a large monitor, so that the eye does not have to cross the whole monitor to follow a row.
+The top bar holds the logo, the navigation, which is the set of links to the screens of securities, modalities and indexes, and, at its right, the selectors of language and theme. The top bar stays at the top of the screen when the user scrolls, so that the navigation is always within reach. The content area holds the screen itself. It is at most 1,180 pixels wide and centered on a large monitor, so that the eye does not have to cross the whole monitor to follow a row.
 
 Responsiveness is the ability of a layout to adapt to the width of the screen. finmathly is a web application, and every screen works well from a width of 320 pixels, the width of a small phone, up to a large monitor.
 
@@ -498,20 +499,21 @@ The shape of an element is set by three (3) things: its corners, its border and 
 
 The roundness of a corner is measured by its radius: the larger the radius, the rounder the corner. Fields and buttons have a radius of 2 pixels, so their corners are almost square. Every other element, such as a panel, a dialog or a message box, has square corners. Square shapes recall printed reports and tables, as in the [references](#311-personality-and-references). The discarded alternative was large rounded corners, common in consumer apps, which would soften the sober look that the [personality](#311-personality-and-references) asks for.
 
-Every [rule](#321-palette-and-roles), the printing term for a thin line, and every border is 1 pixel wide. A panel is set apart from the page by a thin rule around it, never by a shadow.
+Every [rule](#321-palette-and-roles), the printing term for a thin line, and every border is 1 pixel wide, except the left border of a message box, which is 4 pixels wide, as set in [3.6.6](#366-message-boxes). A panel is set apart from the page by a thin rule around it, never by a shadow.
 
 A shadow makes an element look as if it floats above the page, and a floating element suggests that the page behind it is blocked until the user answers. So the only element with a shadow is a [dialog](#3610-confirmation-dialogs), which does block the page. Its shadow is a blur of 24 pixels, shifted 8 pixels down, in the color of the [backdrop](#321-palette-and-roles). In the dark theme, a shadow barely shows on the dark page, so the dialog also gets a thin rule around it.
 
-Some other elements also open above the page without blocking it: a [concept tip](#264-concept-tips), the list of a [combo box](#365-combo-box) and the navigation menu on a phone. They have the [surface](#321-palette-and-roles) background and a thin rule around them, but no shadow, because the user can go on using the page behind them.
+Some other elements also open above the page without blocking it: a [concept tip](#264-concept-tips), the list of a [combo box](#365-combo-box), the navigation menu on a phone and a floating [message box](#366-message-boxes). They have a thin rule around them, but no shadow, because the user can go on using the page behind them. The first three have the [surface](#321-palette-and-roles) background, and a message box has the background of its level.
 
 #### 3.5.2 Icons
 
-An icon is a small image that stands for an action or an idea, such as a magnifying glass for search. finmathly uses an icon only where a word would not fit, because most of its actions are clearer as words. It has two (2) icons, each with one (1) meaning:
+An icon is a small image that stands for an action or an idea, such as a magnifying glass for search. finmathly uses an icon only where a word would not fit, because most of its actions are clearer as words. It has three (3) icons, each with one (1) meaning:
 
 1. the information icon, a lowercase i in a circle, which opens a [concept tip](#264-concept-tips);
-2. the menu icon, three (3) horizontal lines, which opens the navigation on a phone, as set in [3.4.3](#343-layout-and-responsiveness).
+2. the menu icon, three (3) horizontal lines, which opens the navigation on a phone, as set in [3.4.3](#343-layout-and-responsiveness);
+3. the close icon, an ×, which closes a [message box](#366-message-boxes).
 
-Neither is used for anything else, so that the user learns its meaning once and trusts it on every screen. Each comes with an accessible name, a text that a screen reader reads in its place. A new icon is a decision recorded here, as a new color is in [3.2.1](#321-palette-and-roles).
+None of them is used for anything else, so that the user learns its meaning once and trusts it on every screen. Each comes with an accessible name, a text that a screen reader reads in its place. A new icon is a decision recorded here, as a new color is in [3.2.1](#321-palette-and-roles).
 
 Every icon is a drawing in SVG, a format of images for the web, and never a character typed as text. A character that IBM Plex does not have would be drawn by another font of the computer, and so would look different from one (1) computer to the next.
 
@@ -521,25 +523,37 @@ Motion is any change on the screen that happens over time, such as a color that 
 
 finmathly uses almost no motion. Only changes of color or of transparency are animated, such as the color of a button that changes when the mouse is over it. Each takes 100 milliseconds, a tenth of a second, and starts fast and slows down at the end, a curve called ease-out. The Nielsen Norman Group [recommends this duration and this curve for simple feedback↗](https://www.nngroup.com/articles/animation-duration/).
 
-Nothing slides, bounces, pulses or appears in sequence. Some users ask their operating system for less motion, for example because motion makes them dizzy. The browser passes that setting on to the page, under the name [`prefers-reduced-motion`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion), and for those users even these changes are instant.
+Nothing slides, bounces or appears in sequence. There are two (2) exceptions: (i) a skeleton fades slowly in and out while its content loads, as set in [3.6.11](#3611-skeletons), so that the user sees that the system is still working; and (ii) the scroll to the first invalid field, set in [3.6.4](#364-fields), uses the smooth scrolling of the browser, so that the user does not lose their place. Some users ask their operating system for less motion, for example because motion makes them dizzy. The browser passes that setting on to the page, under the name [`prefers-reduced-motion`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion), and for those users the changes of color and the scroll are instant, and a skeleton stays still.
 
 ### 3.6 Components
 
 A component is a reusable part of a screen, such as a button or a table, built from the decisions of [3.2](#32-color) to [3.5](#35-shape-icons-and-motion). Every screen is assembled from components, so a component is decided once and looks the same everywhere.
 
-The frontend is written in TypeScript and React, a library that builds an interface from components. It builds its own components from the [tokens](#5-design-tokens), without a component library. The discarded alternative was a component library, which brings its own corners, shadows, colors and messages, and would have to be fought on every screen to follow this skill.
+The frontend is written in TypeScript, a version of JavaScript that checks the types of its values, and React, a library that builds an interface from components. It builds its own components from the [tokens](#5-design-tokens), without a component library. The discarded alternative was a component library, which brings its own corners, shadows, colors and messages, and would have to be fought on every screen to follow this skill.
 
 #### 3.6.1 States
 
-A state is a condition of a component that changes how it looks. Every component of finmathly has these states, when they apply:
+A state is a condition of a component that changes how it looks, so that the user sees what the component is doing. Every component of finmathly has these seven (7) states, when they apply:
 
 1. normal, at rest;
-2. hover, when the mouse is over it: the primary button and a link take the accent hover, a secondary button and a row of a list take the soft accent background, and an option of a combo box becomes its active option, as set in [3.6.5](#365-combo-box);
-3. focus, when the keyboard is on it, shown by an outline of 2 pixels in the accent, 2 pixels away from the component, so that it shows even on the primary button. WCAG requires at level AA that [the focus be visible↗](https://www.w3.org/TR/WCAG22/#focus-visible) and [not entirely hidden by other content↗](https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum), such as the top bar. finmathly never hides any part of it, by keeping the scroll of the page clear of the top bar. The 2 pixels come from the [criterion for the appearance of the focus↗](https://www.w3.org/TR/WCAG22/#focus-appearance), at level AAA;
-4. error, for a field with an invalid value, as explained in [3.6.4](#364-fields);
-5. loading, while an action waits for the API, as required in [2.4.1](#241-feedback-for-every-action): the component keeps its size, cannot be activated again, and its text names the action in progress, such as "Saving security", with no spinner, as set in [3.5.3](#353-motion);
-6. empty, for a list or table with no records, with a sentence that says so and the action that creates the first one;
-7. disabled, for an action that cannot be done yet, with its text in the muted ink, its border in the rule and its reason close to it. A disabled button is marked as disabled for screen readers but stays reachable with the keyboard, so that a screen reader also reads its reason.
+2. hover, when the mouse is over it;
+3. focus, when the keyboard is on it;
+4. error, when a field holds an invalid value;
+5. loading, while an action waits for the API;
+6. empty, when a list or a table has no records;
+7. disabled, when an action cannot be done yet.
+
+When the mouse is over a component, the primary button and a link take the [accent hover](#321-palette-and-roles), a darker green. A secondary button and a row of a list take the [soft accent](#321-palette-and-roles) background, a very light green. In a combo box, the option under the mouse becomes the active option, as set in [3.6.5](#365-combo-box).
+
+The focus is the mark that shows where the keyboard is. In finmathly, it is an outline of 2 pixels in the [accent](#321-palette-and-roles), drawn 2 pixels away from the component, so that it shows even around the primary button, which is filled with the same green. WCAG requires at level AA that [the focus be visible↗](https://www.w3.org/TR/WCAG22/#focus-visible) and [not entirely hidden by other content↗](https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum), such as the top bar or a message box, and finmathly never hides any part of it. The 2 pixels come from the [criterion for the appearance of the focus↗](https://www.w3.org/TR/WCAG22/#focus-appearance), at level AAA.
+
+A field with an invalid value has a border and a validation error in the [error color](#321-palette-and-roles), as set in [3.6.4](#364-fields).
+
+While an action waits for the API, as required in [2.4.1](#241-feedback-for-every-action), the component keeps its size and cannot be activated again, and its text names the action in progress, ending with an ellipsis, such as "Saving security…". After 10 seconds, the text changes, as set in [2.4.2](#242-response-time). It has no spinner, the turning circle that many apps show, because finmathly avoids motion, as set in [3.5.3](#353-motion).
+
+A list or a table with no records shows a sentence that says so and the action that creates the first record.
+
+A disabled component has its text in the [muted ink](#321-palette-and-roles) and its border in the [rule](#321-palette-and-roles), and its reason is written close to it. A disabled button is marked as disabled for screen readers, but the keyboard still reaches it, so that a screen reader also reads its reason.
 
 A component that lacks any of these states, where it applies, is not finished.
 
@@ -549,86 +563,113 @@ Affordance is the quality of an element that shows how it can be used: a button 
 
 In finmathly, buttons, links and fields have the shapes set in [3.6.3](#363-buttons-and-links) and [3.6.4](#364-fields), and text that is not clickable is never underlined or in the accent.
 
-[Fitts's Law↗](https://lawsofux.com/fittss-law/) states that a target is faster to reach the larger and the closer it is. WCAG sets a [minimum target of 24 by 24 pixels↗](https://www.w3.org/TR/WCAG22/#target-size-minimum). finmathly uses at least 32 pixels of height for every button, field and select, and 40 pixels for a primary button, enough for a mouse. A link inside a sentence or a table cell keeps the height of its line, as WCAG allows.
+A click target is the area of an element that responds to a click or a tap, such as the whole surface of a button. [Fitts's Law↗](https://lawsofux.com/fittss-law/) states that a target is faster to reach the larger and the closer it is, and a small target is easy to miss. WCAG sets a [minimum target of 24 by 24 pixels↗](https://www.w3.org/TR/WCAG22/#target-size-minimum).
 
-When the main pointer is a finger, which CSS detects with [`pointer: coarse`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/pointer), every target is at least 44 by 44 pixels, as [Apple recommends↗](https://developer.apple.com/design/human-interface-guidelines/accessibility). The discarded alternative was 44 pixels everywhere, which would waste the density that the analysts need on a large screen.
+With a mouse, finmathly makes every button and every field at least 32 pixels high, and a [primary button](#363-buttons-and-links), the button of the main action of a screen, 40 pixels high. The width of a button or a field follows its text and the layout, which already makes it wider than its height. The exception is a button with only an icon, such as the information icon, which is also at least 32 pixels wide. A link inside a sentence or a table cell keeps the height of its line, as WCAG allows.
+
+A finger is less precise than a mouse, so when the user touches the screen, which CSS detects with [`pointer: coarse`↗](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/pointer), every button and every field is at least 44 pixels high, and a button at least 44 pixels wide, as [Apple recommends↗](https://developer.apple.com/design/human-interface-guidelines/accessibility) for a target of 44 by 44. A link inside a sentence keeps the height of its line here too. The discarded alternative was 44 pixels everywhere, which would waste the [density](#22-users-and-their-tasks) that the analysts need on a large screen.
 
 #### 3.6.3 Buttons and links
 
-finmathly has two (2) kinds of button and one (1) kind of link:
+A button does something on the screen, such as saving a record. A link takes the user to another screen. Keeping the two (2) apart tells the user, before clicking, whether they will stay or leave. finmathly has two (2) kinds of button and one (1) kind of link:
 
-1. the primary button, filled with the accent, for the main action of a screen, such as "Save security". There is at most one (1) per screen, and one (1) per dialog, so that the main action is always clear;
-2. the secondary button, with an accent border and no fill, for other actions, such as "Add event";
-3. the link, underlined and in the accent, for navigation to a screen that shows data, such as "Calculate prices", which opens the [price calculation screen](#373-the-price-calculation-screen). Creating or closing a record is an action, and uses a button.
+1. the primary button, filled with the [accent](#321-palette-and-roles), for the main action of a screen, such as "Save security";
+2. the secondary button, with an accent border and no fill, for any other action, such as "Add event";
+3. the link, underlined and in the accent, for going to a screen that shows data, such as "Calculate prices", which opens the [price calculation screen](#373-the-price-calculation-screen).
 
-A selector, such as the language and the theme in the top bar, is a group of two (2) buttons. The chosen one has the soft accent background and its text in the accent, and is marked as pressed for screen readers.
+A screen has at most one (1) primary button, and so does a dialog, so that the main action is always clear. Creating or closing a record is an action, even though it changes the screen, so it uses a button and not a link.
 
 The text of a button says the action and its object, as set in [2.6.1](#261-voice). A button that only says "OK" or "Yes" forces the user to read the rest of the screen to know what it does.
 
+A selector, such as the language and the theme in the top bar, is a group of two (2) buttons, of which one (1) is chosen. The chosen one has the [soft accent](#321-palette-and-roles) background and its text in the accent, and is marked as chosen for screen readers.
+
 #### 3.6.4 Fields
 
-A field has a label above it, a border in the strong rule and, when it applies, an error message below it. The label is always visible above the field, never written inside it, where it would disappear as the user types, taking with it what the field asks for.
+A field is where the user types or chooses a value, such as the market rate. Every field has three (3) parts: (i) a label above it, which names what the field asks for; (ii) the box where the user types, with a border in the [strong rule](#321-palette-and-roles); and (iii) when the value is invalid, a validation error below it. A field that chooses a value from a list is set in [3.6.5](#365-combo-box).
 
-A field with an invalid value has a border in the error color and, below it, its error message, in the error color, with no background, linked to the field so that a screen reader reads them together.
+The label is always visible above the field. It is never written inside the box, as a hint that disappears when the user starts to type, because the user would lose what the field asks for.
 
-A number is typed as set in [2.5.1](#251-tolerant-input). A numeric field keeps its value as the decimal that the API receives, and only shows it in the format of the language, so a change of language shows every field in the new format without changing any value. While the user types, the field shows only digits, the minus sign and the decimal separator. When the user leaves it, it shows the value with the thousands separator, as set in [README 3.8](../../../README.md#38-formats), so that a number such as the [face value at issue](../../../README.md#213-face-value-and-face-value-at-issue-vne) of `1.000,00` of an NTN-B is easy to read.
+A field with an invalid value has a border in the error color and, below it, its [validation error](#262-messages-and-notes), in the error color, with no background. The error is tied to the field, so that a screen reader reads both together.
+
+When the user tries to save with invalid fields, the frontend sends nothing, and the page scrolls to the first of them, if it is out of view, and the keyboard focus moves to it, so that the user sees what to fix. The scroll is the smooth scrolling of the browser, one (1) of the few motions that [3.5.3](#353-motion) allows.
+
+Beyond these parts, a field follows the kind of value it holds. finmathly has three (3) kinds: (i) a number, such as the [face value at issue](../../../README.md#213-face-value-and-face-value-at-issue-vne); (ii) a rate or a percentage, such as the market rate and the index percentage, which is a number that the user types as a percentage; and (iii) a date.
+
+For every kind, the language changes only how the value is shown, never the value itself. If the user changes the language, every number, rate, percentage and date shows in the new format, and no value is altered.
+
+A number is typed as set in [2.5.1](#251-tolerant-input). While the user types, the box shows only digits, the minus sign and the decimal separator. When the user leaves the field, it shows the number with the thousands separator, as set in [README 3.8](../../../README.md#38-formats), such as `1.000,00` for the face value at issue of an NTN-B, so that a large number is easy to read. When the user comes back to the field, the separators disappear again.
 
 The discarded alternative was a mask that inserts the separators as the user types, common in banking apps. It works for amounts with a fixed number of decimal places, such as cents, but values in finmathly have a variable number, such as rates with six (6) places and [index values](../../../README.md#253-rounding-and-truncation) with any number.
 
-A date is typed in the format of the language, as set in [README 3.8](../../../README.md#38-formats).
+A rate or a percentage is a number, so it follows the rules above, but the user types it as a percentage, as set in [3.3.4](#334-financial-numbers), such as 13,5678 in Portuguese. Only these fields have, below the box, a line in the monospaced member of [IBM Plex](#331-typefaces) that shows the same value as the decimal that is sent to the API, such as `Decimal = 0.135678`.
 
-A rate or percentage field is typed as a percentage, as set in [3.3.4](#334-financial-numbers). Below it, a decimal reference in IBM Plex Mono shows the decimal value that is sent to the API, in the format of the API whatever the language, such as `Decimal = 0.135678` for 13,5678 typed in Portuguese.
+This line exists because the [maximum number of decimal places](../../../README.md#253-rounding-and-truncation) of a rate or a percentage is counted in the decimal form, which the user does not see while typing a percentage. The other numbers have no such limit and need no line. The code gets the decimal by moving the decimal point two places to the left in the text, from 13.5678 to 0.135678, and never by a calculation, which could change the last digits of the number.
 
-It shows the decimal because the [maximum number of decimal places](../../../README.md#253-rounding-and-truncation) of a rate or a percentage is counted in the decimal form, which the user does not see while typing a percentage. The conversion moves the decimal point on the text of the number, without converting it to a binary floating-point number, so that no digit is lost or added.
+A date is typed in the format of the language, as set in [README 3.8](../../../README.md#38-formats), such as `21/10/2026` in Portuguese and `10/21/2026` in English. It can also be chosen in the calendar that the browser draws.
 
 #### 3.6.5 Combo box
 
-A combo box is a field that combines typing and choosing: the user types part of a name and picks it from a filtered list. Its behavior for the keyboard and for screen readers follows the [combo box pattern of the W3C↗](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). The active option of its list has the soft accent background.
+A combo box is a field that combines typing and choosing: the user types part of a name, such as "NTN", and picks the option from the list that shrinks to match. The option the user is on, with the mouse or the keyboard, is the active option, and it has the [soft accent](#321-palette-and-roles) background, a very light green. The way a combo box works with the keyboard and with screen readers follows the [combo box pattern of the W3C↗](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), the body that sets the standards of the web. Its list floats above the page, as set in [3.5.1](#351-corners-borders-and-shadows).
 
-finmathly uses it to choose the modality on the record screen of a security, because modalities grow with the market and a plain list would force the user to scroll it. Its list floats above the page as set in [3.5.1](#351-corners-borders-and-shadows).
+finmathly uses a combo box whenever the user chooses one (1) item from a list: the [modality](../../../README.md#2112-modalities) of a security, its [index](../../../README.md#216-index-its-values-and-index-factor) and any other. Users register modalities and indexes, so both lists grow, and typing is faster than scrolling.
 
-The index is chosen from a native select of the browser, because the indexes are few, such as the IPCA, the IGP-M, the DI and the Selic, and a native select is accessible and fits a phone without more work. The discarded alternative was a combo box for both, which is the hardest of the two (2) to build correctly and gives nothing for a short list.
+Choosing from a list has one (1) way only, because the same thing must work the same way everywhere, as explained in [1](#1-what-a-design-system-is). The discarded alternative was a select, the list that the browser itself draws, for short lists such as the indexes. A select cannot be typed in, which makes it slow for a long list, and it would give the user two (2) ways to do the same thing.
 
 #### 3.6.6 Message boxes
 
-A message box shows a [message](#262-messages) of the information, warning or error level. It has a background, a left border and, for a warning or an error, a word that names its level:
+A message box is the component that shows a [message](#262-messages-and-notes). When it appears and what it says are set in 2.6.2, and this section sets how it looks and behaves on the screen.
 
-1. information, on the paper, with a left border in the muted ink and no word;
-2. warning, on the soft warning, with a left border in the warning color and the word "Warning";
-3. error, on the soft error, with a left border in the error color and the word "Error".
+A message box is a rectangle with a background, a left border 4 pixels wide, a thin rule around it, as set in [3.5.1](#351-corners-borders-and-shadows), and, for an error, a word that says its level. The sentence is in the [ink](#321-palette-and-roles), and every pair of text and background meets the contrast of [3.2.3](#323-contrast). Each level of 2.6.2 has its own colors and word:
 
-The word is in the color of its level, and the sentence in the ink. In a warning or an error, the left border marks the level together with the word and the background, as required in [3.2.4](#324-message-colors). In an information, the left border alone sets the message apart from the text around it. The left border is never used on other elements, as explained in [4](#4-patterns-to-avoid). A validation error is not a message box: it sits below its field, as set in [3.6.4](#364-fields).
+1. information has the [paper](#321-palette-and-roles) background, a left border in the [muted ink](#321-palette-and-roles) and no word;
+2. error has the [soft error](#321-palette-and-roles) background, a left border in the [error color](#321-palette-and-roles) and the word "Error".
+
+In an error, color does not carry the level alone: the word and the border say it too, as required in [3.2.4](#324-message-colors). An information message needs no word, because it asks nothing of the user.
+
+A message box floats in the top right corner of the screen, below the [top bar](#343-layout-and-responsiveness), and stays there when the user scrolls, so that the user sees it wherever the page is. It is at most as wide as a paragraph, as set in [3.3.3](#333-line-height-and-line-length), so that it covers only a corner of the content, and it blocks nothing: the user can go on working with the page. On a phone, it takes the width of the screen. Because it covers part of the content, the page keeps the focused element clear of it, as set in [3.6.1](#361-states).
+
+How long a message box stays depends on its level, because the more a message matters, the longer it must stay: (i) an information message disappears by itself after 5 seconds, because it only confirms what the user did; and (ii) an error stays until the user closes it, starts another action or leaves the screen, because the user must read it and may need to act. An information message stays while the pointer is over it or the keyboard is on it. Every message box has a button with the [close icon](#352-icons), so that the user can remove it whenever it gets in the way. The Nielsen Norman Group finds a message that disappears after a few seconds [appropriate for passive notifications, and a bad way to show an error↗](https://www.nngroup.com/articles/indicators-validations-notifications/).
+
+Every message box is announced to [screen readers](#27-accessibility) when it appears, as required in 2.7.
 
 #### 3.6.7 Tables
 
-A table shows records or values in rows and columns, and it is the main component of finmathly. It has a strong rule under its header, thin rules between rows, no vertical rules and no alternating row colors. Numeric columns follow [3.3.4](#334-financial-numbers), and text and date columns are aligned to the left.
+A table shows records or values in rows and columns, and it is the main component of finmathly. It sits directly on the [paper](#321-palette-and-roles) and has only horizontal lines: a [strong rule](#321-palette-and-roles) under its header, the row with the names of the columns, and thin [rules](#321-palette-and-roles) between rows. It has no vertical lines and no rows in alternating colors, because the thin rules already guide the eye along a row, and more lines would only add noise, as explained in [4](#4-patterns-to-avoid).
 
-A row of a list opens its record, as in [2.3.4](#234-familiar-patterns). Its first cell is a link to the record, so that the keyboard reaches it and the user can open it in a new tab, and the whole row also opens the record when it is clicked.
+Numeric columns are aligned to the right and follow [3.3.4](#334-financial-numbers), and text and date columns are aligned to the left. A table wider than the screen slides sideways inside its own area, as set in [3.4.3](#343-layout-and-responsiveness).
+
+A row of a list opens its record, as in [2.3.4](#234-familiar-patterns). Its first cell is a [link](#363-buttons-and-links) to the record, so that the keyboard reaches it and the user can open it in a new tab. The whole row also opens the record when it is clicked, and takes the [soft accent](#321-palette-and-roles) background when the mouse is over it, as set in [3.6.1](#361-states).
 
 #### 3.6.8 Prices and calculation details
 
-A price, either the [unit price](../../../README.md#225-unit-price-pu) or the [par unit price](../../../README.md#224-par-unit-price-pu-par), is shown as a key figure, at the largest size of the [type scale](#332-type-scale-and-weights), with its label above it. When a security has both, the unit price is the key figure and the par unit price a secondary figure next to it. It never appears without its calculation details, the steps that show how it was calculated, which the API returns with it:
+A price, either the [unit price](../../../README.md#225-unit-price-pu) or the [par unit price](../../../README.md#224-par-unit-price-pu-par), is shown as a key figure, a number shown on its own at the largest size of the [type scale](#332-type-scale-and-weights), with its label above it. When a security has both, the unit price is the key figure, and the par unit price is a secondary figure next to it.
 
-1. the unit price comes with the payments of its [payment schedule](../../../README.md#223-payment-schedule) after the calculation date, each with its present value, and the unit price as their total. The total is cut by the output rule, so it may differ from the sum of the column in its last decimal places, as explained in [README 2.5.3](../../../README.md#253-rounding-and-truncation);
+A price never appears without its calculation details, the steps that show how it was calculated, which the API returns with it. They sit in a [panel](#342-grouping) below the price, always visible, as set in [3.7.3](#373-the-price-calculation-screen):
+
+1. the unit price comes with the payments of its [payment schedule](../../../README.md#223-payment-schedule) after the calculation date, each with its present value, and the unit price as their total. The API returns the total already cut by the output rule of the modality, the rule that sets the decimal places of a price, as explained in [README 2.5.3](../../../README.md#253-rounding-and-truncation). The frontend shows the total as it comes and never recalculates it;
 2. the par unit price comes with its components, shown as [read-only data](#369-read-only-data) in the order of its formula.
 
 When the API returns the [reading of a price](../../../README.md#23-reading-a-price), at par, at a premium or at a discount, the interface shows it in words, next to the values it compares: the two (2) prices or, without a par unit price, the unit price and the [face value at issue](../../../README.md#213-face-value-and-face-value-at-issue-vne) (VNE).
 
 #### 3.6.9 Read-only data
 
-Read-only data is a set of labels and values that the user cannot change on that screen, such as the rules of the modality of a security. Each label sits above its value, aligned with the fields of the form around it, but without a border, so that it never looks editable. Labels and values are the same as on the screen where that data is edited.
+Read-only data is a set of labels and values that the user cannot change on that screen, such as the rules of the [modality](../../../README.md#2112-modalities) of a security, shown on the record screen of the security. Each label sits above its value, aligned with the [fields](#364-fields) around it, but the value has no border, so that it never looks editable. Labels and values are the same as on the screen where that data is edited, so that the user recognizes them.
 
 #### 3.6.10 Confirmation dialogs
 
-A dialog is an area that opens above the screen and asks for a decision before the user goes on. Its behavior for the keyboard and for screen readers follows the [dialog pattern of the W3C↗](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/), and its focus starts on the button that keeps the work, which is its primary button.
+A dialog is an area that opens above the screen, over the [backdrop](#321-palette-and-roles), and asks for a decision before the user goes on. It is the only element with a shadow, as set in [3.5.1](#351-corners-borders-and-shadows). The way it works with the keyboard and with screen readers follows the [dialog pattern of the W3C↗](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/).
 
-finmathly opens a dialog only before an action that loses work or deletes a record. Its title names the action, such as "Discard changes?", and not "Are you sure?". Its buttons name their results, such as "Discard changes" and "Keep editing", never "Yes" and "No".
+finmathly opens a dialog only before an action that loses work or deletes a record. Its title names the action, such as "Discard changes?" or "Delete modality?", and not "Are you sure?". Its buttons name their results, such as "Discard changes" and "Keep editing", never "Yes" and "No". The button that cancels the action, such as "Keep editing", is the [primary button](#363-buttons-and-links), and the keyboard starts on it, so that pressing Enter by mistake never loses anything.
 
-When the user leaves a record screen with unsaved changes, by its close button or by navigation inside finmathly, the dialog asks whether to discard them, so that the close button never discards work silently. When the user closes the browser tab, only the dialog of the browser can ask, and its text cannot be changed.
+When the user leaves a record screen with unsaved changes, by its close button or by the navigation of finmathly, the dialog asks whether to discard them, so that the close button never discards work silently. When the user closes the browser tab, only the dialog of the browser can ask, and its text cannot be changed.
 
 #### 3.6.11 Skeletons
 
-A skeleton is a shape in the rule color that takes the place and the size of content that is still loading, such as a price or the rows of a table. It shows that the content is coming and reserves its space, which prevents a [layout shift](#243-layout-shift). It does not pulse, as set in [3.5.3](#353-motion).
+A skeleton is a gray shape, in the [rule](#321-palette-and-roles) color, that takes the place and the size of content that is still loading. It shows that the content is coming and reserves its space, which prevents a [layout shift](#243-layout-shift).
+
+A skeleton is used only for content that a screen loads to show, such as the rows of a list, the data of a record that opens, or a price being calculated. An action that changes data, such as saving a record, shows the [loading state](#361-states) of its button instead. A skeleton appears only when the content takes longer than 400 milliseconds, as set in [2.4.2](#242-response-time).
+
+While the content loads, the skeleton fades slowly in and out, so that the user sees that the system is still working, as allowed in [3.5.3](#353-motion). The Nielsen Norman Group notes that such a [pulsating skeleton↗](https://www.nngroup.com/articles/skeleton-screens/) works like a wait animation and makes the wait feel shorter. For a user who asked for less motion, the skeleton stays still.
 
 ### 3.7 Screens
 
@@ -643,11 +684,11 @@ A record that exists only inside another record is edited on the record screen o
 
 An index can have thousands of values, so they form a table filtered by a range of reference dates, the most recent first, and each value is added or corrected and saved on its own, because each has its own version, as explained in [README 4.4.5](../../../README.md#445-index-and-index_value). A correction changes only the value, so the reference date of a saved value is read-only, and a new value of a monthly index number is chosen as a month, because its reference date is always the first day of that month.
 
-The record screens also follow three (3) rules of the [README](../../../README.md#4-data-model): (i) a modality or an index that is [locked](../../../README.md#441-modality) shows its data as read-only data, with an information message that says why it cannot be changed; (ii) a security or an index value is never deleted, only corrected, and a modality or an index is deleted only while it is not locked, after a [confirmation dialog](#3610-confirmation-dialogs); and (iii) a save of a security or an index value that the API rejects, because the stored version differs from the one the user read, shows an error that names the version the user read and asks the user to reload the record.
+The record screens also follow three (3) rules of the [README](../../../README.md#4-data-model): (i) a modality or an index that is [locked](../../../README.md#441-modality) shows its data as read-only data, with a note that says why it cannot be changed; (ii) a security or an index value is never deleted, only corrected, and a modality or an index is deleted only while it is not locked, after a [confirmation dialog](#3610-confirmation-dialogs); and (iii) a save of a security or an index value that the API rejects, because the stored version differs from the one the user read, shows an error message box that names the version the user read and asks the user to reload the record.
 
 #### 3.7.2 The record screen of a security
 
-The record screen of a security has four (4) sections: identification, dates, remuneration and events. Choosing the modality shows its rules as [read-only data](#369-read-only-data) and hides the fields that the modality does not allow. An information message explains each absence, such as that of an index on a fixed-rate security.
+The record screen of a security has four (4) sections: identification, dates, remuneration and events. Choosing the modality shows its rules as [read-only data](#369-read-only-data) and hides the fields that the modality does not allow. A note, in the place of the field, explains each absence, such as that of an index on a fixed-rate security.
 
 #### 3.7.3 The price calculation screen
 
@@ -706,7 +747,7 @@ Each token is named by its role, never by its value, so that `--color-accent` st
 
 | Group | Tokens | Values in |
 | --- | --- | --- |
-| Color | `--color-paper`, `--color-surface`, `--color-ink`, `--color-ink-muted`, `--color-rule`, `--color-rule-strong`, `--color-accent`, `--color-accent-hover`, `--color-accent-soft`, `--color-on-accent`, `--color-error`, `--color-error-soft`, `--color-warning`, `--color-warning-soft`, `--color-backdrop` | [3.2.1](#321-palette-and-roles) |
+| Color | `--color-paper`, `--color-surface`, `--color-ink`, `--color-ink-muted`, `--color-rule`, `--color-rule-strong`, `--color-accent`, `--color-accent-hover`, `--color-accent-soft`, `--color-on-accent`, `--color-error`, `--color-error-soft`, `--color-backdrop` | [3.2.1](#321-palette-and-roles) |
 | Typeface | `--font-sans`, `--font-mono` | [3.3.1](#331-typefaces) |
 | Size | `--font-size-title`, `--font-size-key-figure`, `--font-size-figure`, `--font-size-body`, `--font-size-table`, `--font-size-small`, where the section title shares `--font-size-body` | [3.3.2](#332-type-scale-and-weights) |
 | Weight | `--font-weight-regular`, `--font-weight-medium`, `--font-weight-semibold` | [3.3.2](#332-type-scale-and-weights) |
@@ -714,7 +755,7 @@ Each token is named by its role, never by its value, so that `--color-accent` st
 | Line height | `--line-height-body`, `--line-height-table`, `--line-height-title`, the last one also used by figures | [3.3.3](#333-line-height-and-line-length) |
 | Space | `--space-4`, `--space-8`, `--space-12`, `--space-16`, `--space-20`, `--space-24`, `--space-32` | [3.4.1](#341-spacing-scale) |
 | Width | `--width-content`, `--width-text` | [3.4.3](#343-layout-and-responsiveness) and [3.3.3](#333-line-height-and-line-length) |
-| Shape | `--radius-control`, `--border-width`, `--shadow-dialog` | [3.5.1](#351-corners-borders-and-shadows) |
+| Shape | `--radius-control`, `--border-width`, `--border-width-message`, `--shadow-dialog` | [3.5.1](#351-corners-borders-and-shadows) |
 | Motion | `--duration-fade`, `--easing-out` | [3.5.3](#353-motion) |
 | Control | `--height-control`, `--height-control-primary`, `--focus-width`, `--focus-offset` | [3.6.2](#362-affordance-and-click-targets) and [3.6.1](#361-states) |
 
